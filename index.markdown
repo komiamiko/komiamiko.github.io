@@ -1,6 +1,86 @@
 ---
-# Feel free to add content and custom Front Matter to this file.
-# To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
-
-layout: home
+layout: default
 ---
+
+![A realistic wide fabric bow knot with a transgender flag pattern, laying on an abstract bipolar coordinate grid floor with smooth metallic grid lines](/assets/komi-icon-2019-bow/banner-halfsize.png)
+
+<span style="font-size:80%;">"Komi's Bow" © 2019 Komi Amiko, published under [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | [full size](/assets/komi-icon-2019-bow/regular.png) | [matcapped](/assets/komi-icon-2019-bow/matcap.png) | [wireframe](/assets/komi-icon-2019-bow/wireframe.png)</span>
+
+[Jump to posts index](#posts-index)
+
+**The bow is a very honest knot.**
+For those less familiar with bows, you may imagine an ideal bow - a central binding band, a loop on either side, and two trailing ends behind.
+You might ponder how such a knot is tied, and be frustrated at not being able to figure it out.
+Actually, a proper bow knot does not look like that, and if you see such an ideal bow, it's almost certainly not a single piece of fabric that's been tied cleverly.
+One of the loose ends is fated to be on top, no matter how you orient the bow.
+You can see it in my banner - the loose end from the left side is actually on top of the loop.
+Normally, you would tuck this loose end around to give the appearance of it being behind, and hide the looping around section in the middle where the central band obscures it.
+The knot hasn't really changed, it's just been made to look a certain way.
+In my knot, I display this little bit of messiness, not bothering to try and conform it to a certain look, and being honest with my knot tying.
+
+The bow is topologically equivalent to a rectangle, and not even a knot in the mathematical sense, yet it is the most geometrically complex object I've worked with.
+Up to this project anyway.
+That's not to say I'm a simpleton - the knot is deceptively complex.
+The path of the fabric strip is relatively complex, with lots of deformations and small details like the wrinkles.
+I would not dare to try and sculpt it, and definitely not find a surface equation for it.
+But I'm an artist, and artists cheat a bit - get creative and resourceful, that is.
+I used an armature and pinning groups to give the bow a fake spine that could not be replicated in the real world, and used that to guide the tying of the knot.
+The cloth simulation did the rest of the work of producing a realistic knot.
+If you look in the wireframe, around the middle, you may be able to spot some clipping.
+The simulation was quite good, but not perfect, evidently, though with a correctly parameterized *Solidify* modifier I was able to give the bow thickness and cover up the clipping at the same time.
+It's pretty, isn't it?
+
+The project was done in [Blender](https://www.blender.org) 2.8.1.
+The sky is ["Winter Lake 01", by Sergej Majboroda](https://hdrihaven.com/hdri/?c=skies&h=winter_lake_01), published under a [CC0](https://creativecommons.org/publicdomain/zero/1.0/) license.
+I chose it because it provides very uniform and neutral lighting.
+It will still provide realistic lighting to create shadows and all, but it won't be distracting or obtrusive when seen in reflections, and the colours will show up mostly unaltered.
+The floor is an entirely procedurally generated material using Blender's nodes, and shows a [Bipolar coordinate](https://en.wikipedia.org/wiki/Bipolar_coordinates) grid.
+The bow meanwhile is partially procedurally generated, with the details coming from a colour map and bump map which I made from a photo of my sleeve and that I then edited in GIMP.
+I could have used some very nice paid textures but I didn't want to be bound by their licenses for this project which I want control over.
+The maps aren't the best, but they look good enough - everyone I've asked says the bow feels physically real, and I agree.
+
+I quite like this project.
+It's something I can call mine.
+It represents me.
+To start, I am an artist, and this is my art.
+It is a showcase of my skills and knowledge, and a visually verifiable proof of some things I can do, for if I couldn't do it, how would I have made this piece?
+The bow is an object of beauty, combining regular mathematical elegance, physical fashion, artistic liberties, cultural attachments, emergent features on different scales, and an inherent verifiable authenticity in its messy tying.
+There are many other objects that could have been there, but I think the bow suits me well.
+It also sets the difficulty bar high enough that it's actually impressive but not so high that I can't feasibly reach it.
+An interesting thing with bows is how different they look depending on how large the loops are in comparison to the width of the ribbon used.
+A thin ribbon produces something more like a gift wrapping bow, while a thick ribbon is more like the typical worn bow.
+I'd like to have a solid 20 cm wide bow on the back of my head with quite thick ribbons for the fan out effect, like in the image, but more so.
+The fabric I originally envisioned as a large repeating woven pattern, though it wasn't the approach I used in the end.
+In the end sometimes you get the best realism by using real things - in my case, taking photos of real fabric to adapt into maps.
+Mixing in reality there is just a part of my spirit, finding creative and better solutions to problems.
+The trans flag is there because I'm trans, among other things, and I have pride in my identity.
+It is a statement that trans people are beautiful, and I will wear it while being successful as an inspiring symbol of hope.
+The floor meanwhile is a bipolar grid.
+It's not the hardest math problem I've ever done - that would be the Problem of Apollonius - but it was reasonably difficult and it pairs really well with the bow by having the poles coincide with the loops of the bows.
+I find mappings interesting, and this one is a conformal map.
+It maps a rectangular strip in the Euclidean plane which is topologically equivalent to an infinitely long cylinder to the entire Euclidean plane in a way that preserves locality.
+Being a conformal map, angles are preserved as well, and in some sense shapes are preserved.
+The two points at infinity at the ends of the cylinder are mapped to the two poles in the bipolar grid.
+It is more obscure than its sibling the polar grid, but hey, part of who I am is picking up lots of small interesting things that I'll probably never use.
+This time, I did find a serious use for a bipolar grid, and it's in my art.
+It is the most complicated node setup I've used, though for me who is comfortable seeing and working with mathematical concepts in several different forms, including *nodes* and its sibling *wires*, this was pretty manageable, just time consuming.
+The colouration comes from noise, so that's largely randomized.
+It'd be inaccurate to say it's a rainbow, though it does have a diverse show of colours.
+With a bit of background in art, I don't really have a favourite colour to put on display, instead, I see all colours as having possible contextual merit, and after playing around with the noise for a while I got a blend that looks pretty and complements the other elements of the scene well.
+It's a pretty sample of my curiosity in math and the wide expertise that came from it, with some of my artistry sprinkled in.
+That's all there is to it really - it's a relatively simple scene with a trans flag bow on a bipolar grid background, but there are a lot of features to be picked out.
+Those features reflect me.
+More than that, these features are distinguishing, and all help to identify me uniquely.
+I think I can say with confidence that no other human is likely to compose a remotely similar image independently.
+It's special and it's mine.
+It's a personal symbol I can use globally to identify myself, and I like it that way.
+
+# All posts
+{: #posts-index}
+
+| Date posted | Title of post |
+|--:|:--|
+{% for post in site.posts %} | {{ post.date | date: "%Y-%m-%d" }} | [{{ post.title }}]({{ post.url }}) |
+{% endfor %}
+
+[Subscribe via RSS](/feed.xml)
