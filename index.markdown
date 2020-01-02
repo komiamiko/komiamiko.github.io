@@ -24,7 +24,7 @@ That's not to say I'm a simpleton - the knot is deceptively complex.
 The path of the fabric strip is relatively complex, with lots of deformations and small details like the wrinkles.
 I would not dare to try and sculpt it, and definitely not find a surface equation for it.
 But I'm an artist, and artists cheat a bit - get creative and resourceful, that is.
-I used an armature and pinning groups to give the bow a fake spine that could not be replicated in the real world, and used that to guide the tying of the knot.
+I used an armature and pinning groups to give the strip of fabric a fake spine that I could animate precisely, something that could not be replicated in the real world, and used that to guide the tying of the knot.
 The cloth simulation did the rest of the work of producing a realistic knot.
 If you look in the wireframe, around the middle, you may be able to spot some clipping.
 The simulation was quite good, but not perfect, evidently, though with a correctly parameterized *Solidify* modifier I was able to give the bow thickness and cover up the clipping at the same time.
