@@ -1,12 +1,15 @@
 ---
-layout: default
+layout: post
+title: "Komi's Bow"
+date: 2020-01-02 05:15
+categories: archive homepage
 ---
 
 ![A realistic wide fabric bow knot with a transgender flag pattern, laying on an abstract bipolar coordinate grid floor with smooth metallic grid lines](/assets/komi-icon-2019-bow/banner-halfsize.png)
 
 <span style="font-size:80%;">"Komi's Bow" © 2019 Komi Amiko, published under [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | [full size](/assets/komi-icon-2019-bow/regular.png) | [matcapped](/assets/komi-icon-2019-bow/matcap.png) | [wireframe](/assets/komi-icon-2019-bow/wireframe.png)</span>
 
-[Jump to posts index](#posts-index)
+*This is an archived version of the homepage which was in use since 2020-01-02.*
 
 **The bow is a very honest knot.**
 For those less familiar with bows, you may imagine an ideal bow - a central binding band, a loop on either side, and two trailing ends behind.
@@ -74,13 +77,3 @@ More than that, these features are distinguishing, and all help to identify me u
 I think I can say with confidence that no other human is likely to compose a remotely similar image independently.
 It's special and it's mine.
 It's a personal symbol I can use globally to identify myself, and I like it that way.
-
-# All posts
-{: #posts-index}
-
-| Date posted | Title of post |
-|--:|:--|
-{% for post in site.posts %} | {{ post.date | date: "%Y-%m-%d" }} | [{{ post.title }}]({{ post.url }}) |
-{% endfor %}
-
-{% include footer.markdown %}
