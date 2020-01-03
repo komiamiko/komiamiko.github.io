@@ -2,7 +2,7 @@
 layout: post
 title: "About Komi"
 date: 2020-01-03 16:00:00
-categories: about komi
+categories: people komi
 ---
 
 <div style="float:left;padding:1em;max-width:30%;">

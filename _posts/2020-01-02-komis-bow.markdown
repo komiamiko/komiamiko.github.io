@@ -2,7 +2,7 @@
 layout: post
 title: "Komi's Bow"
 date: 2020-01-02 05:15
-categories: archive homepage
+categories: archive homepage art
 ---
 
 ![A realistic wide fabric bow knot with a transgender flag pattern, laying on an abstract bipolar coordinate grid floor with smooth metallic grid lines](/assets/komi-icon-2019-bow/banner-halfsize.png)
