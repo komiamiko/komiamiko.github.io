@@ -1,10 +1,18 @@
 ---
-layout: default
+layout: homepage
 ---
 
 ![A realistic wide fabric bow knot with a transgender flag pattern, laying on an abstract bipolar coordinate grid floor with smooth metallic grid lines](/assets/komi-icon-2019-bow/banner-halfsize.png)
 
-<span style="font-size:80%;">"Komi's Bow" © 2019 Komi Amiko, published under [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | [full size](/assets/komi-icon-2019-bow/regular.png) | [matcapped](/assets/komi-icon-2019-bow/matcap.png) | [wireframe](/assets/komi-icon-2019-bow/wireframe.png)</span>
+<span style="font-size:80%;">"Komi's Bow" © 2019 Komi Amiko, published under [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/)[^repub] | [full size](/assets/komi-icon-2019-bow/regular.png) | [matcapped](/assets/komi-icon-2019-bow/matcap.png) | [wireframe](/assets/komi-icon-2019-bow/wireframe.png)</span>
+
+[^repub]: Was CC-BY-SA instead prior to 2020-01-04.
+I had chosen CC-BY-SA due to a worse understanding of the CC licenses.
+The ShareAlike restriction would force others to redistribute only under the exact same license.
+Without it, any compatible license would be okay.
+Others would be able to use it in other works with different licenses, and I am okay with that.
+The Attribution requirement is important to me here because this is one of my signature artworks.
+Thus, I chose to republish the exact same artwork under CC-BY.
 
 [Jump to posts index](#posts-index)
 
@@ -82,5 +90,3 @@ It's a personal symbol I can use globally to identify myself, and I like it that
 |--:|:--|
 {% for post in site.posts %} | {{ post.date | date: "%Y-%m-%d" }} | [{{ post.title }}]({{ post.url }}) |
 {% endfor %}
-
-{% include footer.markdown %}
