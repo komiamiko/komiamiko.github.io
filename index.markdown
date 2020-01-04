@@ -6,13 +6,7 @@ layout: homepage
 
 <span style="font-size:80%;">"Komi's Bow" © 2019 Komi Amiko, published under [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/)[^repub] | [full size](/assets/komi-icon-2019-bow/regular.png) | [matcapped](/assets/komi-icon-2019-bow/matcap.png) | [wireframe](/assets/komi-icon-2019-bow/wireframe.png)</span>
 
-[^repub]: Was CC-BY-SA instead prior to 2020-01-04.
-I had chosen CC-BY-SA due to a worse understanding of the CC licenses.
-The ShareAlike restriction would force others to redistribute only under the exact same license.
-Without it, any compatible license would be okay.
-Others would be able to use it in other works with different licenses, and I am okay with that.
-The Attribution requirement is important to me here because this is one of my signature artworks.
-Thus, I chose to republish the exact same artwork under CC-BY.
+[^repub]: Was CC-BY-SA instead prior to 2020-01-04. I had chosen CC-BY-SA due to a worse understanding of the CC licenses. The ShareAlike restriction would force others to redistribute only under the exact same license. Without it, any compatible license would be okay. Others would be able to use it in other works with different licenses, and I am okay with that. The Attribution requirement is important to me here because this is one of my signature artworks. Thus, I chose to republish the exact same artwork under CC-BY.
 
 [Jump to posts index](#posts-index)
 
