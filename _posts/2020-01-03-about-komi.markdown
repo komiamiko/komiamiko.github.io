@@ -9,11 +9,23 @@ categories: people komi
 <img src="/assets/komi-icon-2019-bow/icon-halfsize.png" alt="A realistic wide fabric bow knot with a transgender flag pattern, laying on an abstract bipolar coordinate grid floor with smooth metallic grid lines" style="border-radius:50%;box-shadow:0 0 1em grey;"/>
 </div>
 
+{::options parse_block_html="true" /}
+
 Hi! I'm Komi. "Programmer, engineer, and artist" is pretty accurate.
 If you want something more grounded and specific, I'd say I main Python as a programming language and Blender as an art creation suite,
 though that says more about the state of open source tools than my preferences and talents.
 
-If you're looking for me on another site, try looking for username or tag `@komiamiko`. If it has my icon and all, it's probably me. I don't have anyone impersonating me at this time, though if it becomes an issue in the future I'll provide verifiable proof on all my accounts that I actually own them.
+I'm `@komiamiko` on social media and other sites.
+If it has my icon and all, it's probably me.
+
+Come say hello! I welcome new friends.
+
+## A powerful Komi
+{: #powerful-komi}
+
+{% include collapser.markdown %}
+
+<div>
 
 I like art and having fun, and I usually don't think much of throwing my full problem solving skillset at a task,
 just as a gamer may solve many small problems to progress and never consider it work until it becomes particularly grindy or difficult.
@@ -24,48 +36,51 @@ growth rates are quite important to understand to achieve proper balance as play
 and hyperbolic space has been proposed as a way to fit many locations within short distances of each other.
 These may look like intimidating topics in mathematics, but if I intend to use it in a roleplaying game, it's all for fun and I have a reason to look into it.
 I pick up a lot of topics in this way, making my knowledge base wider and deeper as I go.
-It's more or less why I've stayed well above my grade level in school without caring much for studying itself as a purposeful task.
 
-## A powerful Komi
-
-Unless I'm making an app or library meant to be shared and used,
-programming is just another part of my toolkit used to get things done.
-I use the Python shell as my everyday calculator because it's more powerful than the typical calculator app and can do a lot more than just arithmetic.
-While long time mastery of a language can help to write code faster,
-the documentation is always available if I need information on a library's API, language features, or even language syntax.
-Looking up the documentation only takes a minute.
-Those are things I never try to memorize, though if it sticks after enough usage it's a nice bonus.
-The more time consuming topics are the large concepts, including algorithms and data structures drawn from larger subjects like graph theory.
-Perhaps it does not take long to look up a specific algorithm, but you'd first need to know what algorithm to look up.
-When faced with a large and new problem, it's up to you to figure out what concepts you'll need and how to combine them to solve the problem,
-and for that it helps to already have a large knowledge base to draw from.
-It is the more important kind of knowledge for writing good code.
-Fortunately, I do have a large knowledge base there.
+"If it works, it counts."
+It's an old mantra of mine.
+It doesn't mean everything I produce is barely functional,
+because part of "it works" is meeting quality standards and other requirements for the task.
+It tells you to be resourceful and not limit your paths to your goal.
+As the classic example I give, why bother with a smoke simulation when you can slap a 2D smoke effect in the scene and nobody will notice?
+I work efficiently and use the resources available to me, no shame in that.
+If I need to know a library's API or need information on a language feature or even forget the syntax for a for loop,
+that is something I can look up anytime.
+The documentation is always there and it only takes a minute.
+If I don't know how to solve a problem because I lack the algorithms for it,
+I'm out of luck.
+While having long time mastery of a language is a nice bonus to write code faster,
+it is the large concepts, including algorithms and data structures drawn from larger subjects like graph theory,
+which are important to solving problems and writing good code.
+Fortunately, I have a large knowledge base for those concepts.
 I also document and test my code, as well was format it nicely and leave informative comments, so the code is maintainable.
-Even if you never expect someone else to see your program, I'd suggest you do the same, so you aren't looking at your own spaghetti code later and wondering what it was for, or breaking your own API that you never properly specified.
-That happened to me before.
-Never again.
+Even if you never expect someone else to see your program, I'd suggest you do the same,
+so you aren't looking at your own spaghetti code later and wondering what it was for, or breaking your own API that you never properly specified.
+That happened to me before with an old project that shall not be named because it was made under a different name.
+Later in development I formed a habit of leaving doc comments and writing tests.
+I'm very consistent with it now.
 
-Artists "cheat".
-As the classic example I give, why bother with a smoke simulation when you can slap a 2D smoke effect on your scene and nobody will notice?
-There's nothing shameful or immoral about it.
-"Cheating" may be the short form for it, but it's really about finding faster and easier solutions to problems.
-The same creative spirit that helps artists make great pieces also allows engineers to problem solve better,
-because for the artist, how to present a scene is a real problem.
-I embrace it.
-While many novice programmers seek to learn a language by memorizing the syntax and features, I don't mind spending most of my time looking at documentation.
-It's just me using the resources available to me, and it allows me to produce a better result.
-If I can adapt to my environment and work more efficiently, why should I not?
+</div>
 
 ## My art portfolio
+{: #artworks-list}
+
+{% include collapser.markdown %}
+
+<div>
 
 I started Blender in 2014-12[^firsttime].
 I've been limited by what my toaster of a computer can handle, but that hasn't stopped me from getting excited about art others have made in Blender and trying to make some art myself.
 I first used GIMP in 2015-07[^firsttime], Inkscape in 2019-01[^firsttime], and Audacity in 2015-02[^firsttime].
-Blender ends up being the dominant tool for all sorts of creative works from animation to video editing, with GIMP coming in second place as specializing in 2D raster images, being my painting and image editing program.
-Inkscape I use when I need to work with SVGs, which sometimes happens. Audacity is what I use for audio.
+Blender ends up being the dominant tool for all sorts of creative works from animation to video editing,
+with GIMP coming in second place as specializing in 2D raster images, being my painting and image editing program.
+Inkscape I use when I need to work with SVGs, which is rare.
+Audacity is what I use for audio, though I only use it for audio editing, as it's not suitable for making things.
+All are open source tools.
 
-My first notable artwork is "Komi's Bow", seen in my icon. I conceived it in some form long before, began work in Blender on 2019-12-18, and had it done and rendered out in its current form on 2019-12-26. The regular version at the 2k resolution took a little under 15 minutes to render on my laptop.
+My first notable artwork is "Komi's Bow", seen in my icon.
+I conceived it in some form long before, began work in Blender on 2019-12-18, and had it done and rendered out in its current form on 2019-12-26.
+The regular version at the 2k resolution took a little under 15 minutes to render on my laptop.
 
 [^firsttime]: All of these dates I reference refer to the earliest work of mine that I was able to dig up for the specific tool or language. Perhaps I used it earlier but no files survived. I didn't require it was impressive, I just need to see one file as proof that I did use the program.
 
@@ -75,7 +90,16 @@ My first notable artwork is "Komi's Bow", seen in my icon. I conceived it in som
 [{{ post.title }} ({{ post.date | date: "%Y-%m-%d" }})]({{ post.url }})
 {% endfor %}
 
+</div>
+
 ## My programming languages
+{: #programming-languages-list}
+
+{% include collapser.markdown %}
+
+<div>
+
+You can find my recent work on [GitHub](https://github.com/komiamiko).
 
 I've been doing
 Java since 2014-06[^firsttime][^javatime],
@@ -116,6 +140,12 @@ Despite this role, there is one thing I would always go to Java for, chalking up
 If I want to make a visualizer, a simulator, a complicated user interface, a custom UI component with rendering and user interaction defined by me, or something along those lines, I go to Java.
 I'm already familiar with Java2D, and I've used Java's Swing and Apache Pivot before, so of course I'll be most comfortable with a Java project there.
 
+My favourite little Java project is a visualizer for a simple 2D world with a circular portal.
+It barely qualifies as raytracing.
+It's interesting how the space appears to warp just because of the paths light would take.
+
+![A normal blue checkerboard pattern on the right, and a warped purple checkerboard on the left. The purple area is actually on the other end of a portal, but there is no visual indicator of the portal.](/assets/misc/circle-portal-screenshot-long.png)
+
 ### C++ - high performance
 
 If I need the fastest performance possible, I go to C++.
@@ -141,3 +171,5 @@ Web clients and servers, machine learning, dataset analysis, image processing, a
 C is pretty much a weaker version of C++. C++ has access to just about everything C does, and more, so I have no reason to use C.
 
 Rust is a contender for the role of a high performance language, though I often pick C++ instead out of familiarity. I'm not against using Rust if a project demands it though, and I'll certainly take it if C++ isn't available.
+
+</div>

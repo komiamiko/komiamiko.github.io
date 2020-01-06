@@ -6,8 +6,6 @@ layout: default
 
   <article class="post-content">
     {{ content }}
-
-    {% include footer.markdown %}
   </article>
 
 </div>
