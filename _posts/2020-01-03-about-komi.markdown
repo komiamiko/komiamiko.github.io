@@ -112,7 +112,7 @@ Those plus a few lesser used and esoteric languages.
 I don't use them all equally, as each has its advantages and situations where it's appropriate to use them.
 I'd say I main Python, with Java and C++ as secondaries.
 
-[^javatime]: [Processing](https://processing.org) (ProcessingJava specifically) since 2014, plain Java since 2016. The distinction isn't really that important for determining experience. While Processing does make it easier to write a full program with graphics, a Processing program uses Java syntax and still has access to all of Java, so there's nothing stopping you from using, say, `java.util.ArrayList`. I later did graphics with Java2D, which gave me finer control over what I render and how the user interacts with it, and didn't need Processing by then.
+[^javatime]: [Processing](https://processing.org) (ProcessingJava specifically) since 2014-06, plain Java since 2016-10. The distinction isn't really that important for determining experience. While Processing does make it easier to write a full program with graphics, a Processing program uses Java syntax and still has access to all of Java, so there's nothing stopping you from using, say, `java.util.ArrayList`. I later did graphics with Java2D, which gave me finer control over what I render and how the user interacts with it, and didn't need Processing by then.
 
 This sums up the main reasons I'd use each, in order that they'd be considered, like a if-elif-else tree.
 
