@@ -8,6 +8,7 @@ categories: programming design
 {::options parse_block_html="true" /}
 
 # An issue with exponential runtime
+{: #introduction-issue}
 
 {% include collapser.markdown %}
 
@@ -48,6 +49,7 @@ Exponential runtime is rather undesirable here.
 </div>
 
 # What is a 3-way comparison?
+{: #introduction-3-way-definition}
 
 {% include collapser.markdown %}
 
@@ -79,6 +81,7 @@ where `@` should be replaced by any of `==`, `!=`, `<`, `<=`, `>`, or `>=`.
 </div>
 
 # How 3-way comparisons improve performance
+{: #comparison-performance}
 
 {% include collapser.markdown %}
 
@@ -114,6 +117,7 @@ is what fixed it all.
 </div>
 
 # Interoperability of regular comparison and 3-way comparison
+{: #comparison-interoperability}
 
 {% include collapser.markdown %}
 
@@ -136,6 +140,7 @@ so there is no loss of capability in your program regardless of which you choose
 </div>
 
 # Reasons for and against using 3-way comparison
+{: #comparison-reasons-for-against}
 
 {% include collapser.markdown %}
 
@@ -167,7 +172,7 @@ and can get better with just the dumber optimizations.
 One can also argue 3-way comparisons force programmers to define total orderings even where it doesn't make sense.
 Though, nobody is forcing you to implement the 3-way comparison or a total ordering, so this will not be an issue.
 Alternatively, another signal value or enum could be used to indicate the values are not comparable,
-though we would lose the nice mathematical properties of the 3-way comparison as typicall implemented,
+though we would lose the nice mathematical properties of the 3-way comparison as typically implemented,
 with a negative, zero, or positive result.
 
 In defense of the 3-way comparison, it costs little extra to implement and has better performance guarantees.
@@ -181,6 +186,7 @@ and programming languages should do their part to encourage this good practice.
 </div>
 
 # Adoption of the 3-way comparison
+{: #adoption-by-languages}
 
 {% include collapser.markdown %}
 
