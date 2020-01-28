@@ -206,7 +206,7 @@ from which the "secondary" operators like `<` will automatically be derived.
 Java has had 3-way comparison for quite some time,
 [provided by the Comparable interface](https://docs.oracle.com/javase/10/docs/api/java/lang/Comparable.html)
 and [the Comparator class](https://docs.oracle.com/javase/10/docs/api/java/util/Comparator.html),
-and it's been the de facto way of comparing objects.
+and it's been the standard way of comparing objects.
 It's a bit ugly in code but it works to get people to use it.
 As a nice bonus, the regular API always accepts comparators instead, so you can use custom orderings in place of whatever the class normally defines.
 
