@@ -204,6 +204,12 @@ and it's been the de facto way of comparing objects.
 It's a bit ugly in code but it works to get people to use it.
 As a nice bonus, the regular API always accepts comparators instead, so you can use custom orderings in place of whatever the class normally defines.
 
+Rust's `cmp` and `partial_cmp` use 3-way comparisons,
+as a quick look at its
+[Ordering enum](https://doc.rust-lang.org/std/cmp/enum.Ordering.html)
+would show.
+Using an enum instead of numeric results fits Rust's design well.
+
 At the time of writing,
 [Wikipedia's list of languages with the spaceship operator](https://en.wikipedia.org/wiki/Three-way_comparison#"Spaceship_operator")
 also includes Perl, Ruby, Groovy, and PHP,
