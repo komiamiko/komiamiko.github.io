@@ -28,7 +28,7 @@ function stringToStringHash(message) {
     z ^= z >> 18;
     x += z;
   }
-  return 'H_' + (0x300000000+x).toString(16) + '_' + (0x300000000+y).toString(16) + '_' + (0x300000000+z).toString(16);
+  return 'H_' + (0x300000000 + x).toString(16) + '_' + (0x300000000 + y).toString(16) + '_' + (0x300000000 + z).toString(16);
 }
 
 function numberCompare(a, b) {
@@ -65,20 +65,20 @@ class Ordinal {
     this.hash = stringToStringHash(hash_blob);
   }
   toString() {
-  	if(this.data.length === 1){
-    return this.data[0].toString();
-    }else{
-    var mulSuffix = "";
-    var addSuffix = "";
-    if(this.data[2] !== 1){
-    mulSuffix = this.data[2].toString();
-    }
-    if(!ordinalFastEq(this.data[3], ZERO_ORDINAL)){
-    addSuffix = " + " + this.data[3].toString();
-    }
-    return "ψ<sub>" + this.data[0].toString() +
-    "</sub>(" + this.data[1].toString() + ")" + mulSuffix +
-    addSuffix;
+    if (this.data.length === 1) {
+      return this.data[0].toString();
+    } else {
+      var mulSuffix = "";
+      var addSuffix = "";
+      if (this.data[2] !== 1) {
+        mulSuffix = this.data[2].toString();
+      }
+      if (!ordinalFastEq(this.data[3], ZERO_ORDINAL)) {
+        addSuffix = " + " + this.data[3].toString();
+      }
+      return "ψ<sub>" + this.data[0].toString() +
+        "</sub>(" + this.data[1].toString() + ")" + mulSuffix +
+        addSuffix;
     }
   }
 }
@@ -95,14 +95,14 @@ function toOrdinal(value) {
  * Convert to ordinal, with some overhead but more safe. Use by higher level ordinal processing to avoid stupid things happening.
  */
 function safeToOrdinal(value) {
-	if (value.isOrdinal) return value;
-  if (value.length === 1){
-    if(value[0] === 0)return ZERO_ORDINAL;
-    if(value[0] === 1)return ONE_ORDINAL;
+  if (value.isOrdinal) return value;
+  if (value.length === 1) {
+    if (value[0] === 0) return ZERO_ORDINAL;
+    if (value[0] === 1) return ONE_ORDINAL;
     return toOrdinal(value);
   }
   return ordinalAdd(ordinalMulByNumber(ordinalPsi(
-  value[0], value[1]), value[2]), value[3]);
+    value[0], value[1]), value[2]), value[3]);
 }
 
 const ZERO_ORDINAL = toOrdinal([0]);
@@ -360,4 +360,177 @@ function ordinalSequence(value, termsRequested) {
   return result;
 }
 
+/**
+ * How many in a are less than v?
+ */
+function ordinalBinarySearchLT(a, l, r, v) {
+  while (l < r) {
+    var m = (l + r) >> 1;
+    if (ordinalCompare(a[m], v) < 0) {
+      l = m + 1;
+    } else {
+      r = m;
+    }
+  }
+  return l;
+}
+/**
+ * How many in a are less than or equal to v?
+ */
+function ordinalBinarySearchLE(a, l, r, v) {
+  while (l < r) {
+    var m = (l + r) >> 1;
+    if (ordinalCompare(a[m], v) <= 0) {
+      l = m + 1;
+    } else {
+      r = m;
+    }
+  }
+  return l;
+}
+
+// --- things related to gameplay ---
+
+/**
+ * Utility function to add text to an HTML element.
+ */
+function documentAddText(elem, text) {
+  textElem = document.createTextNode(text);
+  elem.appendChild(textElem);
+}
+
+/**
+ * Since the ultimate limit of the game exists outside of 
+ * ordinals the game can represent, we need a special function
+ * to compute its fundamental sequence.
+ *
+ * We only care about the smallest term in it that's beyond anything the player has.
+ */
+function getTopOrdinal(playerOrdinals) {
+  var preCandidate = ZERO_ORDINAL;
+  while (true) {
+    var candidate = ordinalPsi(ZERO_ORDINAL, preCandidate);
+    if (playerOrdinals.length === 0 ||
+      ordinalCompare(candidate, playerOrdinals[playerOrdinals.length - 1][0]) > 0) return candidate;
+    preCandidate = ordinalPsi(preCandidate, ZERO_ORDINAL);
+  }
+}
+
+var playerOrdinals = []; // list of ordinals owned by the player, ascending, as [ord, count]
+var lastTime = new Date().getTime(); // time of last update
+var tickDelayMS = 330; // desired MS for a tick
+
+/**
+ * How many of this ordinal does the player own?
+ */
+function getNumOwned(value) {
+  var l = 0;
+  var r = playerOrdinals.length;
+  while (l < r) {
+    var m = (l + r) >> 1;
+    var cmpResult = ordinalCompare(playerOrdinals[m][0], v);
+    if (cmpResult === 0) {
+      return playerOrdinals[m][1];
+    } else if (cmpResult < 0) {
+      l = m + 1;
+    } else {
+      r = m;
+    }
+  }
+  return 0;
+}
+
+/**
+ * How many previous ordinals are needed to craft one of this ordinal?
+ */
+function getNumNeededToCraft(value) {
+  return 4; // PLACEHOLDER
+}
+
+/**
+ * Rebuilds the interface HTML completely,
+ * except for content that will definitely never change.
+ */
+function updateInterface() {
+  // --- ordinals section ---
+  // first wipe the table
+  var ordinalTable = document.getElementById("ordinals-table");
+  for (var i = ordinalTable.rows.length - 1; i >= 1; --i) {
+    ordinalTable.deleteRow(i);
+  }
+  // then see what needs to go in it
+  var ordinalDetailSelector = document.getElementById("ordinal-detail-selector");
+  var ordinalDetailLevel = ordinalDetailSelector.options[ordinalDetailSelector.selectedIndex].value;
+  if (ordinalDetailLevel === "NONE") {
+    // do nothing
+  } else {
+    // we must show some ordinals, but which ones?
+    // start at the top, then walk down to cover all player ordinals
+    var topOrdinal = getTopOrdinal(playerOrdinals);
+    var current = topOrdinal;
+    var ordinalsToShow = [current]; // note: in descending order
+    var pindex = playerOrdinals.length - 1;
+    while (pindex >= 0) {
+      // find smallest that is >= the owned ordinal
+      var currentSeq = ordinalSequence(current, getNumNeededToCraft(current));
+      var sindex = 0;
+      while (sindex < currentSeq.length &&
+        ordinalCompare(currentSeq[sindex], playerOrdinals[pindex][0]) < 0) ++sindex;
+      current = currentSeq[sindex];
+      ordinalsToShow.push(current);
+      // move onto next, if we reached the ordinal
+      if (ordinalFastEq(current, playerOrdinals[pindex][0])) --pindex;
+    }
+    // inject zero if it's not there already
+    if (!ordinalFastEq(ordinalsToShow[ordinalsToShow.length - 1], ZERO_ORDINAL)) {
+      ordinalsToShow.push(ZERO_ORDINAL);
+    }
+    // filter based on detail level
+    var sliceStart = 0;
+    var sliceStop = ordinalsToShow.length;
+    // ALL --> don't filter
+    if (ordinalDetailLevel === "SLICE" ||
+      ordinalDetailLevel === "SLICE_DOWN") {
+      // need to cut above (move up start)
+      var playerHighest = playerOrdinals.length === 0 ? ZERO_ORDINAL : playerOrdinals[playerOrdinals.length - 1][0];
+      var numLE = ordinalBinarySearchLE(ordinalsToShow.reverse(), 0, ordinalsToShow.length, playerHighest);
+      sliceStart = Math.max(sliceStart, ordinalsToShow.length - numLE - 1);
+    }
+    if (ordinalDetailLevel === "SLICE") {
+      // need to cut below (move down stop)
+      var playerHighest = playerOrdinals.length === 0 ? ZERO_ORDINAL : playerOrdinals[playerOrdinals.length - 1][0];
+      var numLE = ordinalBinarySearchLE(ordinalsToShow.reverse(), 0, ordinalsToShow.length, playerHighest);
+      var topCraftingNum = getNumNeededToCraft(topOrdinal);
+      sliceStop = Math.min(sliceStop, ordinalsToShow.length - numLE + topCraftingNum);
+    }
+    ordinalsToShow = ordinalsToShow.slice(sliceStart, sliceStop);
+    // add to table
+    for (var i = 0; i < ordinalsToShow.length; ++i) {
+      var current = ordinalsToShow[i];
+      var row = ordinalTable.insertRow(i + 1);
+      documentAddText(row.insertCell(0), current.toString());
+      documentAddText(row.insertCell(1), getNumOwned(current).toString());
+      documentAddText(row.insertCell(2), "button placeholder");
+      documentAddText(row.insertCell(3), "creq placeholder");
+      documentAddText(row.insertCell(4), "afac placeholder");
+    }
+  }
+  // --- shop section ---
+  // --- stats section ---
+  // --- settings section ---
+}
+
+/**
+ * The main loop. Actually calls itself again with a delay.
+ */
+function mainLoop() {
+  // log
+  console.log("Running main loop, current time is " + new Date().toString());
+  // update the interface
+  updateInterface();
+  // ready next iteration
+  setTimeout(mainLoop, tickDelayMS);
+}
+
+mainLoop();
 

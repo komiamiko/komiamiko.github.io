@@ -1,0 +1,24 @@
+.group-box {
+  border-radius: 1em;
+  padding: 0 0.5em;
+}
+
+.group-box.info {
+  background-color: rgba(220, 144, 176, 0.25);
+}
+
+.group-box.ordinal {
+  background-color: rgba(194, 167, 119, 0.25);
+}
+
+.group-box.shop {
+  background-color: rgba(135, 195, 133, 0.25);
+}
+
+.group-box.stats {
+  background-color: rgba(124, 188, 198, 0.25);
+}
+
+.group-box.settings {
+  background-color: rgba(176, 157, 225, 0.25);
+}

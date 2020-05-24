@@ -1,0 +1,72 @@
+<html>
+
+  <head>
+    <title>Better Ordinal Game (Draft v2)</title>
+  </head>
+
+  <body>
+    <h1>
+      Better Ordinal Game
+    </h1>
+    <div class="group-box info">
+      <h2>
+        Game Information
+      </h2>
+      <p>
+        Zero ordinal is free and has no effect, but you must click for it at first.
+      </p>
+      <p>
+        Successor ordinals can be crafted using <strong>3</strong> of its predecessor. This cost increases for each that you have. Successors do the same thing as their predecessor, but take actions <strong>3</strong> times as fast.
+      </p>
+      <p>
+        Limit ordinals can be crafted using the first <strong>4</strong> ordinals from its fundamental sequence. This cost increases for each that you have. Limit ordinals will automatically craft ordinals strictly less than itself.
+      </p>
+      <p>
+        Once you reach certain ordinals, you can research a theory. You will lose all your ordinals, but receive a permanent upgrade to help you climb faster and go higher next time. In-game theories are only loosely related to real-world theories, and the upgrades conferred are rather unrelated.
+      </p>
+      <p>
+        ψ here is the extended Buchholz's psi function. With the original Buchholz's psi function, the limit would be ψ<sub>0</sub>(ε<sub>Ω<sub>ω</sub>+1</sub>), but by relaxing the restriction on the cardinality, the new limit is ψ<sub>0</sub>(Λ), where Λ is the omega fixed point. Fundamental sequences are standard, except where a sub-expression has uncountable cofinality, in which case we use the usual iterated function trick.
+      </p>
+    </div>
+    <div class="group-box ordinal">
+      <h2>
+        Ordinals
+      </h2>
+      <p>
+      Choose detail level
+      </p>
+      <select name="ordinal-detail-level" id="ordinal-detail-selector">
+  <option value="NONE">Hide all</option>
+  <option value="SLICE">Progress to next</option>
+  <option value="SLICE_DOWN">Progress to next, and below</option>
+  <option value="ALL">Everything</option>
+</select>
+<table id="ordinals-table">
+<tr id="ordinals-table-header">
+  <th>Ordinal</th>
+  <th>Amount you have</th>
+  <th>Button to craft more</th>
+  <th>Crafting requirement</th>
+  <th>Automation factor</th>
+</tr>
+</table>
+    </div>
+    <div class="group-box shop">
+      <h2>
+        Theories
+      </h2>
+    </div>
+    <div class="group-box stats">
+      <h2>
+        Achievements and Statistics
+      </h2>
+    </div>
+    <div class="group-box settings">
+      <h2>
+        Settings
+      </h2>
+    </div>
+  </body>
+
+</html>
+
