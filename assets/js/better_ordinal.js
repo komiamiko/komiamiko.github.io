@@ -237,7 +237,7 @@ function ordinalSequence(value, termsRequested) {
   var termsToCompute = Math.max(3, termsRequested);
   if (cacheKey in ordinalSeqCache) {
     var cached = ordinalSeqCache[cacheKey];
-    if (cached.length >= termsRequested) return cached;
+    if (cached.length >= termsRequested) return cached.slice(0, termsRequested);
     // only boost terms if the cache was too short, to prevent blowup
     termsToCompute = Math.round(termsToCompute * 1.26);
   }
