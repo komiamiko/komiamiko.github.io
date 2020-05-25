@@ -395,8 +395,7 @@ function ordinalBinarySearchLE(a, l, r, v) {
  * Utility function to add text to an HTML element.
  */
 function documentAddText(elem, text) {
-  textElem = document.createTextNode(text);
-  elem.appendChild(textElem);
+  elem.innerHTML = text;
 }
 
 /**
@@ -421,30 +420,162 @@ var lastTime = new Date().getTime(); // time of last update
 var tickDelayMS = 330; // desired MS for a tick
 
 /**
- * How many of this ordinal does the player own?
+ * Get index of ordinal in player ordinals, if it exists.
+ * Time complexity: O(logN A)
  */
-function getNumOwned(value) {
+function getOrdinalIndex(value) {
   var l = 0;
   var r = playerOrdinals.length;
   while (l < r) {
     var m = (l + r) >> 1;
-    var cmpResult = ordinalCompare(playerOrdinals[m][0], v);
+    var cmpResult = ordinalCompare(playerOrdinals[m][0], value);
     if (cmpResult === 0) {
-      return playerOrdinals[m][1];
+      return m;
     } else if (cmpResult < 0) {
       l = m + 1;
     } else {
       r = m;
     }
   }
-  return 0;
+  if (l < playerOrdinals.length &&
+    ordinalFastEq(playerOrdinals[l][0], ZERO_ORDINAL)) return l;
+  return undefined;
+}
+
+/**
+ * ordinalBinarySearchLE modified for player ordinals list
+ * Time complexity: O(logN A)
+ */
+function getOrdinalIndexLE(value, l, r) {
+  while (l < r) {
+    var m = (l + r) >> 1;
+    var cmpResult = ordinalCompare(playerOrdinals[m][0], value);
+    if (cmpResult <= 0) {
+      l = m + 1;
+    } else {
+      r = m;
+    }
+  }
+  return l;
+}
+
+/**
+ * ordinalBinarySearchLT modified for player ordinals list
+ * Time complexity: O(logN A)
+ */
+function getOrdinalIndexLT(value, l, r) {
+  while (l < r) {
+    var m = (l + r) >> 1;
+    var cmpResult = ordinalCompare(playerOrdinals[m][0], value);
+    if (cmpResult < 0) {
+      l = m + 1;
+    } else {
+      r = m;
+    }
+  }
+  return l;
+}
+
+/**
+ * How many of this ordinal does the player own?
+ * Time complexity O(logN A)
+ */
+function getNumOwned(value) {
+  var vindex = getOrdinalIndex(value);
+  if (vindex === undefined) return 0;
+  return playerOrdinals[vindex][1];
 }
 
 /**
  * How many previous ordinals are needed to craft one of this ordinal?
+ * Time complexity O(M^2 A)
  */
 function getNumNeededToCraft(value) {
-  return 4; // PLACEHOLDER
+  var seq = ordinalSequence(value, 2);
+  if (seq.length === 0) {
+    return 0;
+  } else if (ordinalFastEq(seq[0], seq[1])) {
+    return 3 + getNumOwned(value);
+  } else {
+    return 4 + getNumOwned(value);
+  }
+}
+
+/**
+ * Can it be crafted?
+ * Time complexity O(M logN A)
+ */
+function getCanCraft(value) {
+  if (ordinalFastEq(value, ZERO_ORDINAL)) return true;
+  if (playerOrdinals.length === 0) return false;
+  var cutIndex = getOrdinalIndexLT(value, 0, playerOrdinals.length);
+  var craftn = getNumNeededToCraft(value);
+  var craftSeq = ordinalSequence(value, craftn);
+  var cutLast = cutIndex;
+  var leftover = 0;
+  for (var i = craftn - 1; i >= 0; --i) {
+    var u = craftSeq[i];
+    var lowerIndex = getOrdinalIndexLT(u, 0, cutIndex);
+    while (cutLast > lowerIndex) {
+      --cutLast;
+      leftover += playerOrdinals[cutLast][1];
+      if (leftover > i) return true;
+    }
+    --leftover;
+    if (leftover < 0) return false;
+  }
+  return true;
+}
+
+/**
+ * Give the player some number of an ordinal, and return how many were actually given.
+ */
+function giveOrdinal(value, howMany) {
+  if (howMany === 0) return 0;
+  if (howMany < 0) return -takeOrdinal(value, -howMany);
+  var insIndex = getOrdinalIndexLT(value, 0, playerOrdinals.length);
+  if (insIndex < playerOrdinals.length &&
+    ordinalFastEq(playerOrdinals[insIndex][0], value)) {
+    playerOrdinals[insIndex][1] += howMany;
+    return howMany;
+  } else {
+    playerOrdinals.splice(insIndex, 0, [value, howMany]);
+    return howMany;
+  }
+}
+
+/**
+ * Take away some number of an ordinal (or however many are available), and return how many were actually taken.
+ */
+function takeOrdinal(value, howMany) {
+  if (howMany === 0) return 0;
+  if (howMany < 0) return -giveOrdinal(value, -howMany);
+  var insIndex = getOrdinalIndexLT(value, 0, playerOrdinals.length);
+  if (insIndex < playerOrdinals.length &&
+    ordinalFastEq(playerOrdinals[insIndex][0], value)) {
+    var available = playerOrdinals[insIndex][1];
+    if (howMany < available) {
+      playerOrdinals[insIndex][1] -= howMany;
+      return howMany;
+    } else {
+      playerOrdinals.splice(insIndex, 1);
+      return available;
+    }
+  } else {
+    return 0;
+  }
+}
+
+function tryCraftOrdinal(value) {
+  // add the ordinal to the ordinals list
+  giveOrdinal(value, 1);
+  // clear out all lower ordinals
+}
+
+function makeTryCraftOrdinal(value) {
+  return function() {
+    tryCraftOrdinal(value);
+  };
 }
 
 /**
@@ -474,8 +605,9 @@ function updateInterface() {
       // find smallest that is >= the owned ordinal
       var currentSeq = ordinalSequence(current, getNumNeededToCraft(current));
       var sindex = 0;
-      while (sindex < currentSeq.length &&
-        ordinalCompare(currentSeq[sindex], playerOrdinals[pindex][0]) < 0) ++sindex;
+      if (!ordinalFastEq(currentSeq[0], currentSeq[1]))
+        while (sindex + 1 < currentSeq.length &&
+          ordinalCompare(currentSeq[sindex], playerOrdinals[pindex][0]) <= 0) ++sindex;
       current = currentSeq[sindex];
       ordinalsToShow.push(current);
       // move onto next, if we reached the ordinal
@@ -508,10 +640,28 @@ function updateInterface() {
     for (var i = 0; i < ordinalsToShow.length; ++i) {
       var current = ordinalsToShow[i];
       var row = ordinalTable.insertRow(i + 1);
+      var craftn = getNumNeededToCraft(current);
+      var craftText;
+      if (craftn === 0) {
+        craftText = "Nothing";
+      } else {
+        var craftSeq = ordinalSequence(current, craftn);
+        if (ordinalFastEq(craftSeq[0], craftSeq[1])) {
+          craftText = craftn.toString() + " of " + craftSeq[0].toString();
+        } else {
+          craftText = "1 each or higher of " + craftSeq.join(", ");
+        }
+      }
+      var canCraft = getCanCraft(current);
+      var buttonObj = document.createElement("button");
+      buttonObj.type = "button";
+      documentAddText(buttonObj, "Craft one");
+      buttonObj.disabled = !canCraft;
+      buttonObj.addEventListener("click", makeTryCraftOrdinal(current));
       documentAddText(row.insertCell(0), current.toString());
       documentAddText(row.insertCell(1), getNumOwned(current).toString());
-      documentAddText(row.insertCell(2), "button placeholder");
-      documentAddText(row.insertCell(3), "creq placeholder");
+      row.insertCell(2).appendChild(buttonObj);
+      documentAddText(row.insertCell(3), craftText);
       documentAddText(row.insertCell(4), "afac placeholder");
     }
   }
