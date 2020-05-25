@@ -567,14 +567,34 @@ function takeOrdinal(value, howMany) {
 }
 
 function tryCraftOrdinal(value) {
+  // fetch crafting number and sequence
+  var craftn = getNumNeededToCraft(value);
+  var craftSeq = ordinalSequence(value, craftn);
   // add the ordinal to the ordinals list
   giveOrdinal(value, 1);
-  // clear out all lower ordinals
+  // clear out lower ordinals
+  if(!ordinalFastEq(value, ZERO_ORDINAL)){
+    if(ordinalFastEq(craftSeq[0], craftSeq[1])){
+      // apply successor rule
+      // eat only previous, and only required number
+      takeOrdinal(craftSeq[0], craftn);
+    }else{
+      // apply limit rule
+      // eat all lower ordinals
+      var insIndex = getOrdinalIndex(value);
+      playerOrdinals.splice(0, insIndex);
+    }
+  }
 }
 
+/**
+ * Makes the function that will craft an ordinal.
+ * Since this is generally invoked by a user action, we should update the interface immediately.
+ */
 function makeTryCraftOrdinal(value) {
   return function() {
     tryCraftOrdinal(value);
+    updateInterface();
   };
 }
 
@@ -657,7 +677,7 @@ function updateInterface() {
       buttonObj.type = "button";
       documentAddText(buttonObj, "Craft one");
       buttonObj.disabled = !canCraft;
-      buttonObj.addEventListener("click", makeTryCraftOrdinal(current));
+      buttonObj.addEventListener("mousedown", makeTryCraftOrdinal(current));
       documentAddText(row.insertCell(0), current.toString());
       documentAddText(row.insertCell(1), getNumOwned(current).toString());
       row.insertCell(2).appendChild(buttonObj);
