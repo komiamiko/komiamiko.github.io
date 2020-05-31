@@ -1,11 +1,9 @@
 ---
 layout: post
 title: "Amiko hydras"
-date: 2020-05-07 23:00
+date: 2020-06-07 23:00
 categories: math ordinals
 ---
-
-^ change to 06-07
 
 <div class="no-js">
 Math on this page may not display correctly without JavaScript.
