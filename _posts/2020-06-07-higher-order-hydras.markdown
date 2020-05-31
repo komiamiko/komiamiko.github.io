@@ -1,9 +1,11 @@
 ---
 layout: post
-title: "Higher order hydras"
-date: 2020-06-07 23:00
+title: "Amiko hydras"
+date: 2020-05-07 23:00
 categories: math ordinals
 ---
+
+^ change to 06-07
 
 <div class="no-js">
 Math on this page may not display correctly without JavaScript.
@@ -71,46 +73,77 @@ Then we can add another layer, say, \\\( \xi_0 \\\), the first common fixed poin
 
 </div>
 
-# Second order hydras
-{: #second-order-hydras}
-
-{% include collapser.markdown %}
+# Visualizing nested hydras
+{: #visualizing-nested-hydras}
 
 <div>
 
-Okay, we got the basic idea now.
-So we can add up to \\\( \omega \\\) layers on top of the base hydra system.
-Instead of using numbers, we can use hydras here too, as the index of the dimension for hyper-nesting.
+Before we proceed to make stronger hydras, I should show a method to draw nested hydras.
+It would be inconvenient to try and embed a diagram of a hydra within a single node, and possibly even do that recursively.
+Instead, I propose drawing the label to the left of the node, connected using a sideways edge.
 
-As less of a mathematical opinion and more of a philosophical one, I believe going to higher orders should never be easy.
-Whether it's higher order arithmetic, higher order set theory, higher order Turing machines, or something else, there should not be a straightforward scheme to ascend the ladders of orders.
-If it's too easy to go higher, I doubt what you have invented is worth being called higher order, and perhaps you should take the next major milestone and call that the next higher order.
-After properly analyzing the hydras I came up with, it was a bit disappointing to see that I had only attained the strength of hydra-indexed hyper-nesting, and not any of the larger schemes I had vaguely named,
-which was a bit poetic to me, as even if I wanted to call those further extensions third order and beyond, I hadn't reached them with my best efforts.
+![Two diagrams of the same Buchholz hydra, side by side. One of them draws the labels on the node, while the other draws the label to the left of the node with an edge between them.](/assets/hydras/left-labels.png)
 
-There's a bit of a conundrum in how to describe the strength of my hydras.
-If each layer of nesting (or even each hyper-nesting dimension) contributed \\\(1\\\) order, then the order would be an obscenely large ordinal.
-However, to flatten that entire hierarchy and say my hydras are second order seems to be giving it too much credit,
-since my constructions don't actually quantify over the first order kinds of objects, which are unnested hydras.
-There isn't really an inbetween that I know of, so I'll have to call my hydras second order for now.
-I think it's fine though, since hierarchies can be very deep - first order set theory is stronger than every \\\(\alpha\\\)-order arithmetic,
-and within second order arithmetic we have many subsystems of varying strength,
-and even between \\\(\Pi_1^1-CA\\\) and \\\(Pi_2^1-CA\\\) there is a wide range of theories of varying strength.
-I think it's fine to say my hydras are second order, if only because they're definitely above first order.
-Within second order, it may be very low, and yet still have a family of weaker second order hydras below it.
-We have a long way to go until we reach third order hydras, whatever that means.
-While my hydras can definitely be extended further to obtain stronger second order hydras, I believe they are sufficiently minimal and natural to be worth studying.
+This looks unnecessary and silly when the labels are small ordinals like this, but when we use hydras as labels, this becomes much more practical.
 
 </div>
 
-# Amiko hydras
-{: #amiko-hydras}
+# Externalize and close
+{: #externalize-close}
 
 {% include collapser.markdown %}
 
 <div>
 
-## Form of Amiko hydras
+"Externalize" and "close" are some important basic transformation types in our toolkit of higher order transformations on hydra constructions.
+"Externalize" means to shift information from the labels (internal) toward the children (external), with the end goal of putting an upper bound on the labels without changing the strength of the construction.
+"Close" means to take a construction where labels are upper-bounded, and extend it to support arbitrary hydras as labels, thus taking the closure of the construction under using hydras as labels, and making the construction stronger.
+These form a natural pair.
+I call these transformation types because there is not just one way to externalize or close, and different possible transformations may differ in strength.
+
+Amiko hydras can be derived from Buchholz hydras with a close step, a somewhat strong externalize step, then a close step.
+The interesting step here is the externalize.
+I'll walk you through converting the example hydra from above, and then discuss the strength of the system.
+
+![Diagram of a Buchholz hydra with the labels drawn to the left instead of on the nodes.](/assets/hydras/externalize-0.png)
+
+We're first going to mark all existing edges with label \\\(0\\\).
+
+![Diagram of a Buchholz hydra with the labels drawn to the left instead of on the nodes, and edges labelled with 0.](/assets/hydras/externalize-1.png)
+
+We're then going to move the current label into a child node, with edge labelled \\\(1\\\).
+
+![Diagram of a Buchholz hydra with the former labels drawn as children with edge label 1, and original edges labelled with 0.](/assets/hydras/externalize-2.png)
+
+All original labels have now been evicted.
+We transfer these edge labels into the now unlabelled children.
+The root could be considered to have a special fake label, or no label.
+
+![Diagram of a Buchholz hydra with the former labels drawn as children with label 1, and original nodes labelled 0.](/assets/hydras/externalize-3.png)
+
+We then expand these former labels into the appropriate hydras, except that the immediate children of that root has label \\\(1\\\), and then fuse those with their parents.
+Recall that the lone root hydra is ordinal \\\(0\\\), a hydra with \\\(n\\\) children is the ordinal \\\(n\\\), and the hydra \\\(((()))\\\) is the ordinal \\\(\omega\\\).
+You'll notice in this step since \\\(0\\\) turned into \\\(()\\\) and got fused with its parent, that branch just disappears, and since \\\(2\\\) turned into \\\((()())\\\) and got fused with its parent, it gained another child with label \\\(1\\\).
+
+![A transformed hydra with only 0 and 1 labels and some new branches.](/assets/hydras/externalize-4.png)
+
+We're almost there!
+We just need to get rid of the remaining ordinal labels by recursively converting them into hydras.
+
+![A transformed hydra with no ordinals, just more hydras. Roots are specially marked with a star symbol.](/assets/hydras/externalize-5.png)
+
+There we have it, our first Amiko hydra!
+Whatever rules we use to define its evolution, it should evolve pretty much the same as Buchholz hydras, for hydras that were converted from Buchholz hydras.
+
+Amiko hydras with only \\\(0 = (\star:)\\\) and \\\(1 = (\star:((\star:):))\\\) labels correspond to nested Buchholz hydras.
+Amiko hydras with labels below \\\(\omega = (\star:((\star:):((\star:):)))\\\) correspond to hyper-nested Buchholz hydras with a finite number of hyper-nesting dimensions,
+which we may collectively call \\\(\textrm{hyper}^\omega\\\)-nested Buchholz hydras.
+The full construction of Amiko hydras, obtained by applying a close transform after this externalize, is far more powerful,
+and its corresponding ordinal is the first common fixed point of "\\\(\alpha\\\) maps to the ordinal of \\\(\textrm{hyper}^\alpha\\\)-nested Buchholz hydras."
+
+</div>
+
+# Form of Amiko hydras
 {: #amiko-hydras-form}
 
 {% include collapser.markdown %}
@@ -129,9 +162,12 @@ When reducing hydras, this invariant is always maintained.
 Hydras are written with a \\\(:\\\) between the label and the children.
 For example, \\\((\star:((\star:):)((\star:):))\\\) is a hydra where the root has \\\(2\\\) children, and both those children have label \\\((\star:)\\\) and no further children.
 
+Direct children of the root and children of children of the root (but not any further children) are required to have label \\\((\star:)\\\).
+This is the analogous rule to Buchholz hydras requiring direct children of the root to have label \\\(0\\\).
+
 </div>
 
-## Converting Buchholz hydras to Amiko hydras
+# Converting Buchholz hydras to Amiko hydras
 {: #amiko-hydras-buchholz-conversion}
 
 {% include collapser.markdown %}
@@ -156,7 +192,7 @@ The converted Amiko hydra will not necessarily evolve exactly the same as the Bu
 
 </div>
 
-## Comparison of Amiko hydras
+# Comparison of Amiko hydras
 {: #amiko-hydras-comparison}
 
 {% include collapser.markdown %}
@@ -167,16 +203,17 @@ Comparison operators may have a filter, which refers to the labels of the immedi
 The filter does not propagate in recursive comparisons.
 For example, writing \\\(A <>_{>C} B\\\) means to compare \\\(A\\\) and \\\(B\\\) as if all their immediate children with labels \\\(\le C\\\) were removed.
 
-To compare hydras \\\(A, B\\\), first compare their labels, then tiebreak by lexicographic order of their children tuples (which are always ordered descending).
-\\\(\star\\\) is considered less than all hydras.
+I'm not actually sure about the comparison rules for Amiko hydras, which would decide if a hydra's associated fast-growing function would dominate another hydra's.
+My gut feeling is that it should be the same as Buchholz hydras (and thus nested Buchholz hydras), but there's something very wrong with that.
+The comparison defines the ordering, which determines the order type, and thus the ordinal that describes the strength of the system.
+If the comparison rules were exactly the same as nested Buchholz hydras, it would imply the order type is the same, and that they are the same strength, but clearly Amiko hydras are much stronger.
 
-This is an extension of the Buchholz hydra comparison rules.
-It may seem surprising that the comparison rules are still the same, even though the hydras have been restructured and the evolution rules are different.
-I believe these simple rules are correct, but if not, the evolution rules are the reference and should be used to derive the correct comparison rules.
+I haven't figured out the comparison rules yet, but assuming all hydras terminate, it would be possible to derive the comparison rules from that.
+As a possible starting point, weaker hydras like Buchholz hydras will have their ordering preserved when converted to Amiko hydras, also implying that these converted hydras correspond to the same ordinals.
 
 </div>
 
-## Evolution of Amiko hydras
+# Evolution of Amiko hydras
 {: #amiko-hydras-evolution}
 
 {% include collapser.markdown %}
@@ -210,7 +247,7 @@ It is defined like so:
 > **2.** If \\\(C > (\star:)\\\):
 > Let \\\(D = S(C)\\\).
 > Let \\\(E = R(B)\\\).
-> Do this \\\(N\\\) times, for some \\\(N\\\): "Replace \\\(E\\\) with \\\(D:E\\\)."
+> Do this \\\(N\\\) times, for some \\\(N\\\): "Replace \\\(E\\\) with \\\((D:E)\\\)."
 > Replace \\\(B\\\) with \\\(E\\\).
 > \\\(S(A)\\\) is the modified \\\(A\\\).
 
@@ -231,9 +268,12 @@ It is defined like so:
 > Let \\\(D\\\) be \\\(C\\\) but with the root label changed to the label of \\\(A\\\).
 > \\\(R(A) = D\\\).
 
+The rules are sensitive to the order of recursive evaluations if the value of \\\(N\\\) depends on which comes first, as it does in the derived fast-growing function.
+In the future I may need to re-order the instructions to better reflect the underlying ordinal notation, though for now this is okay.
+
 </div>
 
-## Ordinal notation
+# Ordinal notation
 {: #amiko-hydras-ordinals}
 
 {% include collapser.markdown %}
@@ -253,7 +293,7 @@ It seems challenging, and perhaps that is an item best left for future research.
 
 </div>
 
-## Flattening of Amiko hydras
+# Flattening of Amiko hydras
 {: #amiko-hydras-flattening}
 
 {% include collapser.markdown %}
@@ -268,23 +308,15 @@ If you wanted to flatten it further, you could use any of a number of methods wh
 
 </div>
 
-## Visualization of Amiko hydras
-{: #amiko-hydras-visualization}
+# Fast-growing function and reference number
+{: #amiko-hydras-fast-growing}
 
 {% include collapser.markdown %}
 
 <div>
 
-Actually drawing hydras inside of nodes is not very practical, so instead I draw unlabelled nodes but use a sideways edge (as opposed to vertical, which is for children) to denote the label hydra.
-This means all initial hydras from my \\\(AH\\\) function (next section) look like staircases or zigzags.
-I'm not saying this is the only option, but it's how I dealt with it.
-
-</div>
-
-## Fast-growing function and named number
+## Summary of the fast-growing function and reference number
 {: #amiko-hydras-fast-growing}
-
-{% include collapser.markdown %}
 
 <div>
 
@@ -305,82 +337,16 @@ As examples, here are the first few values of \\\(AH\\\):
 * \\\(AH(1) = 1\\\)
 * \\\(f_{\omega^{\omega^\omega}}(4) < AH(2) < f_{\omega^{\omega^\omega}}(5)\\\)
 
-</div>
-
-## A program implementing Amiko hydras
-{: #amiko-hydras-program}
-
-{% include collapser.markdown %}
-
-<div>
-
-To save myself the trouble of needing to do larger hydras by hand, and to allow you to play with Amiko hydras, I wrote a program which includes all the related functionality: [amiko_hydra.py](/assets/hydras/amiko_hydra.py).
-It's not as clean as my usual code, but please forgive me, I was very excited to share this with the world so I took some shortcuts.
+\\\(AH(3)\\\) is the first truly huge value, and it blows Buchholz hydras out of the water.
+I don't feel a necessity to give this number a fancy name, so I'll submit \\\(AH(3)\\\) as-is to the ever-growing list of large numbers people have come up with.
+I also don't see a reason to submit any more specific values, since any other named numbers will likely be far smaller than \\\(AH(3)\\\) anyway or so large as to be practically out of reach for \\\(AH\\\) -
+that if we replace \\\(f_0\\\) in the fast-growing hierarchy with \\\(AH\\\), \\\(f_\alpha(N)\\\) for reasonable ordinal \\\(\alpha\\\) and small integer \\\(N\\\) will still not get even close to that other number.
+\\\(AH(3)\\\) is the natural representative I think for \\\(AH\\\).
 
 </div>
 
-## Discussion of stronger hydras
-{: #discussion-stronger-hydras}
-
-{% include collapser.markdown %}
-
-<div>
-
-Second order hydras aren't very well mapped out, but I do have a guess as to what kind of hydra systems are worth studying, and what makes this hydra system second order.
-
-There are 2 basic transformation types: "close" and "externalize".
-Externalize means to take a hydra system where the labels are allowed to be arbitrary hydras (which are also in that hydra system) and re-encode the hydra such that labels are upper-bounded.
-Externalize does not change the strength of the system, but now permits us to perform the close operation.
-I call it externalize because it takes the label (internal) and shifts that data toward the children (external).
-Close means to take a hydra system where the labels are meaningfully upper-bounded, and allow arbitrary hydras as labels.
-I call it close because it results in the closure under using hydras as labels.
-These form a natural pair, and repeating them both (though I know of no automated way to do so) would yield progressively stronger systems of hydras.
-It is possible to get from Buchholz hydras to Amiko hydras using just close then externalize then close, though some other possible sequences may take more steps or even never be able to reach Amiko hydras.
-
-You're probably excited to add a limit meta-transformation and assign ordinals, but that would collude the important information here.
-Externalize operations vary in strength, and there are different transformations (and meta-transformations, meta-meta-transformations, and so on) which you can do closures with.
-
-I believe second order hydras should include all hydra systems reachable with these kinds of transformations, and perhaps some more.
-Ultimately, the order is about what we quantify over.
-In this second order analysis, our transforms work with hydra systems, which were the first order object.
-Every hydra system ultimately looks flat and first order, but to derive and analyze Amiko hydras and beyond requires second order techniques.
-A third order hydra system would need to be at least as strong as all second order hydra systems, and its analysis would demand quantifying over all transforms of second order strength.
-Reaching third order hydras seems very difficult.
-
-There may be a correspondence between the ladders of \\\(\alpha\\\)-order arithmetic and \\\(\beta\\\)-order hydras, but that's way beyond me.
-
-</div>
-
-## My contributions to the field
-{: #contributions-to-field}
-
-{% include collapser.markdown %}
-
-<div>
-
-Hydras have been used so far as independence results for a certain theory, where the corresponding hydra theorem itself and its unprovability in that theory can be proved in a slightly stronger theory.
-Incidentally, these hydras also defined ordinal notations up to some \\\(\alpha\\\) which is also the proof-theoretic ordinal of that weaker theory, and the fast-growing functions derived from those hydras grow similarly fast to \\\(f_\alpha\\\) in the fast-growing hierarchy.
-For Kirby-Paris hydras, this was Peano Arithmetic and \\\(\varepsilon_0\\\).
-For Buchholz hydras, this was \\\(\Pi_1^1-CA+BI\\\) and the Takeuti-Feferman-Buchholz ordinal.
-These ordinal notations can also be turned into actual predicative ordinal functions with normal forms -
-the Cantor normal form for Kirby-Paris hydras and the Buchholz's \\\(\psi\\\) normal form for Buchholz hydras.
-
-Hydras are useful to mathematicians.
-Now, I don't have any of these other parts yet.
-For now, all I have is the hydras.
-I can perhaps answer at a later date how strong of a theory is needed to prove the termination of Amiko hydras, build a proper ordinal notation out of these hydras, and give a name to the ordinal for these hydras.
-Right now I'm just getting the idea out there and my name on it.
-I hope someday I will have the chance to study them more in depth, answer these questions, and perhaps get a paper published.
-
-I'm open to feedback and additions, including corrections.
-It would be great if I nailed everything the first time, but it's quite likely I didn't.
-
-</div>
-
-</div>
-
-# Sample Amiko hydra evolutions
-{: #sample-hydras}
+## Walked expansions of sample hydras
+{: #amiko-hydras-samples}
 
 {% include collapser.markdown %}
 
@@ -422,6 +388,86 @@ So quickly we can say that \\\(H_{\omega^{\omega^{\omega^\omega}}}(4) < AH(2) < 
 Converting these bounds to use FGH instead, we get \\\(f_{\omega^{\omega^\omega}}(4) < AH(2) < f_{\omega^{\omega^\omega}}(5)\\\).
 These bounds are sufficiently tight, I believe, for all practical purposes.
 
-\\\(AH(3)\\\) expands quite large on the first step, so I won't show the expansion here.
+\\\(AH(3)\\\) starts with the hydra \\\((\star:((\star:((\star:((\star:):)):)):))\\\), and expands quite large on the first outer step.
+I didn't want to do it by hand, but according to the program, after the first step, \\\(N = 7\\\) and the hydra is `(*:((*:((*:):((*:):((*:):((*:):))))):((*:((*:):((*:):((*:):((*:):))))):((*:((*:):((*:):((*:):((*:):))))):((*:((*:):((*:):((*:):((*:):))))):((*:((*:):((*:):((*:):((*:):))))):((*:((*:):((*:):((*:):((*:):))))):((*:((*:):((*:):((*:):((*:):((*:):((*:):((*:):((*:):))))))))):((*:((*:):((*:):((*:):((*:):((*:):((*:):((*:):((*:):))))))))):((*:((*:):((*:):((*:):((*:):((*:):((*:):((*:):((*:):))))))))):((*:((*:):((*:):((*:):((*:):((*:):((*:):((*:):((*:):))))))))):((*:((*:):((*:):((*:):((*:):((*:):((*:):((*:):((*:):))))))))):((*:((*:):((*:):((*:):((*:):((*:):((*:):((*:):((*:):))))))))):)))))))))))))`.
+However, this exact expansion is almost certainly wrong since I don't actually know the comparison rules for Amiko hydras yet and I'm using Buchholz hydra comparison rules as a placeholder in the program.
+In any case, even the *label* is very large, so it has a long way to go before it becomes remotely comparable to hyper-nested Buchholz hydras.
+
+</div>
+
+</div>
+
+# A program implementing Amiko hydras
+{: #amiko-hydras-program}
+
+{% include collapser.markdown %}
+
+<div>
+
+To save myself the trouble of needing to do larger hydras by hand, and to allow you to play with Amiko hydras, I wrote a program which includes all the related functionality: [amiko_hydra.py](/assets/hydras/amiko_hydra.py).
+Please keep in mind I do not yet know the comparison rules for Amiko hydras, so I used the Buchholz hydras comparison rules as a placeholder.
+It's not as clean as my usual code, but please forgive me, I was very excited to share this with the world so I took some shortcuts.
+
+</div>
+
+# Higher order hydras
+{: #higher-order-hydras}
+
+{% include collapser.markdown %}
+
+<div>
+
+This whole time I've been avoiding mention of "higher order hydras".
+A higher order theory should quantify over and work with the objects of the lower order theory, for example, first order arithmetic quantifies over integers, and second order arithmetic can now quantify over sets of integers (and thus relations on integers and real numbers).
+While it may be true that we used a higher order technique to get to this hydra construction, the hydras themselves are first order trees and the evolution rules are all first order computable,
+which I understand are very different things, but the point is I can't find anything second order about the hydras themselves which would allow me to refer to them as second order.
+
+For the time being, Amiko hydras are just a hydra construction that is stronger than Buchholz hydras and introduces new techniques.
+
+</div>
+
+# Stronger hydra constructions beyond Amiko hydras
+{: #beyond-amiko-hydras}
+
+{% include collapser.markdown %}
+
+<div>
+
+Amiko hydras are by no means the end.
+I've already introduced externalize and close, so I acknowledge that you can boost further with more iterations of externalize and close.
+The reason I don't bother just presenting those instead is because Amiko hydras are in some sense the minimal example for this technique,
+and stacking on more externalize and close iterations does not necessarily make it more interesting.
+It would make it more confusing though.
+
+I believe the next stronger hydra worthy of study must introduce something new.
+Buchholz introduced labels.
+I introduced externalize and close as higher order transformations.
+What comes next may be a higher order closure over the hydra constructions reachable by externalize and close, or perhaps something more novel and creative that I have not even conceived.
+
+</div>
+
+## My contributions to the field
+{: #contributions-to-field}
+
+{% include collapser.markdown %}
+
+<div>
+
+Hydras have been used so far as independence results for a certain theory, where the corresponding hydra theorem itself and its unprovability in that theory can be proved in a slightly stronger theory.
+Incidentally, these hydras also defined ordinal notations up to some \\\(\alpha\\\) which is also the proof-theoretic ordinal of that weaker theory, and the fast-growing functions derived from those hydras grow similarly fast to \\\(f_\alpha\\\) in the fast-growing hierarchy.
+For Kirby-Paris hydras, this was Peano Arithmetic and \\\(\varepsilon_0\\\).
+For Buchholz hydras, this was \\\(\Pi_1^1-CA+BI\\\) and the Takeuti-Feferman-Buchholz ordinal.
+These ordinal notations can also be turned into actual predicative ordinal functions with normal forms -
+the Cantor normal form for Kirby-Paris hydras and the Buchholz's \\\(\psi\\\) normal form for Buchholz hydras.
+
+Hydras are useful to mathematicians.
+Now, I don't have any of these other parts yet.
+For now, all I have is the hydras.
+I can perhaps answer at a later date how strong of a theory is needed to prove the termination of Amiko hydras, build a proper ordinal notation out of these hydras, and give a name to the ordinal for these hydras.
+Right now I'm just getting the idea out there and my name on it.
+I hope someday I will have the chance to study them more in depth, answer these questions, and perhaps get a paper published.
+
+I'm open to feedback and additions, including corrections.
+It would be great if I nailed everything the first time, but it's quite likely I didn't.
 
 </div>

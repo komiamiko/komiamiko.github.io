@@ -14,6 +14,12 @@ class counter(object):
 hydra_lt_cache = set()
 
 def hydra_cmp(a, b):
+    """
+    Compare hydras.
+    This method is based on Buchholz hydras,
+    which I already explained can't be correct.
+    It works fine for small hydras though.
+    """
     global hydra_lt_cache
     if a is b:return 0
     if a is None:return -1
@@ -41,6 +47,7 @@ class hydra(object):
     def __init__(self, children=(), label=None):
         self.children = children
         self.label = label
+        self.init_size()
         self.init_hash()
     def init_hash(self):
         u = hash(self.children)
@@ -48,6 +55,10 @@ class hydra(object):
         h0 = hash((1, u, v))
         h1 = hash((v, 1, u))
         self._hash = (h0, h1)
+    def init_size(self):
+        self._size = (len(self.label) if self.label is not None else 0) + \
+                     sum(map(len, self.children)) + \
+                     1
     def __str__(self):
         label_str = '*' if self.label is None else str(self.label)
         child_str = ''.join(map(str, self.children))
@@ -56,6 +67,8 @@ class hydra(object):
         return 'hydra('+repr(self.children)+','+repr(self.label)+')'
     def __hash__(self):
         return hash(self._hash)
+    def __len__(self):
+        return self._size
     def __eq__(self, other):
         return hydra_cmp(self, other) == 0
     def __ne__(self, other):
@@ -68,6 +81,13 @@ class hydra(object):
         return hydra_cmp(self, other) > 0
     def __ge__(self, other):
         return hydra_cmp(self, other) >= 0
+    def is_valid(self, is_root=True):
+        if self.label is None:
+            return is_root
+        else:
+            if not is_valid(self.label):
+                return False
+        return all(is_valid(c, is_root=False) for c in self.children)
 
 ZERO = hydra() # (*:)
 
@@ -144,7 +164,7 @@ def reduce_inner(a, nf):
     else: # rule 2
         b = hydra(a.children, None)
         c = reduce_outer(b, nf)
-        d = hydra(c.children, b.label)
+        d = hydra(c.children, a.label)
         return d
 
 def parse_hydra(stream):
@@ -168,10 +188,29 @@ def parse_hydra(stream):
             if not stack:return h
             stack[-1].append(h)
 
+def pprint_hydra(h):
+    """
+    Stringify hydras prettified.
+    """
+    if h is None:return '*'
+    if h == ZERO:return '(*:)'
+    import textwrap
+    s_label = pprint_hydra(h.label)
+    s_children = '\n'.join(pprint_hydra(c) for c in h.children).split('\n')
+    result = '(' + s_label + '\n:'
+    if s_children:
+        result += s_children[0] + '\n' + \
+                  textwrap.indent('\n'.join(s_children[1:]+['']), ' ') + ')'
+    else:
+        result += ')'
+    return result
+
 def main():
     """
     Main function, where you get to watch hydras evolve.
     """
+    print('Enable long output of hydras? (Y/N)')
+    use_pprint_hydra = input().lower() in ('y','yes','1','true')
     print('Do a single step by entering `N A` ex.\n3 (*:((*:):)((*:):))\n')
     s = input()
     while s:
@@ -182,7 +221,10 @@ def main():
         h = reduce_outer(h, nf)
         n = nf.n
         print(n)
-        print(h)
+        if use_pprint_hydra:
+            print(pprint_hydra(h))
+        else:
+            print(h)
         s = input()
 
 if __name__ == '__main__':
