@@ -205,6 +205,7 @@ I'm not actually sure about the comparison rules for Amiko hydras, which would d
 My gut feeling is that it should be the same as Buchholz hydras (and thus nested Buchholz hydras), but there's something very wrong with that.
 The comparison defines the ordering, which determines the order type, and thus the ordinal that describes the strength of the system.
 If the comparison rules were exactly the same as nested Buchholz hydras, it would imply the order type is the same, and that they are the same strength, but clearly Amiko hydras are much stronger.
+While I have a lot of confidence in that statement, I am also just a little skeptical, since order type is influenced not only by the ordering, but also the subset of describable elements which are considered valid - those in the normal form.
 
 I haven't figured out the comparison rules yet, but assuming all hydras terminate, it would be possible to derive the comparison rules from that.
 As a possible starting point, weaker hydras like Buchholz hydras will have their ordering preserved when converted to Amiko hydras, also implying that these converted hydras correspond to the same ordinals.
@@ -268,6 +269,15 @@ It is defined like so:
 
 The rules are sensitive to the order of recursive evaluations if the value of \\\(N\\\) depends on which comes first, as it does in the derived fast-growing function.
 In the future I may need to re-order the instructions to better reflect the underlying ordinal notation, though for now this is okay.
+
+I did more recently conceive of a variation on the rules which would make it more powerful.
+Under the current rules, expansion of higher labels on subtrees (rule **2** in \\\(S\\\)) is similar to Veblen's \\\(\varphi\\\).
+This would make the limit "look like" \\\(\Gamma_0\\\), though of course the value is much larger.
+However, if we allow it to create more inner stacks like in rule **1.2** (which is the adaptation of Buchholz's hydra successor label rule), then there would be a much longer descent at each step.
+This would make the limit "look like" the TFB.
+I did not think of this difference when originally conceiving my hydras, after all, the target to beat was hyper-nested Buchholz hydras, which are all well below \\\((\star:(1:(1:))) = (\star:((\star:((\star:):)):((\star:((\star:):)):)))\\\), the smallest hydra for which the current system and the variant I describe would have a different next step.
+I haven't had time to formalize this rule or analyze these variant hydras yet.
+For now I'm fine with publishing my hydra system in its current form, but in the future I may explore stronger variations on the rules such as this one.
 
 </div>
 
