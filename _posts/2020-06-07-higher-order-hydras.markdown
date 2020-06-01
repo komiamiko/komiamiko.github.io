@@ -276,6 +276,7 @@ This would make the limit "look like" \\\(\Gamma_0\\\), though of course the val
 However, if we allow it to create more inner stacks like in rule **1.2** (which is the adaptation of Buchholz's hydra successor label rule), then there would be a much longer descent at each step.
 This would make the limit "look like" the TFB.
 I did not think of this difference when originally conceiving my hydras, after all, the target to beat was hyper-nested Buchholz hydras, which are all well below \\\((\star:(1:(1:))) = (\star:((\star:((\star:):)):((\star:((\star:):)):)))\\\), the smallest hydra for which the current system and the variant I describe would have a different next step.
+Under current rules it would expand into something like \\\((\star:(0:(0:(0:(1:(0:(0:(0:(0:))))))))) = (\star((\star):((\star):((\star):((\star((\star):)):((\star):((\star):((\star):((\star):)))))))))\\\), but under the new variant rule it would look more like \\\(\\\((\star:(0:(0:(0:(1:(0:(1:(0:(1:)))))))))\\\).
 I haven't had time to formalize this rule or analyze these variant hydras yet.
 For now I'm fine with publishing my hydra system in its current form, but in the future I may explore stronger variations on the rules such as this one.
 
