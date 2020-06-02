@@ -45,7 +45,7 @@ def hydra_cmp(a, b):
 
 class hydra(object):
     def __init__(self, children=(), label=None):
-        self.children = children
+        self.children = tuple(children)
         self.label = label
         self.init_size()
         self.init_hash()
@@ -99,18 +99,19 @@ small_ordinals_map = {
     ZERO: '0',
     ONE: '1'}
 
-def reduce_outer(a, nf):
+def reduce_outer(a, nf, skip_nz=False):
     """
     S function. Pass nf as a function which generates the next N.
     """
     b = a.children[-1]
     c = b.label
-    if c == ZERO: # rule 1
+    if c == ZERO or skip_nz: # rule 1
         line = [a, b]
         d = b
-        while d.children and d.children[-1].label == ZERO:
+        while d.children and (d.children[-1].label == ZERO or skip_nz):
             d = d.children[-1]
             line.append(d)
+            skip_nz = d.label != ZERO
         if not d.children: # rule 1.1
             e = line[-2]
             e = hydra(e.children[:-1], e.label)
@@ -149,31 +150,15 @@ def reduce_outer(a, nf):
                 f = hydra(w.children[:-1] + (f,), w.label)
             return f
     else: # rule 2
-        d = reduce_outer(c, nf)
-        e = reduce_inner(b, nf)
-        n = nf()
-        for _ in range(n):
-            e = hydra((e,), d)
-        a = hydra(a.children[:-1] + (e,), a.label)
-        return a
-
-def reduce_inner(a, nf):
-    """
-    R function. Pass nf as a function which generates the next N.
-    """
-    if not a.children: # rule 1
-        b = a.label
-        c = reduce_outer(b, nf)
-        d = hydra((), c)
-        n = nf()
-        for _ in range(n):
-            d = hydra((d,), c)
-        return d
-    else: # rule 2
-        b = hydra(a.children, None)
-        c = reduce_outer(b, nf)
-        d = hydra(c.children, a.label)
-        return d
+        line = [a, b]
+        d = b
+        while d.children and d.children[-1].label != ZERO:
+            d = d.children[-1]
+            line.append(d)
+        if d.children: # rule 2.1
+            return reduce_outer(a, nf, skip_nz=True)
+        else: # rule 2.2
+            pass
 
 def parse_hydra(stream):
     """

@@ -160,9 +160,6 @@ When reducing hydras, this invariant is always maintained.
 Hydras are written with a \\\(:\\\) between the label and the children.
 For example, \\\((\star:((\star:):)((\star:):))\\\) is a hydra where the root has \\\(2\\\) children, and both those children have label \\\((\star:)\\\) and no further children.
 
-Direct children of the root and children of children of the root (but not any further children) are required to have label \\\((\star:)\\\).
-This is the analogous rule to Buchholz hydras requiring direct children of the root to have label \\\(0\\\).
-
 </div>
 
 # Converting Buchholz hydras to Amiko hydras
@@ -244,41 +241,26 @@ It is defined like so:
 > \\\(S(A)\\\) is the modified \\\(A\\\).
 >
 > **2.** If \\\(C > (\star:)\\\):
-> Let \\\(D = S(C)\\\).
-> Let \\\(E = R(B)\\\).
-> Do this \\\(N\\\) times, for some \\\(N\\\): "Replace \\\(E\\\) with \\\((D:E)\\\)."
-> Replace \\\(B\\\) with \\\(E\\\).
-> \\\(S(A)\\\) is the modified \\\(A\\\).
-
-Let \\\(R(A)\\\) be the inner reduction function, which is used when reducing something other than the root hydra.
-It is defined like so:
-
-> **1.** If \\\(A\\\) has no children:
-> Let \\\(B\\\) be the label of \\\(A\\\).
-> It is guaranteed that \\\(B > (\star:)\\\).
-> Let \\\(C = S(B)\\\).
-> Let \\\(D = (C:)\\\).
-> Do this \\\(N\\\) times, for some \\\(N\\\): "Replace \\\(D\\\) with \\\((C:D)\\\)."
-> \\\(R(A) = D\\\).
+> Go right in the tree, looking for the rightmost leaf.
+> If \\\(C\\\) has no children the search just ends there.
 >
-> **2.** If \\\(A\\\) has any children:
-> Let \\\(B\\\) be \\\(A\\\) but with the label changed to \\\(\star\\\) (which turns it into a root).
-> Let \\\(C = S(B)\\\).
-> Let \\\(D\\\) be \\\(C\\\) but with the root label changed to the label of \\\(A\\\).
-> \\\(R(A) = D\\\).
+> **2.1.** If a node \\\(D\\\) with label \\\((\star:)\\\) is encountered, proceed as in rule **1**.
+>
+> **2.2** Let \\\(D\\\) be this rightmost leaf.
+> Let \\\(E\\\) be the label of \\\(D\\\).
+> Traverse up the parents from \\\(D\\\) searching for a node \\\(F\\\) with \\\(G\\\) as the label of \\\(F\\\) satisfying \\\(G < E\\\), which is always guaranteed to exist, because the root always satisfies this.
+> Let \\\(H = S(E)\\\).
+> Let \\\(F'\\\) be \\\(F\\\) but with the label changed to \\\(H\\\).
+> Let \\\(I = ((\star:):)\\\).
+> Do this \\\(N\\\) times, for some \\\(N\\\): "Replace \\\(I\\\) with \\\(F'\\\) where \\\(D\\\) is replaced by \\\(I\\\)"
+> Replace \\\(D\\\) with \\\(I\\\).
+> \\\(S(A)\\\) is the modified \\\(A\\\).
 
 The rules are sensitive to the order of recursive evaluations if the value of \\\(N\\\) depends on which comes first, as it does in the derived fast-growing function.
 In the future I may need to re-order the instructions to better reflect the underlying ordinal notation, though for now this is okay.
 
-I did more recently conceive of a variation on the rules which would make it more powerful.
-Under the current rules, expansion of higher labels on subtrees (rule **2** in \\\(S\\\)) is similar to Veblen's \\\(\varphi\\\).
-This would make the limit "look like" \\\(\Gamma_0\\\), though of course the value is much larger.
-However, if we allow it to create more inner stacks like in rule **1.2** (which is the adaptation of Buchholz's hydra successor label rule), then there would be a much longer descent at each step.
-This would make the limit "look like" the TFB.
-I did not think of this difference when originally conceiving my hydras, after all, the target to beat was hyper-nested Buchholz hydras, which are all well below \\\((\star:(1:(1:))) = (\star:((\star:((\star:):)):((\star:((\star:):)):)))\\\), the smallest hydra for which the current system and the variant I describe would have a different next step.
-Under current rules it would expand into something like \\\((\star:(0:(0:(0:(1:(0:(0:(0:(0:))))))))) = (\star((\star):((\star):((\star):((\star((\star):)):((\star):((\star):((\star):((\star):)))))))))\\\), but under the new variant rule it would look more like \\\(\\\((\star:(0:(0:(0:(1:(0:(1:(0:(1:)))))))))\\\).
-I haven't had time to formalize this rule or analyze these variant hydras yet.
-For now I'm fine with publishing my hydra system in its current form, but in the future I may explore stronger variations on the rules such as this one.
+I have had to make one major revision to the rules so far because the rules as written didn't do what I thought they were doing.
+Do let me know if it's doing something weird, because that's probably not intentional.
 
 </div>
 
@@ -342,15 +324,7 @@ The final value of \\\(N\\\) is \\\(AH(k)\\\).
 
 As examples, here are the first few values of \\\(AH\\\):
 
-* \\\(AH(0) = 1\\\)
-* \\\(AH(1) = 1\\\)
-* \\\(f_{\omega^{\omega^\omega}}(4) < AH(2) < f_{\omega^{\omega^\omega}}(5)\\\)
-
-\\\(AH(3)\\\) is the first truly huge value, and it blows Buchholz hydras out of the water.
-I don't feel a necessity to give this number a fancy name, so I'll submit \\\(AH(3)\\\) as-is to the ever-growing list of large numbers people have come up with.
-I also don't see a reason to submit any more specific values, since any other named numbers will likely be far smaller than \\\(AH(3)\\\) anyway or so large as to be practically out of reach for \\\(AH\\\) -
-that if we replace \\\(f_0\\\) in the fast-growing hierarchy with \\\(AH\\\), \\\(f_\alpha(N)\\\) for reasonable ordinal \\\(\alpha\\\) and small integer \\\(N\\\) will still not get even close to that other number.
-\\\(AH(3)\\\) is the natural representative I think for \\\(AH\\\).
+TODO rewrite
 
 </div>
 
@@ -364,43 +338,8 @@ that if we replace \\\(f_0\\\) in the fast-growing hierarchy with \\\(AH\\\), \\
 For \\\(AH(0)\\\), the starting hydra is just \\\((\star:)\\\), and there are no steps left to take, so \\\(N\\\) stays at \\\(1\\\) and thus \\\(AH(0) = 1\\\).
 
 For \\\(AH(1)\\\), the starting hydra is just \\\((\star:((\star:):))\\\).
-Rule **1.1** applies, the single child node is chopped, and there is no regrowth.
-Thus, \\\(AH(1) = 1\\\).
 
-For \\\(AH(2)\\\), the starting hydra is \\\((\star:((\star:((\star:):)):))\\\).
-This one actually gets large.
-
-On our first outer evaluation of \\\(S\\\), we invoke rule **2**.
-The value of \\\(C\\\) is \\\((\star:((\star:):))\\\), so \\\(D = S(C) = (\star:)\\\).
-The value of \\\(B\\\) is \\\(((\star:((\star:):)):)\\\), which then goes through \\\(R\\\).
-
-When we evaluate \\\(R\\\), rule **1** applies.
-\\\(B\\\) here is taken as \\\((\star:((\star:):))\\\), so \\\(C = S(B) = (\star:)\\\).
-\\\(D\\\) is created as \\\(((\star:):)\\\).
-Now it calls for \\\(N\\\), so we will use \\\(N = 1\\\), and increment \\\(N\\\) afterward.
-We replace \\\(D = ((\star:):)\\\) with \\\(D = (C:D) = ((\star:):((\star:):))\\\).
-The returned value from \\\(R\\\) is \\\(((\star:):((\star:):))\\\).
-
-Back to the outer scope, \\\(E = ((\star:):((\star:):))\\\).
-Now it calls for \\\(N\\\) again, so we will use \\\(N = 2\\\), and increment \\\(N\\\) afterward.
-At the end of this loop, \\\(E = ((\star:):((\star:):((\star:):((\star:):))))\\\).
-We then replace \\\(B\\\) (which is the only child of the hydra root) with \\\(E\\\).
-Finally we finish our first outer step, the new hydra is \\\((\star:((\star:):((\star:):((\star:):((\star:):)))))\\\), and currently \\\(N=3\\\).
-
-Now, I know that looks confusing.
-But that's just a root node, and then a linear chain of \\\(4\\\) nodes that each have label \\\((\star:)\\\).
-Future steps will just be a lot of iterations of rule **1.1**, which you should recognize as the Kirby-Paris regrowth rule.
-At this point, it's just a Kirby-Paris hydra which is a linear chain of \\\(5\\\) nodes: \\\(((((()))))\\\).
-
-If we follow it for another step, it becomes \\\((((()()()())))\\\), with \\\(N = 4\\\).
-So quickly we can say that \\\(H_{\omega^{\omega^{\omega^\omega}}}(4) < AH(2) < H_{\omega^{\omega^{\omega^\omega}}}(5)\\\).
-Converting these bounds to use FGH instead, we get \\\(f_{\omega^{\omega^\omega}}(4) < AH(2) < f_{\omega^{\omega^\omega}}(5)\\\).
-These bounds are sufficiently tight, I believe, for all practical purposes.
-
-\\\(AH(3)\\\) starts with the hydra \\\((\star:((\star:((\star:((\star:):)):)):))\\\), and expands quite large on the first outer step.
-I didn't want to do it by hand, but according to the program, after the first step, \\\(N = 7\\\) and the hydra is `(*:((*:((*:):((*:):((*:):((*:):))))):((*:((*:):((*:):((*:):((*:):))))):((*:((*:):((*:):((*:):((*:):))))):((*:((*:):((*:):((*:):((*:):))))):((*:((*:):((*:):((*:):((*:):))))):((*:((*:):((*:):((*:):((*:):))))):((*:((*:):((*:):((*:):((*:):((*:):((*:):((*:):((*:):))))))))):((*:((*:):((*:):((*:):((*:):((*:):((*:):((*:):((*:):))))))))):((*:((*:):((*:):((*:):((*:):((*:):((*:):((*:):((*:):))))))))):((*:((*:):((*:):((*:):((*:):((*:):((*:):((*:):((*:):))))))))):((*:((*:):((*:):((*:):((*:):((*:):((*:):((*:):((*:):))))))))):((*:((*:):((*:):((*:):((*:):((*:):((*:):((*:):((*:):))))))))):)))))))))))))`.
-However, this exact expansion is almost certainly wrong since I don't actually know the comparison rules for Amiko hydras yet and I'm using Buchholz hydra comparison rules as a placeholder in the program.
-In any case, even the *label* is very large, so it has a long way to go before it becomes remotely comparable to hyper-nested Buchholz hydras.
+TODO rewrite
 
 </div>
 
