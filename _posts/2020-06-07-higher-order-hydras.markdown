@@ -339,7 +339,7 @@ As examples, here are the first few values of \\\(AH\\\):
 
 It only makes sense to submit one number to the ever-growing list of large numbers humans have described, since other numbers will likely be far below it or so far above it that if you replaced \\\(f_0\\\) in the fast-growing hierarchy with \\\(AH\\\) then \\\(f_\alpha(N)\\\) for reasonable ordinal \\\(\alpha\\\) and integer \\\(N\\\) it wouldn't even get close to the other number.
 
-\\\(AH(3)\\\) already beats Buchholz hydras (and finitely hyper-nested Buchholz hydras) out of the water, yet it doesn't feel huge enough to really show off the strength of the construction, so I'll take the next number after that.
+\\\(AH(3)\\\) already blows Buchholz hydras (and finitely hyper-nested Buchholz hydras) out of the water, yet it doesn't feel huge enough to really show off the strength of the construction, so I'll take the next number after that.
 Thus, I put forward \\\(AH(4)\\\) to represent the Amiko hydras.
 
 </div>
