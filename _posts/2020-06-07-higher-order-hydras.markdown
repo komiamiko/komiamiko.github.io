@@ -234,7 +234,8 @@ It is defined like so:
 >
 > **1.2.** If \\\(D\\\) has any children (which are guaranteed to have label \\\( > (\star:)\\\)):
 > Traverse up the parents from \\\(D\\\) searching for a node \\\(E\\\) satisfying \\\(E <_{> (\star:)} D\\\), or if no suitable \\\(E\\\) is found, take \\\(E\\\) as \\\(A\\\) but with all children removed except for the rightmost.
-> Let \\\(E'\\\) be \\\(R(D)\\\) with the children of \\\(E\\\) appended as children.
+> Let \\\(D'\\\) be \\\(D\\\) but with the label changed to \\\(\star\\\).
+> Let \\\(E'\\\) be \\\(S(D')\\\) but without children whose label is \\\((\star:)\\\) and with the children of \\\(E\\\) whose labels are \\\((\star:)\\\) appended as children.
 > Let \\\(F = ((\star:):)\\\).
 > Do this \\\(N\\\) times, for some \\\(N\\\): "Replace \\\(F\\\) with \\\(E'\\\) where \\\(D\\\) is replaced by \\\(F\\\)."
 > Replace \\\(D\\\) with \\\(F\\\).
@@ -260,7 +261,7 @@ The rules are sensitive to the order of recursive evaluations if the value of \\
 In the future I may need to re-order the instructions to better reflect the underlying ordinal notation, though for now this is okay.
 
 I have had to make one major revision to the rules so far because the rules as written didn't do what I thought they were doing.
-Do let me know if it's doing something weird, because that's probably not intentional.
+Do let me know if it's doing something weird, because that's probably not intentional and it was a legitimate mistake when translating the idea to hard rules.
 
 </div>
 
@@ -324,7 +325,8 @@ The final value of \\\(N\\\) is \\\(AH(k)\\\).
 
 As examples, here are the first few values of \\\(AH\\\):
 
-TODO rewrite
+> \\\(AH(0) = 1\\\)
+> \\\(AH(1) = 1\\\)
 
 </div>
 
@@ -338,8 +340,8 @@ TODO rewrite
 For \\\(AH(0)\\\), the starting hydra is just \\\((\star:)\\\), and there are no steps left to take, so \\\(N\\\) stays at \\\(1\\\) and thus \\\(AH(0) = 1\\\).
 
 For \\\(AH(1)\\\), the starting hydra is just \\\((\star:((\star:):))\\\).
-
-TODO rewrite
+Rule **1.1** applies, so that child node gets chopped, but because there is no grandparent, there is no regrowth.
+\\\(N\\\) never increments, so \\\(AH(1) = 1\\\).
 
 </div>
 

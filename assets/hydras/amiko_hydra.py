@@ -61,7 +61,7 @@ class hydra(object):
                      1
     def __str__(self, replace_ordinals=False):
         global small_ordinals_map
-        if self in small_ordinals_map:
+        if replace_ordinals and self in small_ordinals_map:
             return small_ordinals_map[self]
         label_str = '*' if self.label is None else str(self.label)
         child_str = ''.join(map(str, self.children))
@@ -131,8 +131,10 @@ def reduce_outer(a, nf, skip_nz=False):
             if i < 0:
                 i = 0
                 e = hydra(e.children[-1:], e.label)
-            ep = reduce_inner(d, nf)
-            ep = hydra(ep.children + e.children, ep.label)
+            dp = hydra(d.children)
+            ep = reduce_inner(dp, nf)
+            ep = hydra(tuple(c for c in ep.children if c.label != ZERO) + \
+                       tuple(c for c in e.children if c.label == ZERO), ep.label)
             transforms = []
             def repl(w):
                 def irepl(v):
@@ -141,6 +143,7 @@ def reduce_outer(a, nf, skip_nz=False):
             w = ep
             for _ in range(len(line) - 1 - i):
                 transforms.append(repl(w))
+                w = w.children[-1]
             f = hydra((), ZERO)
             n = nf()
             for _ in range(n):
@@ -158,7 +161,29 @@ def reduce_outer(a, nf, skip_nz=False):
         if d.children: # rule 2.1
             return reduce_outer(a, nf, skip_nz=True)
         else: # rule 2.2
-            pass
+            e = d.label
+            for i, f in list(enumerate(line[:-1]))[::-1]:
+                if f.label < d.label:break
+            g = f.label
+            h = reduce_outer(e, nf)
+            fp = hydra(f.children, h)
+            transforms = []
+            def repl(w):
+                def irepl(v):
+                    return hydra(w.children[:-1] + (v,), w.label)
+                return irepl
+            w = fp
+            for _ in range(len(line) - 1 - i):
+                transforms.append(repl(w))
+                w = w.children[-1]
+            n = nf()
+            j = hydra((), ZERO)
+            for _ in range(n):
+                for t in transforms[::-1]:
+                    j = t(j)
+            for w in line[:-1][::-1]:
+                j = hydra(w.children[:-1] + (j,), w.label)
+            return j
 
 def parse_hydra(stream):
     """
