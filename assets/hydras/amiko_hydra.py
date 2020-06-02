@@ -59,7 +59,10 @@ class hydra(object):
         self._size = (len(self.label) if self.label is not None else 0) + \
                      sum(map(len, self.children)) + \
                      1
-    def __str__(self):
+    def __str__(self, replace_ordinals=False):
+        global small_ordinals_map
+        if self in small_ordinals_map:
+            return small_ordinals_map[self]
         label_str = '*' if self.label is None else str(self.label)
         child_str = ''.join(map(str, self.children))
         return '('+label_str+':'+child_str+')'
@@ -90,6 +93,11 @@ class hydra(object):
         return all(is_valid(c, is_root=False) for c in self.children)
 
 ZERO = hydra() # (*:)
+ONE = hydra((hydra(label=ZERO),))
+
+small_ordinals_map = {
+    ZERO: '0',
+    ONE: '1'}
 
 def reduce_outer(a, nf):
     """
@@ -171,6 +179,7 @@ def parse_hydra(stream):
     """
     Parse a single hydra from a character stream.
     """
+    global ZERO, ONE
     c = next(stream)
     if c != '(':raise ValueError('hydra must start with (')
     stack = [[]]
@@ -180,6 +189,10 @@ def parse_hydra(stream):
             pass
         elif c == '*':
             stack[-1].append(None)
+        elif c == '0':
+            stack[-1].append(ZERO)
+        elif c == '1':
+            stack[-1].append(ONE)
         elif c == '(':
             stack.append([])
         elif c == ')':
@@ -209,8 +222,11 @@ def main():
     """
     Main function, where you get to watch hydras evolve.
     """
+    yes_set = {'y','yes','1','true'}
     print('Enable long output of hydras? (Y/N)')
-    use_pprint_hydra = input().lower() in ('y','yes','1','true')
+    use_pprint_hydra = input().lower() in yes_set
+    print('Replace known small hydras with their ordinals?')
+    replace_ordinals = input().lower() in yes_set
     print('Do a single step by entering `N A` ex.\n3 (*:((*:):)((*:):))\n')
     s = input()
     while s:
@@ -224,7 +240,7 @@ def main():
         if use_pprint_hydra:
             print(pprint_hydra(h))
         else:
-            print(h)
+            print(h.__str__(replace_ordinals))
         s = input()
 
 if __name__ == '__main__':
