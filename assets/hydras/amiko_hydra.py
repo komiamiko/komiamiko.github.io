@@ -61,10 +61,11 @@ class hydra(object):
                      1
     def __str__(self, replace_ordinals=False):
         global small_ordinals_map
+        istr = lambda ih:ih.__str__(replace_ordinals=replace_ordinals)
         if replace_ordinals and self in small_ordinals_map:
             return small_ordinals_map[self]
-        label_str = '*' if self.label is None else str(self.label)
-        child_str = ''.join(map(str, self.children))
+        label_str = '*' if self.label is None else istr(self.label)
+        child_str = ''.join(map(istr, self.children))
         return '('+label_str+':'+child_str+')'
     def __repr__(self):
         return 'hydra('+repr(self.children)+','+repr(self.label)+')'
@@ -94,10 +95,12 @@ class hydra(object):
 
 ZERO = hydra() # (*:)
 ONE = hydra((hydra(label=ZERO),))
+OMEGA = hydra((hydra((hydra(label=ZERO),), label=ZERO),))
 
 small_ordinals_map = {
     ZERO: '0',
-    ONE: '1'}
+    ONE: '1',
+    OMEGA: 'w'}
 
 def reduce_outer(a, nf, skip_nz=False):
     """
@@ -203,6 +206,8 @@ def parse_hydra(stream):
             stack[-1].append(ZERO)
         elif c == '1':
             stack[-1].append(ONE)
+        elif c == 'w':
+            stack[-1].append(OMEGA)
         elif c == '(':
             stack.append([])
         elif c == ')':

@@ -134,7 +134,7 @@ There we have it, our first Amiko hydra!
 Whatever rules we use to define its evolution, it should evolve pretty much the same as Buchholz hydras, for hydras that were converted from Buchholz hydras.
 
 Amiko hydras with only \\\(0 = (\star:)\\\) and \\\(1 = (\star:((\star:):))\\\) labels correspond to nested Buchholz hydras.
-Amiko hydras with labels below \\\(\omega = (\star:((\star:):((\star:):)))\\\) correspond to hyper-nested Buchholz hydras with a finite number of hyper-nesting dimensions,
+Amiko hydras with labels below \\\(\omega = (\star:(0:(0:))) = (\star:((\star:):((\star:):)))\\\) correspond to hyper-nested Buchholz hydras with a finite number of hyper-nesting dimensions,
 which we may collectively call \\\(\textrm{hyper}^\omega\\\)-nested Buchholz hydras.
 The full construction of Amiko hydras, obtained by applying a close transform after this externalize, is far more powerful,
 and its corresponding ordinal is the first common fixed point of "\\\(\alpha\\\) maps to the ordinal of \\\(\textrm{hyper}^\alpha\\\)-nested Buchholz hydras."
@@ -247,7 +247,8 @@ It is defined like so:
 >
 > **2.1.** If a node \\\(D\\\) with label \\\((\star:)\\\) is encountered, proceed as in rule **1**.
 >
-> **2.2** Let \\\(D\\\) be this rightmost leaf.
+> **2.2** If we reach a leaf without ever encountering a node with label \\\((\star:)\\\):
+> Let \\\(D\\\) be this rightmost leaf.
 > Let \\\(E\\\) be the label of \\\(D\\\).
 > Traverse up the parents from \\\(D\\\) searching for a node \\\(F\\\) with \\\(G\\\) as the label of \\\(F\\\) satisfying \\\(G < E\\\), which is always guaranteed to exist, because the root always satisfies this.
 > Let \\\(H = S(E)\\\).
@@ -259,6 +260,13 @@ It is defined like so:
 
 The rules are sensitive to the order of recursive evaluations if the value of \\\(N\\\) depends on which comes first, as it does in the derived fast-growing function.
 In the future I may need to re-order the instructions to better reflect the underlying ordinal notation, though for now this is okay.
+
+If you want to intuitively understand what each rule does:
+
+* **1.1** is the Kirby-Paris chop and regrow rule, which Buchholz hydras also have.
+* **1.2** is an adaptation of the Buchholz hydra successor stack rule. You can see the correspondence if you un-externalize the higher labelled children back into the label somehow.
+* **2.1** redirects to **1**. It's perhaps not the strongest variant of the rule that's compatible with the other rules, but it is very safe (in that it won't accidentally make the hydra ordinal much smaller), and produces the intended behaviour as far as I know.
+* **2.2** is yet another rule adapted from the Buchholz hydra successor stack rule, so perhaps you can think of it like a tier 2 Buchholz successor stack rule. It's also responsible for reducing the labels and expanding those nodes out. It used to be weaker, and expand more like the Veblen functions, but I thought of this variant and I'm pretty sure it still always terminates so this is what I'm publishing first.
 
 I have had to make one major revision to the rules so far because the rules as written didn't do what I thought they were doing.
 Do let me know if it's doing something weird, because that's probably not intentional and it was a legitimate mistake when translating the idea to hard rules.
@@ -327,6 +335,12 @@ As examples, here are the first few values of \\\(AH\\\):
 
 > \\\(AH(0) = 1\\\)
 > \\\(AH(1) = 1\\\)
+> \\\(AH(2) = 3\\\)
+
+It only makes sense to submit one number to the ever-growing list of large numbers humans have described, since other numbers will likely be far below it or so far above it that if you replaced \\\(f_0\\\) in the fast-growing hierarchy with \\\(AH\\\) then \\\(f_\alpha(N)\\\) for reasonable ordinal \\\(\alpha\\\) and integer \\\(N\\\) it wouldn't even get close to the other number.
+
+\\\(AH(3)\\\) already beats Buchholz hydras (and finitely hyper-nested Buchholz hydras) out of the water, yet it doesn't feel huge enough to really show off the strength of the construction, so I'll take the next number after that.
+Thus, I put forward \\\(AH(4)\\\) to represent the Amiko hydras.
 
 </div>
 
@@ -337,11 +351,50 @@ As examples, here are the first few values of \\\(AH\\\):
 
 <div>
 
-For \\\(AH(0)\\\), the starting hydra is just \\\((\star:)\\\), and there are no steps left to take, so \\\(N\\\) stays at \\\(1\\\) and thus \\\(AH(0) = 1\\\).
+For \\\(AH(0)\\\), the starting hydra is just \\\(0 = (\star:)\\\), and there are no steps left to take, so \\\(N\\\) stays at \\\(1\\\) and thus \\\(AH(0) = 1\\\).
 
-For \\\(AH(1)\\\), the starting hydra is just \\\((\star:((\star:):))\\\).
+For \\\(AH(1)\\\), the starting hydra is just \\\(1 = (\star:((\star:):))\\\).
 Rule **1.1** applies, so that child node gets chopped, but because there is no grandparent, there is no regrowth.
 \\\(N\\\) never increments, so \\\(AH(1) = 1\\\).
+
+For \\\(AH(2)\\\), the starting hydra is \\\((\star:((\star:((\star:):)):))\\\).
+
+Rule **2** applies.
+\\\(D = C = ((\star:((\star:):)):)\\\).
+\\\(E = 1 = (\star:((\star:):))\\\).
+\\\(F\\\) is the root.
+It then asks us to take \\\(S(E)\\\).
+We already know from before this will be \\\(H = S(E) = 0 = (\star:)\\\) and \\\(N\\\) will not increment.
+\\\(F' = ((\star:):D)\\\).
+\\\(I = ((\star:):) = (0:)\\\).
+We now invoke the counter for the first time, so we use \\\(N = 1\\\) here, and it increments afterward.
+\\\(I\\\) becomes \\\(((\star:):I) = ((\star:):((\star:):)) = (0:(0:))\\\).
+Then we replace \\\(D\\\) in the original hydra, resulting in \\\((\star:((\star:):((\star:):))) = (\star:(0:(0:))) = \omega\\\), with \\\(N = 2\\\) now.
+That concludes the first outer step.
+
+After this, it is a Kirby-Paris hydra, and we will repeatedly invoke rule **1.1**.
+At the next step, the deepest child is chopped, and then \\\(N = 2\\\) heads regrow, and after that \\\(N = 3\\\).
+The hydra is now \\\((\star:((\star:):)((\star:):)((\star:):)) = (\star:(0:)(0:)(0:)) = 3\\\).
+There will be no more regrowth after this, so at the end, \\\(N = 3\\\).
+
+For \\\(AH(3)\\\), the starting hydra is \\\((\star:((\star:((\star:((\star:):)):)):))\\\).
+
+Rule **2** applies.
+\\\(D = C = ((\star:((\star:((\star:):)):)):)\\\).
+\\\(E = (\star:((\star:((\star:):)):))\\\).
+\\\(F\\\) is the root.
+It then asks us to take \\\(S(E)\\\).
+We know since we already did this once that \\\(H = S(E) = (\star:((\star:):((\star:):))) = (\star:(0:(0:))) = \omega\\\) and \\\(N\\\) increments now to \\\(2\\\).
+\\\(F' = (H:D)\\\).
+\\\(I = ((\star:):) = (0:)\\\).
+We invoke the counter again, taking \\\(N = 2\\\) this time, and incrementing it afterward.
+After these iterations \\\(I\\\) becomes \\\((H:(H:(0:))) = (\omega:(\omega:(0:)))\\\).
+Then we replace \\\(D\\\) with \\\(I\\\).
+The hydra after the first outer step is \\\((\star((\star((\star):((\star):))):((\star((\star):((\star):))):((\star):)))) = (\star:(\omega:(\omega:(0:))))\\\).
+
+In case you haven't caught on yet, this is hugely more powerful than Buchholz hydras already (and finitely hyper-nested Buchholz hydras).
+After another step, the Kirby-Paris regrowth rule applies, resulting in the (abbreviated form) hydra \\\((\star:(\omega:(\omega:)(\omega:)(\omega:)(\omega:)))\\\) with \\\(N = 4\\\).
+It may not be obvious yet we're actually doing much better
 
 </div>
 
