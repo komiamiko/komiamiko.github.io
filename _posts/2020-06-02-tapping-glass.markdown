@@ -61,7 +61,7 @@ The requirements for the scene can be broken down into 3 goals:
 
 1. It must not take very long to make. I can't exceed the time limit and I wanted the render to be done in time. This is the strictest requirement.
 2. It should pass. Perhaps not photoreal, but it should look very good.
-3. It should be interesting. There should be something going on in the scene, and you actually want to look at it. Being interesting is a desireable property, perhaps even required, for art.
+3. It should be interesting. There should be something going on in the scene, and you actually want to look at it. Being interesting is a desirable property, perhaps even required, for art.
 
 I did some brainstorming, excluded the ideas that were unlikely to work out, refined the ideas and explored more, and repeated this until I settled on a viable idea.
 
