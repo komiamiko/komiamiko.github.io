@@ -233,9 +233,9 @@ It is defined like so:
 > \\\(S(A)\\\) is the modified \\\(A\\\).
 >
 > **1.2.** If \\\(D\\\) has any children (which are guaranteed to have label \\\( > (\star:)\\\)):
-> Traverse up the parents from \\\(D\\\) searching for a node \\\(E\\\) satisfying \\\(E <_{> (\star:)} D\\\), or if no suitable \\\(E\\\) is found, take \\\(E\\\) as \\\(A\\\) but with all children removed except for the rightmost.
+> Traverse up the parents from \\\(D\\\) searching for a node \\\(E\\\) satisfying \\\(E <_{> (\star:)} D\\\) (but do not enter nodes with label \\\(> (\star:)\\\)), or if no suitable \\\(E\\\) is found, take \\\(E\\\) as the last candidate's parent (or \\\(A\\\) if it was reached) but with all children removed except for the rightmost.
 > Let \\\(D'\\\) be \\\(D\\\) but with the label changed to \\\(\star\\\).
-> Let \\\(E'\\\) be \\\(S(D')\\\) but without children whose label is \\\((\star:)\\\) and with the children of \\\(E\\\) whose labels are \\\((\star:)\\\) appended as children.
+> Let \\\(E'\\\) be \\\(S(D')\\\) but without children whose label is \\\((\star:)\\\) and with the children of \\\(E\\\) whose labels are \\\((\star:)\\\) appended as children, and with the label of \\\(D\\\).
 > Let \\\(F = ((\star:):)\\\).
 > Do this \\\(N\\\) times, for some \\\(N\\\): "Replace \\\(F\\\) with \\\(E'\\\) where \\\(D\\\) is replaced by \\\(F\\\)."
 > Replace \\\(D\\\) with \\\(F\\\).

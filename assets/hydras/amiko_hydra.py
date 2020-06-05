@@ -130,14 +130,17 @@ def reduce_outer(a, nf, skip_nz=False):
             z = lambda y:hydra(tuple(x for x in y.children if x != ZERO), y.label)
             for i, e in list(enumerate(line[:-1]))[::-1]:
                 if z(e) < z(d):break
+                if e.label > ZERO:
+                    e = hydra(e.children[-1:], e.label)
+                    break
                 i -= 1
             if i < 0:
                 i = 0
                 e = hydra(e.children[-1:], e.label)
             dp = hydra(d.children)
-            ep = reduce_inner(dp, nf)
+            ep = reduce_outer(dp, nf)
             ep = hydra(tuple(c for c in ep.children if c.label != ZERO) + \
-                       tuple(c for c in e.children if c.label == ZERO), ep.label)
+                       tuple(c for c in e.children if c.label == ZERO), d.label)
             transforms = []
             def repl(w):
                 def irepl(v):
