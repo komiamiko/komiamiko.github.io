@@ -394,7 +394,8 @@ The hydra after the first outer step is \\\((\star((\star((\star):((\star):))):(
 
 In case you haven't caught on yet, this is hugely more powerful than Buchholz hydras already (and finitely hyper-nested Buchholz hydras).
 After another step, the Kirby-Paris regrowth rule applies, resulting in the (abbreviated form) hydra \\\((\star:(\omega:(\omega:)(\omega:)(\omega:)(\omega:)))\\\) with \\\(N = 4\\\).
-It may not be obvious yet we're actually doing much better
+It may not be obvious yet we're actually doing much better, but when it comes to fast-growing functions like this, it's not like I can just show the whole path.
+There's a long descent until the \\\(\omega\\\) labels are gone though, and still much longer to termination.
 
 </div>
 
