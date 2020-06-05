@@ -447,9 +447,23 @@ Buchholz introduced labels.
 I introduced externalize and close as higher order transformations.
 What comes next may be a higher order closure over the hydra constructions reachable by externalize and close, or perhaps something more novel and creative that I have not even conceived.
 
+Though not a hydra unless it's perhaps a flattened hydra, I want to point out the [Bashicu matrix system](https://googology.wikia.org/wiki/Bashicu_matrix_system), which is one of the contenders for being a next stronger system.
+I haven't studied it in depth so I do not want to make claims, but based on my first reading, I can make a guess.
+Keep in mind I've not done the analysis to confirm this, and this is only my speculation.
+\\\(2\\\) row Bashicu matrices are at the same strength as Buchholz hydras with labels below \\\(\omega\\\).
+Each close (and optionally externalize) of the kind I performed allows to match \\\(1\\\) more row in Bashicu matrices, so I believe Amiko hydras are on par with \\\(4\\\) row Bashicu matrices.
+We would need \\\(\omega\\\) iterations of close and externalize to match \\\(\omega\\\) row Bashicu matrices, which are the full strength of the Bashicu matrix system.
+That doesn't mean there's no hope for hydras though, since as I just said, it's with the kind of close and externalize I used.
+A stronger externalize may permit a stronger close which brings us to the ordinal \\\(\alpha\\\) which is the first common fixed point of
+"from \\\(\alpha\\\), take the ordinal corresponding to the hydra construction created by starting with Buchholz hydras and applying the weaker kind of close and externalize \\\(\alpha\\\) times,"
+which surely is far beyond \\\(\omega\\\).
+As a vague way to conceptualize how the new rules may look, \\\(\alpha\\\) labels may correspond to the level of hydras after \\\(\alpha\\\) iterations of the weaker close and externalize.
+All Bashicu needs to do to match it is allow transfinite entries via embedded deeper matrices.
+Still, with the strength and relative simplicity of Bashicu matrices, as my personal opinion, I believe Bashicu matrices are the future for a next stronger construction, if only they can be proven to terminate.
+
 </div>
 
-## My contributions to the field
+# My contributions to the field
 {: #contributions-to-field}
 
 {% include collapser.markdown %}
