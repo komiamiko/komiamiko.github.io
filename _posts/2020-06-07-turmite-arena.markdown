@@ -45,9 +45,9 @@ Not initialized
 {% include collapser.markdown %}
 
 <div id="turmite-settings-form">
-<input type="button" value="Pause/resume">
+<input type="button" value="Pause/resume" onclick="turmites.sendPauseResume()">
 
-<input type="button" value="Apply settings and restart session">
+<input type="button" value="Apply settings and restart session" onclick="turmites.sendRestart()">
 
 <label for="settings-seed">Random seed</label>
 <input type="text" id="settings-seed" name="settings-seed">

@@ -1,8 +1,26 @@
 /*
- * Main script for the Turmite Arena webapp.
- * (c) Komi Amiko 2020
- * See license file for license.
- * The app simulates many of a kind of turmite on a large canvas.
+ * Main script for the Turmite Arena webapp, which simulates many turmites
+ * on a large shared canvas.
+ * 
+ * Copyright (c) 2020 Komi Amiko
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 
 (function(turmites) {
@@ -69,7 +87,7 @@
       return result;
     }
     getNextInt(n) {
-      if((n & -n) === n)return getNext() & (n - 1);
+      if((n & -n) === n)return this.getNext() & (n - 1);
       let raw = this.getNext();
       let res = raw % n;
       while(raw - res + n - 1 >= 0x100000000) {
@@ -120,32 +138,41 @@
   turmites.Mite = class Mite {
     constructor() {
       let prandom = turmites.prandom;
-      this.y = prandom.getNext(turmites.canvasH);
-      this.x = prandom.getNext(turmites.canvasW);
-      this.facing = prandom.getNext(4);
-      this.state = prandom.getNext(turmites.nStates);
+      this.y = prandom.getNextInt(turmites.canvasH);
+      this.x = prandom.getNextInt(turmites.canvasW);
+      this.facing = prandom.getNextInt(4);
+      this.state = prandom.getNextInt(turmites.nStates);
       let transition = this.transitionTable = [];
-      for(let i = nColors * nStates; i > 0; --i) {
-        let movement = prandom.getNext(12);
-        let voteColor = prandom.getNext(turmites.nColors);
-        let nextState = prandom.getNext(turmites.nStates);
+      for(let i = turmites.nColors * turmites.nStates; i > 0; --i) {
+        let movement = prandom.getNextInt(12);
+        let voteColor = prandom.getNextInt(turmites.nColors);
+        let nextState = prandom.getNextInt(turmites.nStates);
         transition.push([movement, voteColor, nextState]);
       }
     }
     /**
-     * Given the color below it, take 1 step and return the array:
-     *   [old y, old x, voted color]
+     * Given the color below it, take 1 step and return the voted color
      */
     stepOnce(below) {
       let instruction = this.transitionTable[below * turmites.nStates + this.state];
       let movement = instruction[0];
       let voteColor = instruction[1];
       this.state = instruction[2];
-      let result = [this.y, this.x, voteColor];
+      let result = voteColor;
       this.facing = (this.facing + movement % 4) % 4;
       movement = (movement - movement % 4) / 4;
       let addPos = -1 + movement;
-      
+      if(this.facing >= 2)addPos = -addPos;
+      if(this.facing % 2) {
+        let y = this.y + addPos;
+        y += turmites.canvasH * ((y < 0) - (y >= turmites.canvasH));
+        this.y = y;
+      } else {
+        let x = this.x + addPos;
+        x += turmites.canvasW * ((x < 0) - (x >= turmites.canvasH));
+        this.x = x;
+      }
+      return result;
     }
   }
 
@@ -189,7 +216,7 @@
   turmites.shuffle = function(arr, prandom, copy) {
     if(copy)arr = arr.slice();
     for(let i = arr.length - 1; i >= 1; --i) {
-      let j = prandom.getNext(i + 1);
+      let j = prandom.getNextInt(i + 1);
       let tmp = arr[i];
       arr[i] = arr[j];
       arr[j] = tmp;
@@ -206,6 +233,7 @@
       let j = indices[i];
       result.push(arr[j]);
     }
+    return result;
   }
 
   // signal for the game state
@@ -216,6 +244,69 @@
   turmites.stateSignal = 0;
   // signal to apply new settings before next restart
   turmites.applySettingsNext = false;
+  
+  /**
+   * Function to perform a game step and record which tiles need to be re-rendered
+   */
+  turmites.stepOnce = function(tilesToUpdate) {
+    let mites = turmites.mites;
+    let votes = {};
+    for(let i = 0; i < mites.length; ++i) {
+      let mite = mites[i];
+      let key = mite.y * turmites.canvasW + mite.x;
+      let below = turmites.canvasMap[key];
+      let vote = mite.stepOnce(below);
+      let tally;
+      if(key in votes) {
+        tally = votes[key];
+      } else {
+        tally = votes[key] = [];
+        for(let j = 0; j < turmites.nColors; ++j) {
+          tally.push(0);
+        }
+      }
+      tally[vote]++;
+    }
+    for(let key in votes) {
+      let tally = votes[key];
+      let best = 0;
+      let bestIndex = 0;
+      let bestDuplis = 0;
+      for(let j = 0; j < tally.length; ++j) {
+        let n = tally[j];
+        if(n > best) {
+          best = n;
+          bestIndex = j;
+          bestDuplis = 1;
+        } else if(n == best) {
+          bestDuplis++;
+        }
+      }
+      if(bestDuplis === 1) {
+        turmites.canvasMap[key] = bestIndex;
+        tilesToUpdate[key] = bestIndex;
+      }
+    }
+  }
+  
+  /**
+   * Set the state signal and change the corresponding status message.
+   */
+  turmites.setSignal = function(signal) {
+    turmites.stateSignal = signal;
+    let statusEl = document.getElementById("turmite-status");
+    turmites.clearChildren(statusEl);
+    let message = [
+      "Not running",
+      "Running",
+      "Queued stop",
+      "Queued restart",
+      ][signal];
+    let textEl = document.createTextNode(message);
+    let paraEl = document.createElement("p");
+    paraEl.appendChild(textEl);
+    statusEl.appendChild(paraEl);
+  }
 
   /**
    * Apply the settings from the UI, if possible
@@ -236,7 +327,7 @@
     let reqNMites = Number(document.getElementById("settings-nturmites").value || turmites.nMites);
     let reqFFIters = Number(document.getElementById("settings-ffiters").value || turmites.ffIters);
     let reqTickDelay = Number(document.getElementById("settings-tick-delay").value || turmites.tickDelay);
-    let reqPaletteKind = turmites.getSelectedValue("settings-color-map") || turmite.paletteKind;
+    let reqPaletteKind = turmites.getSelectedValue("settings-color-map") || turmites.paletteKind;
     // reject anything that would break the app
     if(
          Number.isNaN(reqCanvasW)
@@ -274,9 +365,7 @@
       ) {
         errors.push("Number inputs (canvas width, canvas height, number of turmites, number of steps per tick) must be below " + flimit.toString());
       }
-      if(
-        || reqNStates >= i32limit
-      ) {
+      if(reqNStates >= i32limit) {
         errors.push("Number of states must be less than " + i32limit.toString() + " due to PRNG restrictions");
       }
       if(reqTickDelay < 10 || reqTickDelay >= 1e9) {
@@ -326,10 +415,10 @@
    */
   turmites.tryStartUp = function() {
     if(turmites.stateSignal > 0)return;
-    if(turmites.applySettings){
+    if(turmites.applySettingsNext){
       let setOK = turmites.tryApplySettings();
-      turmites.applySettings = false;
       if(!setOK)return;
+      turmites.applySettingsNext = false;
     }
     // settings have been applied, we're okay to start
     // generate starting game state
@@ -343,8 +432,86 @@
       turmites.palette = turmites.shuffle(turmites.paletteRef, prandom, true);
     }
     prandom.init("mites: " + turmites.randomSeed);
+    turmites.mites = [];
+    for(let i = turmites.nMites; i > 0; --i) {
+      turmites.mites.push(new turmites.Mite());
+    }
+    turmites.canvasMap = [];
+    for(let i = turmites.canvasW * turmites.canvasH; i > 0; --i) {
+      turmites.canvasMap.push(0);
+    }
     // rebuild canvas
+    let canvasEl = document.getElementById("turmite-canvas");
+    turmites.clearChildren(canvasEl);
+    let fullSize = document.getElementById("turmite-settings-form").offsetWidth;
+    let cellSize = (fullSize / turmites.canvasW).toString() + "px";
+    canvasEl.style["display"] = "grid";
+    canvasEl.style["grid-template-columns"] = "repeat(" + turmites.canvasW.toString() + ", " + cellSize + ")";
+    for(let i = 0; i < turmites.canvasW * turmites.canvasH; ++i) {
+      let cellEl = document.createElement("div");
+      cellEl.id = "turmite-canvas-cell-" + i.toString();
+      cellEl.style["height"] = cellSize;
+      cellEl.style["background-color"] = turmites.palette[0];
+      canvasEl.appendChild(cellEl);
+    }
     // start game loop
+    turmites.gameLoop();
+  }
+  
+  /**
+   * The main loop, used as a function and as a callback.
+   */
+  turmites.gameLoop = function() {
+    if(turmites.stateSignal >= 2) {
+      turmites.setSignal(0);
+      if(turmites.stateSignal === 2)return;
+      turmites.tryStartUp();
+    }
+    if(turmites.stateSignal === 0) {
+      turmites.setSignal(1);
+    } else {
+      let timeStart = performance.now();
+      let tilesToUpdate = {};
+      for(let i = 0; i < turmites.ffIters; ++i) {
+        turmites.stepOnce(tilesToUpdate);
+      }
+      for(let key in tilesToUpdate) {
+        let cellEl = document.getElementById("turmite-canvas-cell-" + key.toString());
+        cellEl.style["background-color"] = turmites.palette[turmites.canvasMap[key]];
+      }
+      let timeEnd = performance.now();
+      let timeMessage = "Performed " + turmites.ffIters.toString() + " steps in " + (timeEnd - timeStart).toFixed(3) + " ms";
+      let messageEl = document.getElementById("turmite-message");
+      turmites.clearChildren(messageEl);
+      let textEl = document.createTextNode(timeMessage);
+      let paraEl = document.createElement("p");
+      paraEl.appendChild(textEl);
+      messageEl.appendChild(paraEl);
+    }
+    setTimeout(turmites.gameLoop, turmites.tickDelay);
+  }
+  
+  /**
+   * Respond to external request to pause or resume
+   */
+  turmites.sendPauseResume = function() {
+    if(turmites.stateSignal === 0) {
+      turmites.gameLoop();
+    } else {
+      turmites.stateSignal = 2;
+    }
+  }
+  
+  /**
+   * Respond to external request to apply new settings and restart
+   */
+  turmites.sendRestart = function() {
+    turmites.applySettingsNext = true;
+    if(turmites.stateSignal === 0) {
+      turmites.tryStartUp();
+    } else {
+      turmites.stateSignal = 3;
+    }
   }
 
   /**
@@ -353,15 +520,15 @@
   turmites.initFirst = function() {
     // Initialize the turmite global parameters
     let randomSeed = ":) " + Date.now().toString();
-    let prandom = turmites.prandom = new TurmiteRandom();
+    let prandom = turmites.prandom = new turmites.PRandom();
     prandom.init(randomSeed);
-    turmites.canvasW = prandom.getNext(10) + 40;
-    turmites.canvasH = prandom.getNext(10) + 40;
-    turmites.nColors = prandom.getNext(4) + 3;
-    turmites.nStates = prandom.getNext(4) + 3;
-    turmites.nMites = prandom.getNext(2) + 2;
+    turmites.canvasH = prandom.getNextInt(10) + 30;
+    turmites.canvasW = prandom.getNextInt(20) + turmites.canvasH;
+    turmites.nColors = prandom.getNextInt(4) + 3;
+    turmites.nStates = prandom.getNextInt(4) + 3;
+    turmites.nMites = prandom.getNextInt(3) + 2;
     turmites.ffIters = 1;
-    turmites.tickDelay = 100;
+    turmites.tickDelay = 50;
     turmites.paletteKind = "handpicked";
     turmites.randomSeed = "any text is okay " + randomSeed;
     document.getElementById("settings-seed").value = turmites.randomSeed;
@@ -372,10 +539,12 @@
     document.getElementById("settings-nturmites").value = turmites.nMites;
     document.getElementById("settings-ffiters").value = turmites.ffIters;
     document.getElementById("settings-tick-delay").value = turmites.tickDelay;
-    document.getElementById("settings-color-map-" + paletteKind).checked = true;
+    document.getElementById("settings-color-map-" + turmites.paletteKind).checked = true;
+    turmites.setSignal(0);
     turmites.tryStartUp();
   }
 
+  // initialize, but don't start up
   turmites.initFirst();
 
 }(window.turmites = window.turmites || {}));
