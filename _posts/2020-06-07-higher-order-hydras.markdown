@@ -120,7 +120,7 @@ The root could be considered to have a special fake label, or no label.
 
 ![Diagram of a Buchholz hydra with the former labels drawn as children with label 1, and original nodes labelled 0.](/assets/hydras/externalize-3.png)
 
-We then expand these former labels into the appropriate hydras, except that the immediate children of that root has label \\\(1\\\), and then fuse those with their parents.
+We then expand these former labels into the corresponding hydras but with immediate children of the root changed to have label \\\(1\\\), and then merge the root of that hydra into the node from which the label originated.
 Recall that the lone root hydra is ordinal \\\(0\\\), a hydra with \\\(n\\\) children is the ordinal \\\(n\\\), and the hydra \\\(((()))\\\) is the ordinal \\\(\omega\\\).
 You'll notice in this step since \\\(0\\\) turned into \\\(()\\\) and got fused with its parent, that branch just disappears, and since \\\(2\\\) turned into \\\((()())\\\) and got fused with its parent, it gained another child with label \\\(1\\\).
 
