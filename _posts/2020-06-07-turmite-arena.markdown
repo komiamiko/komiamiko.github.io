@@ -18,15 +18,31 @@ categories: math automata
 This app requires JavaScript to run.
 </div>
 
+## Canvas
+{: #turmite-canvas-section}
+
+{% include collapser.markdown %}
+
 <div id="turmite-canvas"></div>
 
+## Messages
+{: #turmite-message-section}
+
 <div id="turmite-message"></div>
+
+## Status
+{: #turmite-status-section}
 
 <div id="turmite-status">
 
 Not initialized
 
 </div>
+
+## Settings
+{: #turmite-settings-section}
+
+{% include collapser.markdown %}
 
 <div id="turmite-settings-form">
 <input type="button" value="Pause/resume">
@@ -59,8 +75,11 @@ Not initialized
 
 Colour palette
 
-<input type="radio" id="settings-color-map-default" name="settings-color-map" value="default">
-<label for="settings-color-map-default">Default</label>
+<input type="radio" id="settings-color-map-handpicked" name="settings-color-map" value="handpicked">
+<label for="settings-color-map-handpicked">Handpicked</label>
+
+<input type="radio" id="settings-color-map-sobol" name="settings-color-map" value="sobol">
+<label for="settings-color-map-sobol">Sobol</label>
 
 <input type="radio" id="settings-color-map-random" name="settings-color-map" value="default">
 <label for="settings-color-map-random">Random</label>
@@ -170,8 +189,9 @@ I don't think it should, but just in case it does:
 
 > "Turmite Arena" refers to the application in [the section titled "Turmite Arena app"](#app-section).
 > All outputs of Turmite Arena, including the displayed grid, are dedicated to the public domain under [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/).
+> Where the output of Turmite Arena is not separable from the part of the program from which it originates, that part of the program is also released under CC0 1.0.
 
-Meanwhile, the program itself is licensed under an MIT license, the same as the rest of the site.
+Meanwhile, the program itself (the parts that are separable from the output anyway) is licensed under an MIT license, the same as the rest of the site.
 
 </div>
 
