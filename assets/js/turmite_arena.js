@@ -169,7 +169,7 @@
         this.y = y;
       } else {
         let x = this.x + addPos;
-        x += turmites.canvasW * ((x < 0) - (x >= turmites.canvasH));
+        x += turmites.canvasW * ((x < 0) - (x >= turmites.canvasW));
         this.x = x;
       }
       return result;
@@ -260,11 +260,9 @@
       if(key in votes) {
         tally = votes[key];
       } else {
-        tally = votes[key] = [];
-        for(let j = 0; j < turmites.nColors; ++j) {
-          tally.push(0);
-        }
+        tally = votes[key] = {};
       }
+      if(!(vote in tally))tally[vote] = 0;
       tally[vote]++;
     }
     for(let key in votes) {
@@ -272,7 +270,7 @@
       let best = 0;
       let bestIndex = 0;
       let bestDuplis = 0;
-      for(let j = 0; j < tally.length; ++j) {
+      for(let j in tally) {
         let n = tally[j];
         if(n > best) {
           best = n;
@@ -463,9 +461,12 @@
    */
   turmites.gameLoop = function() {
     if(turmites.stateSignal >= 2) {
+      let doRestart = turmites.stateSignal === 3;
       turmites.setSignal(0);
-      if(turmites.stateSignal === 2)return;
-      turmites.tryStartUp();
+      if(doRestart){
+        turmites.tryStartUp();
+      }
+      return;
     }
     if(turmites.stateSignal === 0) {
       turmites.setSignal(1);
