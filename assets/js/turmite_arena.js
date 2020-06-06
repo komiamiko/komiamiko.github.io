@@ -481,7 +481,7 @@
         cellEl.style["background-color"] = turmites.palette[turmites.canvasMap[key]];
       }
       let timeEnd = performance.now();
-      let timeMessage = "Performed " + turmites.ffIters.toString() + " steps in " + (timeEnd - timeStart).toFixed(3) + " ms";
+      let timeMessage = "Performed " + turmites.ffIters.toString() + " steps in " + (timeEnd - timeStart).toFixed() + " ms";
       let messageEl = document.getElementById("turmite-message");
       turmites.clearChildren(messageEl);
       let textEl = document.createTextNode(timeMessage);
