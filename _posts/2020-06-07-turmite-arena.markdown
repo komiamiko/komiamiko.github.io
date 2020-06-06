@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Turmite Arena"
-date: 2020-06-07 23:00
+date: 2020-05-07 23:00
 categories: math automata
 ---
 
@@ -18,7 +18,53 @@ categories: math automata
 This app requires JavaScript to run.
 </div>
 
+<div id="turmite-canvas"></div>
 
+<div id="turmite-message"></div>
+
+<div id="turmite-status">
+
+Not initialized
+
+</div>
+
+<div id="turmite-settings-form">
+<input type="button" value="Pause/resume">
+
+<input type="button" value="Apply settings and restart session">
+
+<label for="settings-seed">Random seed</label>
+<input type="text" id="settings-seed" name="settings-seed">
+
+<label for="settings-canvas-w">Canvas width</label>
+<input type="number" id="settings-canvas-w" name="settings-canvas-w" min="1" max="10000000">
+
+<label for="settings-canvas-h">Canvas height</label>
+<input type="number" id="settings-canvas-h" name="settings-canvas-h" min="1" max="10000000">
+
+<label for="settings-ncolors">Number of colours</label>
+<input type="number" id="settings-ncolors" name="settings-ncolors" min="1" max="64">
+
+<label for="settings-nstates">Number of states</label>
+<input type="number" id="settings-nstates" name="settings-nstates" min="1" max="10000000">
+
+<label for="settings-nturmites">Number of turmites</label>
+<input type="number" id="settings-nturmites" name="settings-nturmites" min="1" max="10000000">
+
+<label for="settings-ffiters">Number of steps per tick</label>
+<input type="number" id="settings-ffiters" name="settings-ffiters" min="1" max="10000000">
+
+<label for="settings-tick-delay">Tick delay (ms)</label>
+<input type="number" id="settings-tick-delay" name="settings-tick-delay" min="10" max="10000">
+
+Colour palette
+
+<input type="radio" id="settings-color-map-default" name="settings-color-map" value="default">
+<label for="settings-color-map-default">Default</label>
+
+<input type="radio" id="settings-color-map-random" name="settings-color-map" value="default">
+<label for="settings-color-map-random">Random</label>
+</div>
 
 </div>
 
@@ -123,10 +169,12 @@ It's unclear whether a mathematical process with a seed chosen by the user count
 I don't think it should, but just in case it does:
 
 > "Turmite Arena" refers to the application in [the section titled "Turmite Arena app"](#app-section).
-> All outputs of Turmite Arena, including the displayed grid, are dedicated to the public domain under [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/)
+> All outputs of Turmite Arena, including the displayed grid, are dedicated to the public domain under [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/).
 
 Meanwhile, the program itself is licensed under an MIT license, the same as the rest of the site.
 
 </div>
 
 </div>
+
+<script src="/assets/js/turmite_arena.js"></script>
