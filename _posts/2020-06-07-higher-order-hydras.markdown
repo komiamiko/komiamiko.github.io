@@ -60,7 +60,8 @@ In exploring ways to build faster growing functions than the one based on Buchho
 and then since hydras are ordinal-like, "what if we used nested hydras as labels?"
 We can skip the details of adapting ordinal transformation rules for hydras right now, but in any case, these nested hydras are surely more powerful than plain Buchholz hydras.
 
-I then thought to add a singleton, which I'll call \\\( \lambda \\\), which when encountered, expands into a hydra involving labels which are hydras involving labels which are hydras... \\\(N\\\) layers deep, containing no mention of \\\( \lambda \\\).
+I then thought to add a singleton, which I'll call \\\( \lambda \\\).
+When encountered, it would expand into a hydra involving labels which are hydras involving labels which are hydras... \\\(N\\\) layers deep, containing no mention of \\\( \lambda \\\).
 This is, in some sense, a fixed point ordinal of hydra nesting, or for accuracy, the first common fixed point of whatever ordinal operation nesting hydras corresponds to.
 I cannot think of what ordinal such a system corresponds to, but surely it is stronger than without \\\( \lambda \\\).
 Why stop there?
