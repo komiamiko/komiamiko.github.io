@@ -449,7 +449,7 @@ Buchholz introduced labels.
 I introduced externalize and close as higher order transformations.
 What comes next may be a higher order closure over the hydra constructions reachable by externalize and close, or perhaps something more novel and creative that I have not even conceived.
 
-Though not a hydra unless it's perhaps a flattened hydra, I want to point out the [Bashicu matrix system](https://googology.wikia.org/wiki/Bashicu_matrix_system), which is one of the contenders for being a next stronger system.
+Though not a hydra unless it's perhaps a flattened hydra, I want to bring attention to the [Bashicu matrix system](https://googology.wikia.org/wiki/Bashicu_matrix_system), which is one of the contenders for being a next stronger system.
 I haven't studied it in depth so I do not want to make claims, but based on my first reading, I can make a guess.
 Keep in mind I've not done the analysis to confirm this, and this is only my speculation.
 \\\(2\\\) row Bashicu matrices are at the same strength as Buchholz hydras with labels below \\\(\omega\\\).
