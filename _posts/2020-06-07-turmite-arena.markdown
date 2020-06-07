@@ -130,12 +130,12 @@ In maybe an hour, I got a proof of concept up, and since that was so much fun to
 
 I do not know if this app can be called a game, though I can think of no better term for the rules of its world than "game mechanics", so that is what I will use.
 
-Each session uses a fixed number of colours, conveniently numbered from *0* to *C*, which are later mapped to pretty display colours.
+Each session uses a fixed number of colours, conveniently numbered from *0* to *C - 1*, which are later mapped to pretty display colours.
 The canvas is a finite rectangular grid which starts filled with the colour *0*.
 The grid is looping, so topologically it is a torus.
 
 On the canvas live a number of "turmites".
-Each turmite occupies a tile on the canvas, holds a state numbered from *0* to *N*, and has a current orientation which is a cardinal direction.
+Each turmite occupies a tile on the canvas, holds a state numbered from *0* to *N - 1*, and has a current orientation which is a cardinal direction.
 Multiple turmites are able to occupy the same tile at once.
 
 Each turn, every turmite takes a step.
