@@ -288,6 +288,7 @@
         tilesToUpdate[key] = bestIndex;
       }
     }
+    turmites.stepCounter++;
   }
   
   /**
@@ -453,6 +454,7 @@
     for(let i = turmites.canvasW * turmites.canvasH; i > 0; --i) {
       turmites.canvasMap.push(0);
     }
+    turmites.stepCounter = 0;
     // rebuild canvas
     let canvasEl = document.getElementById("turmite-canvas");
     turmites.clearChildren(canvasEl);
@@ -512,11 +514,16 @@
         cellEl.style["background-color"] = turmites.palette[turmites.canvasMap[key]];
       }
       let timeEnd = performance.now();
-      let timeMessage = "Performed " + turmites.ffIters.toString() + " steps in " + (timeEnd - timeStart).toFixed() + " ms";
       let messageEl = document.getElementById("turmite-message");
       turmites.clearChildren(messageEl);
+      let timeMessage = "Total steps: " + turmites.stepCounter.toString();
       let textEl = document.createTextNode(timeMessage);
       let paraEl = document.createElement("p");
+      paraEl.appendChild(textEl);
+      messageEl.appendChild(paraEl);
+      timeMessage = "Performed " + turmites.ffIters.toString() + " steps in " + (timeEnd - timeStart).toFixed() + " ms";
+      textEl = document.createTextNode(timeMessage);
+      paraEl = document.createElement("p");
       paraEl.appendChild(textEl);
       messageEl.appendChild(paraEl);
     }
