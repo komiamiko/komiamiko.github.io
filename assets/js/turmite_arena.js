@@ -499,7 +499,7 @@
     if(turmites.stateSignal === 0) {
       turmites.gameLoop();
     } else {
-      turmites.stateSignal = 2;
+      turmites.setSignal(2);
     }
   }
   
@@ -511,7 +511,7 @@
     if(turmites.stateSignal === 0) {
       turmites.tryStartUp();
     } else {
-      turmites.stateSignal = 3;
+      turmites.setSignal(3);
     }
   }
 
