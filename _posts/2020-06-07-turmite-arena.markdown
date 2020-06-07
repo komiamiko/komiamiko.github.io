@@ -51,6 +51,7 @@ Not initialized
 
 <label for="settings-seed">Random seed</label>
 <input type="text" id="settings-seed" name="settings-seed">
+<input type="button" value="Generate a new seed" onclick="turmites.generateNewSeed()">
 
 <label for="settings-canvas-w">Canvas width</label>
 <input type="number" id="settings-canvas-w" name="settings-canvas-w" min="1" max="10000000">

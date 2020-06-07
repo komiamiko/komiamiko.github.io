@@ -546,6 +546,16 @@
       turmites.setSignal(3);
     }
   }
+  
+  /**
+   * Respond to external request to randomly generate a seed
+   */
+  turmites.generateNewSeed = function() {
+    let data = new Uint32Array(3);
+    window.crypto.getRandomValues(data);
+    let seed = data[0].toString(36) + ":" + data[1].toString(36) + ":" + data[2].toString(36);
+    document.getElementById("settings-seed").value = seed;
+  }
 
   /**
    * Function to initialize the app the first time
