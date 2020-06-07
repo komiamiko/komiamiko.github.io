@@ -243,7 +243,10 @@
   // 3 = running, but please restart
   turmites.stateSignal = 0;
   // signal to apply new settings before next restart
-  turmites.applySettingsNext = false;
+  // mask values:
+  // 1 = update display/performance settings
+  // 2 = update game rules
+  turmites.applySettingsNext = 0;
   
   /**
    * Function to perform a game step and record which tiles need to be re-rendered
@@ -395,40 +398,52 @@
       paraEl.appendChild(textEl);
       messageEl.appendChild(paraEl);
       // apply new settings
-      turmites.randomSeed = reqRandomSeed;
-      turmites.canvasW = reqCanvasW;
-      turmites.canvasH = reqCanvasH;
-      turmites.nColors = reqNColors;
-      turmites.nStates = reqNStates;
-      turmites.nMites = reqNMites;
-      turmites.ffIters = reqFFIters;
-      turmites.tickDelay = reqTickDelay;
-      turmites.paletteKind = reqPaletteKind;
+      if(turmites.applySettingsNext & 2) {
+        turmites.randomSeed = reqRandomSeed;
+        turmites.canvasW = reqCanvasW;
+        turmites.canvasH = reqCanvasH;
+        turmites.nColors = reqNColors;
+        turmites.nStates = reqNStates;
+        turmites.nMites = reqNMites;
+      }
+      if(turmites.applySettingsNext & 1) {
+        let colorsChanged = turmites.paletteKind !== reqPaletteKind;
+        turmites.ffIters = reqFFIters;
+        turmites.tickDelay = reqTickDelay;
+        turmites.paletteKind = reqPaletteKind;
+        if(colorsChanged)turmites.remakeColors(true);
+      }
       return true;
     }
   }
-
+  
   /**
-   * Function to boot up the simulator if it's not already running
+   * Remake the colour map, and also optionally repaint the whole canvas
    */
-  turmites.tryStartUp = function() {
-    if(turmites.stateSignal > 0)return;
-    if(turmites.applySettingsNext){
-      let setOK = turmites.tryApplySettings();
-      if(!setOK)return;
-      turmites.applySettingsNext = false;
-    }
-    // settings have been applied, we're okay to start
-    // generate starting game state
-    let prandom = turmites.prandom;
+  turmites.remakeColors = function(repaintCanvas) {
     if(turmites.paletteKind === "handpicked") {
       turmites.palette = turmites.permute(turmites.paletteRef, turmites.permuteHandpicked);
     } else if(turmites.paletteKind === "sobol") {
       turmites.palette = turmites.permute(turmites.paletteRef, turmites.permuteSobol);
     } else {
-      prandom.init("colormap:" + turmites.randomSeed);
-      turmites.palette = turmites.shuffle(turmites.paletteRef, prandom, true);
+      turmites.prandom.init("colormap:" + turmites.randomSeed);
+      turmites.palette = turmites.shuffle(turmites.paletteRef, turmites.prandom, true);
     }
+    if(repaintCanvas) {
+      for(let i = 0; i < turmites.canvasW * turmites.canvasH; ++i) {
+        cellEl = document.getElementById("turmite-canvas-cell-" + i.toString());
+        cellEl.style["background-color"] = turmites.palette[turmites.canvasMap[i]];
+      }
+    }
+  }
+  
+  /**
+   * Function to reset the game.
+   */
+  turmites.resetGame = function() {
+    // generate starting game state
+    let prandom = turmites.prandom;
+    turmites.remakeColors(false);
     prandom.init("mites: " + turmites.randomSeed);
     turmites.mites = [];
     for(let i = turmites.nMites; i > 0; --i) {
@@ -452,6 +467,22 @@
       cellEl.style["background-color"] = turmites.palette[0];
       canvasEl.appendChild(cellEl);
     }
+  }
+
+  /**
+   * Function to boot up the simulator if it's not already running
+   */
+  turmites.tryStartUp = function() {
+    if(turmites.stateSignal > 0)return;
+    let resetGame = false;
+    if(turmites.applySettingsNext !== 0){
+      let setOK = turmites.tryApplySettings();
+      if(!setOK)return;
+      resetGame = turmites.applySettingsNext & 2;
+      turmites.applySettingsNext = 0;
+    }
+    if(resetGame)turmites.resetGame();
+    // settings have been applied, we're okay to start
     // start game loop
     turmites.gameLoop();
   }
@@ -496,8 +527,9 @@
    * Respond to external request to pause or resume
    */
   turmites.sendPauseResume = function() {
+    turmites.applySettingsNext = 1;
     if(turmites.stateSignal === 0) {
-      turmites.gameLoop();
+      turmites.tryStartUp();
     } else {
       turmites.setSignal(2);
     }
@@ -507,7 +539,7 @@
    * Respond to external request to apply new settings and restart
    */
   turmites.sendRestart = function() {
-    turmites.applySettingsNext = true;
+    turmites.applySettingsNext = 3;
     if(turmites.stateSignal === 0) {
       turmites.tryStartUp();
     } else {
@@ -542,7 +574,7 @@
     document.getElementById("settings-tick-delay").value = turmites.tickDelay;
     document.getElementById("settings-color-map-" + turmites.paletteKind).checked = true;
     turmites.setSignal(0);
-    turmites.tryStartUp();
+    turmites.sendRestart();
   }
 
   // initialize, but don't start up
