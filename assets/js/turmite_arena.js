@@ -412,7 +412,7 @@
         turmites.ffIters = reqFFIters;
         turmites.tickDelay = reqTickDelay;
         turmites.paletteKind = reqPaletteKind;
-        if(colorsChanged)turmites.remakeColors(true);
+        if(colorsChanged && !(turmites.applySettingsNext & 2))turmites.remakeColors(true);
       }
       return true;
     }
