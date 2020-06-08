@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Turmite Arena"
-date: 2020-06-07 23:00
+date: 2020-06-07 22:00
 categories: math automata
 ---
 
