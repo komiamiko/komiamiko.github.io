@@ -102,9 +102,9 @@ Colour palette
 
 <div>
 
-I always have more potential project ideas bouncing around than I had time for, and putting several turmites in a big arena was not originally one of them.
+I always have more potential project ideas bouncing around than I have time for, and putting several turmites in a big arena was not originally one of them.
 
-Originally, my plan was for a first machine learning project with an artistic focus.
+Originally, my plan was for a machine learning project with an artistic focus as my first machine learning project.
 Without going into the details of that, my journey with turmites began as I thought about where to get training data.
 I thought there would be a scarcity of art matching my needs, and artists are also slow to produce new art.
 I turned to a kind of 2D Turing machine (which I later discovered was called a "turmite") as a way to quickly generate many interesting yet also thematically varied images with minimal human involvement.
