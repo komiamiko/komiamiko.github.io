@@ -9,7 +9,7 @@ rules = {
     'S': (lambda x,y,z:x(z)(y(z)))
     }
 
-class expr(self):
+class expr(object):
     """
     Represents a combinator expression.
     The head is the first combinator, and always exists.
@@ -35,7 +35,7 @@ class expr(self):
         self.involves = involves
         self.size = size
         # store hash
-        self._hash = hash(self.head, self.calls)
+        self._hash = hash((self.head, self.calls))
     def __eq__(self, other):
         return hasattr(other, '_hash') and self._hash == other._hash
     def __hash__(self):
@@ -43,7 +43,20 @@ class expr(self):
     def __len__(self):
         return self.size
     def __call__(self, *others):
-        return expr(head, self.calls + others)
+        return expr(self.head, self.calls + others)
+    def __repr__(self):
+        return 'expr(' + repr(self.head) + \
+               ((', ' + repr(self.calls)) if self.calls else '') + ')'
+    def __str__(self):
+        bits = [self.head]
+        for iexpr in self.calls:
+            use_brackets = len(iexpr) > 1
+            if use_brackets:
+                bits.append('(')
+            bits.append(str(iexpr))
+            if use_brackets:
+                bits.append(')')
+        return ''.join(bits)
     def reduce(self, outer=True):
         """
         Recursively reduce until no more reduction is possible.
@@ -72,12 +85,18 @@ class expr(self):
         if current == self:
             return current if outer else None
         return current
-    def bind(self, symbol):
+    def bind(self, *symbols):
         """
         Bind a previously free variable and produce a new expression.
         Basic optimizations are done along the way,
         but there is no guarantee of absolute optimality in any sense.
         """
+        if len(symbols) != 1:
+            current = self
+            for symbol in symbols:
+                current = current.bind(symbol)
+            return current
+        symbol = symbols[0]
         dot = expr(symbol)
         # degenerate case: lambda x.x -> I
         if self == dot:
@@ -94,13 +113,21 @@ class expr(self):
             return rem
         # general algorithm using recursion
         return S(rem.bind(symbol))(last.bind(symbol))
-    @classmethod
+    def subs(self, match, repl):
+        """
+        Substitute all occurrences of the sub-expression
+        match with repl.
+        Will not recurse within a sub-expression where replacement
+        has already been performed.
+        """
+        raise NotImplementedError()
+    @staticmethod
     def parse(it):
         """
         Parse from string or iterator.
         Does not check for validity.
         """
-        if isinstance(it, str):it = iter(str)
+        if isinstance(it, str):it = iter(it)
         stack = [[]]
         for c in it:
             if c == '(':
@@ -108,7 +135,7 @@ class expr(self):
             elif c == ')':
                 part = stack.pop()
                 ex = expr(part[0].head, part[1:])
-                stack[-1].append(part)
+                stack[-1].append(ex)
             else:
                 stack[-1].append(expr(c))
         part = stack.pop()

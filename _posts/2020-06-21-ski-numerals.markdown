@@ -444,6 +444,8 @@ We can now map out the next stages up to \\\(\omega^\omega\\\) (but not reaching
 | \\\([+1R] ([A] [2]) [+1:[\omega^2 C]]\\\) | 44 | \\\(> f_{\omega^2+2}(4)\\\) |
 | \\\([+1R] [2] [+2:[\omega^2 C]]\\\) | 46 | \\\(> f_{\omega^2+3}(2)\\\) |
 | \\\([+1R] [2] [\omega^3 C]\\\) | 49 | \\\(> f_{\omega^3+1}(2)\\\) |
+| \\\([+1R] ([A] [2]) [\omega^3 C]\\\) | 52 | \\\(> f_{\omega^3+1}(4)\\\) |
+| \\\([+1R] [2] [+1:[\omega^3 C]]\\\) | 54 | \\\(> f_{\omega^3+2}(2)\\\) |
 
 Already the pattern emerges:
 
@@ -466,6 +468,7 @@ Already the pattern emerges:
 
 To reach \\\(\omega^\omega\\\), we need to properly create \\\([\times \omega]\\\).
 
+<div style="overflow:auto;">
 \\\[\begin{eqnarray}
 [\times\omega] &= \lambda [+\alpha].[+\alpha \omega] \\\\\\
 &= \lambda f.S(S(KS)(S(K(S(SI(Kf))))K))(KI) \\\\\\
@@ -479,16 +482,106 @@ To reach \\\(\omega^\omega\\\), we need to properly create \\\([\times \omega]\\
 &= S(S(KS)(S(K(S(KS)))(S(S(KS)(S(KK)(S(KS)(S(K(SI))(\lambda f.Kf)))))(KK))))(K(KI)) \\\\\\
 &= S(S(KS)(S(K(S(KS)))(S(S(KS)(S(KK)(S(KS)(S(K(SI))K))))(KK))))(K(KI))
 \end{eqnarray}\\\]
+</div>
 
 This uses \\\(29\\\) combinators.
 I must admit, at this point it's rather annoying to do it by hand, and I don't think I'd have the patience for it at higher ordinals.
-After this I use [my script](LINK TODO) to do these simple but tedious tasks for me.
+After this I use [my script](/assets/combinator/ski_tools.py) to do these simple but tedious tasks for me, which means I won't be showing every step of the way.
 
 Now finally we create our first function with strength \\\(\omega^\omega\\\).
 
 \\\[\begin{eqnarray}
-[+\omega^\omega] &= \lambda f.\lambda x.x \\\\\\
+[+\omega^\omega:f] &= \lambda x.x[\times\omega] [+1] f x \\\\\\
+&= S(S(S(SI(K[\times\omega]))(K[+1]))(Kf))I
 \end{eqnarray}\\\]
+
+This adds \\\(45\\\) combinators.
+
+\\\[\begin{eqnarray}
+[+\omega^\omega] &= \lambda f.[+\omega^\omega:f] \\\\\\
+&= \lambda f.S(S(S(SI(K[\times\omega]))(K[+1]))(Kf))I \\\\\\
+&= S(S(KS)(S(K(S(S(SI(K[\times\omega]))(K[+1]))))K))(KI)
+\end{eqnarray}\\\]
+
+This uses \\\(51\\\) combinators.
+
+\\\[\begin{eqnarray}
+[+\omega^\omega R] &= \lambda x.\lambda f.x[\times\omega] [+1] f x \\\\\\
+&= S(S(KS)(S(SI(K[\times\omega]))(K[+1])))K
+\end{eqnarray}\\\]
+
+This uses \\\(46\\\) combinators.
+
+\\\[\begin{eqnarray}
+[\omega^\omega C] &= S(S(S(SI(K[\times\omega]))(K[+1]))I)I
+\end{eqnarray}\\\]
+
+This uses \\\(45\\\) combinators, and lets us start at \\\(\omega^\omega\\\).
+
+| Expression | Size | Value |
+|--:|:-:|:--|
+| \\\([+1R] [2] [\omega^\omega C]\\\) | \\\(54\\\) | \\\(> f_{\omega^\omega+1}(2)\\\) |
+| \\\([+1R] ([A] [2]) [\omega^\omega C]\\\) | \\\(57\\\) | \\\(> f_{\omega^\omega+1}(4)\\\) |
+| \\\([+1R] [2] [+1:[\omega^\omega C]]\\\) | \\\(59\\\) | \\\(> f_{\omega^\omega+2}(2)\\\) |
+| \\\([+1R] ([A] [2]) [+1:[\omega^\omega C]]\\\) | \\\(62\\\) | \\\(> f_{\omega^\omega+2}(4)\\\) |
+| \\\([+1R] [2] [+2:[\omega^\omega C]]\\\) | \\\(64\\\) | \\\(> f_{\omega^\omega+3}(2)\\\) |
+| \\\([+1R] ([A] [2]) [+2:[\omega^\omega C]]\\\) | \\\(67\\\) | \\\(> f_{\omega^\omega+3}(4)\\\) |
+| \\\([+1R] [2] [+\omega:[\omega^\omega C]]\\\) | \\\(68\\\) | \\\(> f_{\omega^\omega+\omega+1}(2)\\\) |
+| \\\([+1R] ([A] [2]) [+\omega:[\omega^\omega C]]\\\) | \\\(71\\\) | \\\(> f_{\omega^\omega+\omega+1}(4)\\\) |
+| \\\([+1R] [2] [+\omega+1:[\omega^\omega C]]\\\) | \\\(73\\\) | \\\(> f_{\omega^\omega+\omega+2}(2)\\\) |
+| \\\([+1R] ([A] [2]) [+\omega+1:[\omega^\omega C]]\\\) | \\\(76\\\) | \\\(> f_{\omega^\omega+\omega+2}(4)\\\) |
+| \\\([+1R] [2] [+\omega+2:[\omega^\omega C]]\\\) | \\\(78\\\) | \\\(> f_{\omega^\omega+\omega+3}(2)\\\) |
+| \\\([+1R] [2] [+\omega^2:[\omega^\omega C]]\\\) | \\\(81\\\) | \\\(> f_{\omega^\omega+\omega^2+1}(2)\\\) |
+| \\\([+1R] [2] ([\times\omega] [\omega^\omega C])\\\) | \\\(83\\\) | \\\(> f_{\omega^{\omega+1} +1}(2)\\\) |
+
+</div>
+
+## Reaching \\\(\omega^{\omega^\omega}\\\)
+{: #omega-up-3}
+
+{% include collapser.markdown %}
+
+<div>
+
+At this stage, I won't bother taking every individual record anymore.
+Let's just see how many combinators we need for the next major ordinal.
+
+Summary table up front:
+
+| Expression | Size | Value |
+|--:|:-:|:--|
+| \\\([+1R] [2] [\omega^{\omega^\omega} C]\\\) | \\\(115\\\) | \\\(> f_{\omega^{\omega^\omega}+1}(2)\\\) |
+
+<div style="overflow:auto;">
+\\\[\begin{eqnarray}
+[\times \alpha^\omega] &= \lambda f.\lambda g.\lambda x.x [\times \alpha] f g x \\\\\\
+&= S(S(KS)(S(K(S(KS)))(S(S(KS)(S(KK)(S(KS)(S(K(S(SI(K[\times \alpha]))))K))))(KK))))(K(KI))
+\end{eqnarray}\\\]
+</div>
+
+This adds \\\(31\\\) combinators.
+
+<div style="overflow:auto;">
+\\\[\begin{eqnarray}
+[D] &= \lambda [\times \alpha].[\times \alpha^\omega] \\\\\\
+&= \lambda f.S(S(KS)(S(K(S(KS)))(S(S(KS)(S(KK)(S(KS)(S(K(S(SI(Kf))))K))))(KK))))(K(KI)) \\\\\\
+&= S(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(S(KS)(S(K(S(KS)))(S(K(S(KK)))(S(K(S(KS)))(S(S(KS)(S(KK)(S(KS)(S(K(SI))K))))(KK))))))(K(KK))))))(K(K(KI)))
+\end{eqnarray}\\\]
+</div>
+
+This uses \\\(59\\\) combinators.
+
+\\\[\begin{eqnarray}
+[\omega^{\omega^\omega} C] &= \lambda x.x [D] [\times \omega] [+1] x x \\\\\\
+&= S(S(S(S(SI(K[D]))(K[\times \omega]))(K[+1]))I)I \\\\\\
+\end{eqnarray}\\\]
+
+This uses \\\(106\\\) combinators.
+
+At this point, I want to point out that the constructions have gotten more complex.
+When we built \\\([B] = \lambda x.x[+1]xx\\\), that inner expression used \\\(4\\\) terms.
+Now we use \\\(6\\\) in the process of building \\\([\omega^{\omega^\omega} C]\\\).
+They're also deeper - \\\([\times \alpha^\omega]\\\) was the first time we needed to bind \\\(3\\\) variables at once.
 
 </div>
 
@@ -515,6 +608,265 @@ Values are formatted as inline code rather than math to allow easier copying.
 | `[+a w R]` | `8 + #[+a]` |
 | `[+a w:f]` | `7 + #[+a]` |
 | `[a w C]` | `7 + #[+a]` |
+| `[x w]` | `29 = 29` |
+| `[+w^w:f]` | `45 = 9 + #[x w] + #[+1]` |
+| `[+w^w]` | `51 = 15 + #[x w] + #[+1]` |
+| `[+w^w R]` | `46 = 10 + #[x w] + #[+1]` |
+| `[w^w C]` | `45` |
+| `[x a^w]` | `31 + #[x a]` |
+| `[D]` | `59 = 59` |
+
+</div>
+
+## The journey to \\\(\varepsilon_0\\\)
+{: #journey-to-e0}
+
+{% include collapser.markdown %}
+
+<div>
+
+### Reaching \\\(\varepsilon_0\\\) is difficult
+{: #difficulty-e0}
+
+{% include collapser.markdown %}
+
+<div>
+
+There's more?
+Yes, there's more.
+We'll now leave behind our simple ladder climbing constructions.
+
+\\\(\varepsilon_0\\\) presents a significant challenge, since the previous constructions used are nowhere near strong enough to reach it.
+Prototypical examples of systems reaching \\\(\varepsilon_0\\\) are
+[Kirby-Paris hydras](https://googology.wikia.org/wiki/Kirby-Paris_hydra),
+[Beklemishev's worms](https://googology.wikia.org/wiki/Beklemishev's_worms),
+the [primitive sequence system](https://googology.wikia.org/wiki/Primitive_sequence_number),
+[Goodstein sequences](https://googology.wikia.org/wiki/Goodstein_sequence),
+and of course the ordinal itself in the fast-growing hierarchy or Hardy hierarchy.
+These systems, other than the ordinal one, don't bother directly naming the smaller ordinals and building up - they set out some rules, and they happen to reach the level of \\\(\varepsilon_0\\\).
+
+SKI and its more concrete twin [Unlambda](https://en.wikipedia.org/wiki/Unlambda) are Turing tarpits - encoding these data structures and working with them is notoriously difficult.
+With Goodstein sequences, you work with a single number instead, however, the arithmetic and logic is more involved, and it's still not easy.
+
+Nonetheless, I feel that my work would be incomplete here if I did not make any attempt to reach \\\(\varepsilon_0\\\).
+
+I chose to make my attempt using Goodstein sequences, since doing a lot of arithmetic still looks easier than working with data structures.
+While that may be my choice here, there is a close correspondence between all of those systems attaining \\\(\varepsilon_0\\\)
+(Kirby-Paris hydras and the primitive sequence system are equivalent, even, and Goodstein sequences mirror ordinals up to \\\(\varepsilon_0\\\) with the Hardy hierarchy),
+and since they all reach the same ordinal, they should actually be pretty much the same complexity.
+The remaining sections here are dedicated to the implementation of Goodstein sequences in SKI.
+
+</div>
+
+### Planning out the program
+{: #program-plan}
+
+{% include collapser.markdown %}
+
+<div>
+
+The program is complex enough that it's worth writing it out in full in normal code first.
+
+```py
+def bump(a,b,n):
+    if n < a:
+        return n
+    accum = 0
+    index = 0
+    while n:
+        n, m = divmod(n, a)
+        accum += b ** bump(a,b,index) * m
+        index += 1
+    return accum
+
+def goodstein(n,f):
+    result = 1 # can be changed
+    base = 2
+    while n:
+        result += 1 # can be changed
+        c = f(base)
+        n = bump(base, c, n) - 1
+        base = c
+    return result
+```
+
+With \\\(f(x) = x + 1\\\), this implements the original Goodstein sequences.
+That's great and all, but this is not in a form that's ready to convert to SKI, since it involves loops.
+We'll want to convert all loops to recursion, and additionally not rely on any global namespace, since, of course, no such namespace will exist in SKI.
+
+Also make note of the bits that are marked with "can be changed" - there will be certain expressions we can use there which will make the numbers larger (but not change the overall growth rate of \\\(\varepsilon_0\\\)) and make the SKI expressions shorter.
+Remember, the easiest arithmetic operation for us to perform is exponentiation, since that's just direct application of the function.
+We need to be careful not to touch anything else, since doing so could destroy the precise rules that allow Goodstein sequences to work.
+
+```py
+def _acc(bump, accumulate, index, a, b, n, o):
+    m = n - o * a # enter new scope
+    r = b ** bump(bump, accumulate, a, b, index) * m # enter new scope
+    if o == 0:
+        return r
+    else:
+        return r + accumulate(bump, accumulate, index+1, a, b, o, o // a)
+
+def _bump(bump, accumulate, a, b, n):
+    if n < a:
+        return n
+    else:
+        return accumulate(bump, accumulate, 0, a, b, n, n // a)
+
+def _mid(mid, bump, accumulate, f, base, n):
+    if n == 0:
+        return base
+    else:
+        c = f(base) # enter new scope
+        return mid(mid, bump, accumulate, f, c,
+                   bump(bump, accumulate, base, c, n) - 1)
+
+def ski_friendly_goodstein(f, n):
+    return _mid(_mid, _bump, _acc, f, 2, n)
+```
+
+Looking more manageable now.
+We have a lot of argument reordering to play with too.
+Note that every time we create a new local variable, this is marked with "enter new scope", since what we'll actually do is put an inner singleton function which takes the arguments so far and the new variable and evaluates the later expression.
+
+</div>
+
+### Arithmetic helpers
+{: #arithmetic-helpers}
+
+{% include collapser.markdown %}
+
+<div>
+
+The arithmetic operations used here are successor, predecessor, addition, subtraction, multiplication, division, and exponentiation - the full set of basic operations, pretty much.
+I took the techniques from [the Wikipedia article on Church encoding](https://en.wikipedia.org/wiki/Church_encoding), though there may be other ways to implement these operations.
+
+| Operator | Definition | As SKI | Size |
+|--:|:-:|:-:|:--|
+| `[1]` | `I` | `I` | `1 = 1` |
+| `[T]` | `a,b -> a` | `K` | `1 = 1` |
+| `[F] = [0]` | `a,b -> b` | `KI` | `2 = 2` |
+| `[=0]` | `n -> n (K[F]) [T]` | `S(SI(K(K[F])))(K[T])` | `9 = 6 + #[F] + #[T]` |
+| `[>=]` | `n,m -> [=0]([-R]nm)` | `S(K(S(K[=0])))[-R]` | `64 = 4 + #[=0] + #[-R]` |
+| `[++]` | `n,f,x -> f(nfx)` | `S(S(KS)K)` | `5 = 5` |
+| `[+]` | `m,n -> m[++]n` | `SI(K[++])` | `8 = 3 + #[++]` |
+| `[*]` | `m,n,f,x -> m(nf)x` | `S(KS)K` | `4 = 4` |
+| `[--]` | `n,f,x -> n(g,h -> h(gf))(Kx)I` | `S(S(KS)(S(K(S(KS)))(S(S(KS)(S(K(S(KS)))(S(K(S(KK)))(S(S(KS)K)(K(S(K(S(K(SI))))(S(K(S(KK)))(S(K(SI))K))))))))(K(KK)))))(K(K(KI)))` | `52 = 52` |
+| `[zf]` | `p -> pair (p(KI)) ([++](p(KI)))` | `S(S(KS)(S(K(SI))(S(KK)(SI(K(KI))))))(S(KK)(S(K[++])(SI(K(KI)))))` | `31 = 26 + #[++]` |
+| `[zp]` | `pair (KI) (KI)` | `S(SI(K(KI)))(K(KI))` | `9 = 9` |
+| `[--]` | `n -> n [zf] [zp] K` | `S(S(SI(K[zf]))(K[zp]))(KK)` | `48 = 8 + #[zf] + #[zp]`
+| `[-R]` | `m,n -> m[--]n` | `SI(K[--])` | `51 = 3 + #[--]` |
+| `[dR]` | `r,m,n -> [>=]nm([++](rrm(m[--]n)))[0]` | `S(S(KS)(S(K(S(KS)))(S(K(S(S(KS)(S(K(S[>=]))K))))(S(K(S(K(S(K[++])))))(S(S(KS)(S(K(S(KS)))(S(K(S(KK)))(SII))))(K(SI(K[--]))))))))(K(K(K[0])))` | `168 = 49 + #[>=] + #[++] + #[--] + #[0]`
+| `[/]` | `n,m -> (r -> rrmn)[dR]` | `S(S(KS)(S(K(S(S(KS)(S(K(S(SII)))K))))(S(KK)K)))(K(K[dR]))` | `191 = 23 + #[dR]` |
+
+Exponentiation doesn't require any special operator so it's not listed here.
+We avoid using the actual addition and subtraction operator, since we can usually save a few combinators by writing \\\(m[--]n\\\).
+
+</div>
+
+### Building Goodstein sequences
+{: #building-goodstein}
+
+{% include collapser.markdown %}
+
+<div>
+
+At a time like this, I really wish I had an optimizing SKI compiler.
+Here I am doing my best to hand optimize it, ignoring numerous other branches in the tree of possibilities which could possibly lead to a more optimized version, just taking the smallest expression I can get for each part and then linking with its dependencies.
+
+I am by no means claiming the final expression I get is optimal
+It is likely easy to squeeze it down smaller even with no new constructions just by inlining and optimizing.
+I'm just here to say "it can be done in this many combinators".
+
+Here's the plan before optimizing argument order by hand:
+
+| Operator | Definition | As SKI | Size |
+|--:|:-:|:-:|:--|
+| `[c2]` | `u,c,i,a,b,n,o,m,r -> [=0]or(cuc([++]i)abo([/]oa)[++]r)` | | |
+| `[c1]` | `u,c,i,a,b,n,o,m -> [c2]uciabnom([*](uucabi)m)` | | |
+| `[c]` | `u,c,i,a,b,n,o -> [c1]uciabno([*]oa[--]n)` | | |
+| `[u]` | `u,c,a,b,n -> [>=]na(cuc[0]abn([/]na))n` | | |
+| `[m1]` | `m,u,c,f,b,n,d -> mmucfd([--](uucbdn))` | | |
+| `[m]` | `m,u,c,f,b,n -> [=0]nb([m1]mucfbn(fb))` | | |
+| `[E1:f]` | `m,n -> mm[u][c]f[2]n` | |
+| `[E:f]` | `n -> [E1:f][m]n` | |
+
+Unlike in previous examples, there's now cyclic dependencies.
+This forces me to reorder `[u],[c],[c1],[c2]` all in one shot.
+Similarly, `[m], [m1]` must be done together.
+Here's after reordering the arguments, stripping out some parts, and actually building the expressions.
+
+| Operator | Definition | As SKI | Size |
+|--:|:-:|:-:|:--|
+| `[c2]` | `r,a,o,b,i,c,u -> [=0]or(coa([/]oa)b([++]i)cu[++]r)` | `S(S(KS)(S(KK)(S(KS)(S(K(S(KS)))(S(K(S(KK)))(S(K(S(KS)))(S(K(S(KK)))(S(K(S(KS)))(S(K(S(KK)))(S(K(S(KS)))(S(K(S(KK)))(S(K(S[=0]))K))))))))))))(S(K(S(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(K(S(K(S(K(S(KS)))))))(S(K(S(K(S(K(S(K(S(KS)))))))))(S(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(K(S(K(S(K(S(KS)))))))(S(K(S(K(S(K(S(K(S(KS)))))))))(S(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(K(S(K(S(K(S(KS)))))))(S(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(K(S(K(S(KK)))))(S(K(S(K(S(KS)))))(S(S(KS)(S(K(S(KS)))(S(K(S(KK)))(S(K(S(KS)))(S(S(KS)(S(K(S(KS)))(S(K(S(S(KS)(S(K(SI))K))))(S(KK)K))))(S(K(S(KK)))(S(K(S[/]))K)))))))(K(KK))))))))(K(K(K(S(KK)[++])))))))))(K(K(K(KI))))))))))(K(K(K(K(K(K[++]))))))))))))))(S(KK)(S(KK)(S(KK)(S(KK)(S(KK)K))))))` | `481 = 271 + #[=0] + #[/] + 2#[++]` |
+| `[c]` | `n,a,o,b,i,c,u->  [c2]([*](uucabi)([*]oa[--]n))aobicu` | `S(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(K(S(K(S(K(S(KS)))))))(S(K(S(K(S(K(S(K(S(KS)))))))))(S(K(S(K(S(K(S(K(S(K(S(KS)))))))))))(S(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(K(S(K(S(K(S(KS)))))))(S(K(S(K(S(K(S(K(S(KS)))))))))(S(K(S(K(S(K(S(K(S(K(S(KS)))))))))))(S(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(K(S(K(S(K(S(KS)))))))(S(K(S(K(S(K(S(K(S(KS)))))))))(S(K(S(K(S(K(S(K(S(K(S(KS)))))))))))(S(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(K(S(K(S(K(S(KS)))))))(S(K(S(K(S(K(S(K(S(KS)))))))))(S(K(S(K(S(K(S(K(S(K(S(KS)))))))))))(S(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(K(S(K(S(K(S(KS)))))))(S(K(S(K(S(K(S(K(S(KS)))))))))(S(K(S(K(S(K(S(K(S(K(S(KS)))))))))))(S(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(K(S(K(S(K(S(KS)))))))(S(K(S(K(S(K(S(K(S(KS)))))))))(S(K(S(K(S(K(S(K(S(K(S(KS)))))))))))(S(K(S(K(S(K(S(K(S(K(S(K(S(K[c2])))))))))))))(S(K(S(S(KS)(S(KK)(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(K(S(K(S(K(S(KS)))))))(S(K(S(K(S(K(S(K(S(K[*])))))))))(S(S(KS)(S(K(S(KS)))(S(K(S(KK)))(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(S(KS)(S(KK)(S(KS)(S(K(S(KS)))(S(K(S(S(KS)(S(K(S(SII)))K))))(S(KK)K))))))(K(S(KK)K))))))))(K(K(S(KK)K)))))))))))))(S(K(S(K(S(KK)))))(S(K(S(K(S(KK)))))(S(K(S(K(S(KK)))))(S(K(S(K(S(KK)))))(S(K(S(S(KS)(S(S(KS)(S(K(S[*]))K))(K(K[--]))))))(S(KK)K))))))))))))))(K(S(KK)(S(KK)(S(KK)(S(KK)K))))))))))))(K(K(S(KK)(S(KK)(S(KK)K))))))))))))(K(K(K(S(KK)(S(KK)K))))))))))))(K(K(K(K(S(KK)K))))))))))))(K(K(K(K(KK))))))))))))(K(K(K(K(K(KI))))))` | `1062 = 25 + #[c2] + 2#[*] + #[--]` |
+| `[u]` | `n,a,b,c,u -> [>=]na(cna([/]na)b[0]cu)n` | `S(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(K(S(K(S(K(S(KS)))))))(S(S(KS)(S(K(S(KS)))(S(K(S(KK)))(S(K(S(KS)))(S(K(S(KK)))(S(K(S(KS)))(S(K(S(KK)))[>=])))))))(S(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(S(KS)(S(K(S(KS)))(S(K(S(KK)))(S(K(S(KS)))(S(S(KS)(S(K(S(KS)))(S(S(KS)(S(KK)(S(KS)(S(K(SI))K))))(KK))))(S(K(S(KK)))[/]))))))(K(KK))))))(K(K(K(K[0]))))))))(K(K(KI)))))))))(S(KK)(S(KK)(S(KK)K)))` | `419 = 162 + #[>=] + #[/] + #[0]` |
+| `[m1]` | `n,u,c,m,d,b,f -> mfb([--](unbdcu))mcu` | `S(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(K(S(K(S(K(S(KS)))))))(S(K(S(K(S(K(S(K(S(KS)))))))))(S(K(S(K(S(K(S(K(S(K(S(KS)))))))))))(S(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(K(S(K(S(K(S(KS)))))))(S(K(S(K(S(K(S(K(S(KS)))))))))(S(K(S(K(S(K(S(K(S(K(S(KS)))))))))))(S(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(K(S(K(S(K(S(KS)))))))(S(K(S(K(S(K(S(K(S(KS)))))))))(S(K(S(K(S(K(S(K(S(K(S(KS)))))))))))(S(K(S(K(S(K(S(S(KS)(S(KK)(S(KS)(S(K(S(KS)))(S(S(KS)(S(KK)S))(KK))))))))))))(S(K(S(K(S(KK)))))(S(K(S(K(S(K(S(K(S(KK)))))))))(S(K(S(K(S(K(S(K(S(K[--])))))))))(S(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(K(S(K(S(K(S(KS)))))))(S(S(KS)(S(K(S(KS)))(S(K(S(KK)))(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(S(KS)(S(K(S(KS)))(S(K(S(KK)))(S(K(S(KS)))(S(K(SI))K)))))(K(KK))))))))(K(K(S(KK)K))))))))(K(S(KK)(S(KK)K))))))))))))))(K(K(K(S(KK)(S(KK)K))))))))))))(K(K(S(KK)(S(KK)(S(KK)K))))))))))))(K(S(KK)(S(KK)(S(KK)(S(KK)K)))))` | `382 = 334 + #[--]` |
+| `[m]` | `f,b,n,m,c,u -> [=0]nb([m1]nucm(fb)bf)` | `S(K(S(S(KS)(S(K(S(KS)))(S(K(S(KK)))(S(K(S(KS)))(S(K(S(KK)))(S(K(S(KS)))(S(K(S(KK)))(S(K(S[=0]))K))))))))))(S(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(K(S(K(S(K(S(KS)))))))(S(K(S(K(S(K(S(K(S(KS)))))))))(S(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(K(S(K(S(K(S(KS)))))))(S(K(S(K(S(K(S(K(S(KS)))))))))(S(K(S(K(S(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(S(KS)(S(KK)(S(KS)(S(K(S(KS)))(S(S(KS)(S(KK)(S(KS)[m1])))(KK))))))(K(S(KK)K))))))))))(S(K(S(KK)))(S(K(S(KK)))(S(K(S(KK)))(S(KK)))))))))))(K(S(KK)(S(KK)(S(KK)K))))))))))(S(KK)(S(KK)(S(KK)(S(KK)K)))))` | `597 = 206 + #[=0] + #[m1]` |
+| `[E1:f]` | `m,n -> mf[2]nm[c][u]` | `S(S(KS)(S(S(KS)(S(S(KS)(S(SI(Kf))(K[2])))K))(K(K[c]))))(K(K[u]))` | `1509 + #[f] = 22 + #[f] + #[2] + #[c] + #[u]` |
+| `[E:f]` | `n -> [E1:f][m]n` | `[E1:f][m]` | `2106 + #[f] = #[E1:f] + #[m]` |
+
+We've built a variant Goodstein sequence in SKI now, with a little over 2000 combinators.
+I'm sure that number can go down, but I'm not interested in doing more work here.
+Optimizing and compiling `[E:f]` by hand like this, even with the `ski_tools.py` script to help with the tedious task of binding variables, was already difficult.
+Perhaps new work later around SKI compilers would help us get the combinator down and build stronger constructions.
+
+</div>
+
+### New records set with Goodstein sequences
+{: #goodstein-records}
+
+{% include collapser.markdown %}
+
+<div>
+
+The awkward thing about the Goodstein function \\\(G\\\) is it grows just slower than \\\(\varepsilon_0\\\) - \\\(G(2\uparrow \uparrow n) \approx f_{\varepsilon_0}(n)\\\).
+This applies to \\\([E:A]\\\) as well.
+
+| Expression | Size | Value |
+|--:|:-:|:--|
+| \\\([+1R] [2] [E:A]\\\) | \\\(2118\\\) | \\\(>f_{\varepsilon_0}(5)\\\) |
+| \\\([+1R] ([A] [2]) [E:A]\\\) | \\\(2121\\\) | \\\(>f_{\varepsilon_0+1}(3)\\\) |
+| \\\([+1R] ([A] [2]) ([\times \omega] [E] [A])\\\) | \\\(2169\\\) | \\\(>f_{\varepsilon_0 \omega+1}(3) = f_{\omega^{\varepsilon_0+1}+1}(3)\\\) |
+| \\\([+1R] ([A] [2]) ([2] [\times \omega] [E] [A])\\\) | \\\(2175\\\) | \\\(>f_{\varepsilon_0 \omega^2+1}(3) = f_{\omega^{\varepsilon_0+2}+1}(3)\\\) |
+| \\\([+1R] ([A] [2]) ([D] [\times \omega] [E] [A])\\\) | \\\(2199\\\) | \\\(>f_{\varepsilon_0 \omega^\omega+1}(3) = f_{\omega^{\varepsilon_0+\omega}+1}(3)\\\) |
+
+Let's follow what happens here.
+
+In the first run of \\\([E:A]\\\), \\\(n\\\) starts at \\\(2\\\), and the base starts at \\\(2\\\).
+The base gets bumped up to \\\(4\\\), so \\\(n\\\) goes to \\\(4\\\), then \\\(n\\\) decrements to \\\(3\\\).
+After this \\\(n\\\) only decreases, but the base keeps blowing up - to \\\(A^4(2)\\\), actually.
+Finally, that base is returned.
+
+To place the final value after the second \\\([E:A]\\\), we'll want to know what ordinal it starts at.
+
+\\\[\begin{eqnarray}
+A^4(2) &= A^3(2^2) \\\\\\
+&= A^2(2^{2^2\times 2}) \\\\\\
+&= A^2(2^{2^3}) \\\\\\
+&= A(2^{2^{2^3}\times 2^3}) \\\\\\
+&= A(2^{2^{2^3+3}}) \\\\\\
+&= 2^{2^{2^{2^3+3}}\times 2^{2^3+3}} \\\\\\
+&= 2^{2^{2^{2^3+3}+2^3+3}} \\\\\\
+&= 2^{2^{2^{2^{2^1+1}+2^1+1}+2^{2^1+1}+2^1+1}} \\\\\\
+&\to \omega^{\omega^{\omega^{\omega^{\omega+1}+\omega+1}+\omega^{\omega+1}+\omega+1}} \\\\\\
+&> \omega \uparrow \uparrow 5 \\\\\\
+&= \varepsilon_0[6]
+\end{eqnarray}\\\]
+
+We got enough information already to place it between \\\(f_{\varepsilon_0}(5)\\\) and \\\(f_{\varepsilon_0}(6)\\\).
+I assure you there is no mistake in the offset there, as Goodstein sequences follow the Hardy hierarchy and \\\(H_{\omega^\alpha}(n) \approx f_\alpha(n)\\\), so we must take off the first \\\(\omega\\\).
+
+At these large ordinals, there's no point taking small steps.
+We've already used over \\\(2000\\\) combinators, and it won't take that many more to go higher.
+
+| Operator | Definition | As SKI | Size |
+|--:|:-:|:-:|:--|
+| `[E1]` | `m,f,n -> mf[2]nm[c][u]` | `S(S(KS)(S(K(S(KS)))(S(S(KS)(S(K(S(KS)))(S(S(KS)(S(K(S(KS)))(SS(K(K[2])))))(S(KK)K))))(K(K(K[c]))))))(K(K(K[u])))` | `1528 = 41 + #[2] + #[c] + #[u]` |
+| `[+\varepsilon_0]` | `f,n -> [E1][m]fn` | `[E1][m]` | `2125 = #[E1] + #[m]` |
+
+Using these, I named some more numbers.
+It's just giving ideas; I know they're not optimal.
 
 </div>
 
