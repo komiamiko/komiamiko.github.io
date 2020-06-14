@@ -125,7 +125,6 @@ class expr(object):
     def parse(it):
         """
         Parse from string or iterator.
-        Does not check for validity.
         """
         if isinstance(it, str):it = iter(it)
         stack = [[]]
@@ -133,13 +132,17 @@ class expr(object):
             if c == '(':
                 stack.append([])
             elif c == ')':
+                if len(stack) <= 1:
+                    raise ValueError('Unmatched right bracket in expression')
                 part = stack.pop()
                 ex = expr(part[0].head, part[0].calls + tuple(part[1:]))
                 stack[-1].append(ex)
             else:
                 stack[-1].append(expr(c))
+        if len(stack) > 1:
+            raise ValueError('Unmatched left bracket in expression')
         part = stack.pop()
-        ex = expr(part[0].head, part[1:])
+        ex = expr(part[0].head, part[0].calls + tuple(part[1:]))
         return ex
 
 S = expr('S')
