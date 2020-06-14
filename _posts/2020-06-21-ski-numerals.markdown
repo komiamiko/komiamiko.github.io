@@ -117,6 +117,8 @@ I only analyze \\\(\Xi_0\\\), but keep in mind since \\\(\Xi_1(n) \ge \Xi_0(n)\\
 
 You can read all my rough work and explanations below, but if you just want the best numbers I could get, here's the table:
 
+<div style="overflow:auto;">
+
 | Full expression | Size | Bound set |
 |--:|:-:|:--|
 | \\\([A'] ([A] [2]) KK\\\) | 16 | \\\(\Xi_0(16) \ge 2^{2^9}+1=4^{2^8}+1=4^{4^4}+1 > f_3(2)\\\) |
@@ -155,6 +157,8 @@ You can read all my rough work and explanations below, but if you just want the 
 | \\\([+1R] ([A] [2]) ([2] [\times \omega] [E] [A]) KK\\\) | 2177 | \\\(\Xi_0(2177) >f_{\varepsilon_0 \omega^2+1}(3) = f_{\omega^{\varepsilon_0+2}+1}(3)\\\) |
 | \\\([+1R] ([A] [2]) ([D] [\times \omega] [E] [A]) KK\\\) | 2201 | \\\(\Xi_0(2201) >f_{\varepsilon_0 \omega^\omega+1}(3) = f_{\omega^{\varepsilon_0+\omega}+1}(3)\\\) |
 | \\\([+1R] ([A] [2]) ([2] [D] [\times \omega] [E] [A]) KK\\\) | 2207 | \\\(\Xi_0(2207) >f_{\varepsilon_0 \omega^{\omega^2}+1}(3) = f_{\omega^{\varepsilon_0+\omega^2}+1}(3)\\\) |
+
+</div>
 
 All macro definitions can be found in the rough work section below.
 
@@ -837,6 +841,8 @@ This forces me to reorder `[u],[c],[c1],[c2]` all in one shot.
 Similarly, `[m], [m1]` must be done together.
 Here's after reordering the arguments, stripping out some parts, and actually building the expressions.
 
+<div style="overflow:auto;">
+
 | Operator | Definition | As SKI | Size |
 |--:|:-:|:-:|:--|
 | `[c2]` | `r,a,o,b,i,c,u -> [=0]or(coa([/]oa)b([++]i)cu[++]r)` | `S(S(KS)(S(KK)(S(KS)(S(K(S(KS)))(S(K(S(KK)))(S(K(S(KS)))(S(K(S(KK)))(S(K(S(KS)))(S(K(S(KK)))(S(K(S(KS)))(S(K(S(KK)))(S(K(S[=0]))K))))))))))))(S(K(S(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(K(S(K(S(K(S(KS)))))))(S(K(S(K(S(K(S(K(S(KS)))))))))(S(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(K(S(K(S(K(S(KS)))))))(S(K(S(K(S(K(S(K(S(KS)))))))))(S(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(K(S(K(S(K(S(KS)))))))(S(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(K(S(K(S(KK)))))(S(K(S(K(S(KS)))))(S(S(KS)(S(K(S(KS)))(S(K(S(KK)))(S(K(S(KS)))(S(S(KS)(S(K(S(KS)))(S(K(S(S(KS)(S(K(SI))K))))(S(KK)K))))(S(K(S(KK)))(S(K(S[/]))K)))))))(K(KK))))))))(K(K(K(S(KK)[++])))))))))(K(K(K(KI))))))))))(K(K(K(K(K(K[++]))))))))))))))(S(KK)(S(KK)(S(KK)(S(KK)(S(KK)K))))))` | `481 = 271 + #[=0] + #[/] + 2#[++]` |
@@ -846,6 +852,8 @@ Here's after reordering the arguments, stripping out some parts, and actually bu
 | `[m]` | `f,b,n,m,c,u -> [=0]nb([m1]nucm(fb)bf)` | `S(K(S(S(KS)(S(K(S(KS)))(S(K(S(KK)))(S(K(S(KS)))(S(K(S(KK)))(S(K(S(KS)))(S(K(S(KK)))(S(K(S[=0]))K))))))))))(S(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(K(S(K(S(K(S(KS)))))))(S(K(S(K(S(K(S(K(S(KS)))))))))(S(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(K(S(K(S(K(S(KS)))))))(S(K(S(K(S(K(S(K(S(KS)))))))))(S(K(S(K(S(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(S(KS)(S(KK)(S(KS)(S(K(S(KS)))(S(S(KS)(S(KK)(S(KS)[m1])))(KK))))))(K(S(KK)K))))))))))(S(K(S(KK)))(S(K(S(KK)))(S(K(S(KK)))(S(KK)))))))))))(K(S(KK)(S(KK)(S(KK)K))))))))))(S(KK)(S(KK)(S(KK)(S(KK)K)))))` | `597 = 206 + #[=0] + #[m1]` |
 | `[E1:f]` | `m,n -> mf[2]nm[c][u]` | `S(S(KS)(S(S(KS)(S(S(KS)(S(SI(Kf))(K[2])))K))(K(K[c]))))(K(K[u]))` | `1509 + #[f] = 22 + #[f] + #[2] + #[c] + #[u]` |
 | `[E:f]` | `n -> [E1:f][m]n` | `[E1:f][m]` | `2106 + #[f] = #[E1:f] + #[m]` |
+
+</div>
 
 We've built a variant Goodstein sequence in SKI now, with a little over 2000 combinators.
 I'm sure that number can go down, but I'm not interested in doing more work here.
