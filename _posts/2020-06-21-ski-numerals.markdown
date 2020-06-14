@@ -100,6 +100,7 @@ The "size" of an expression is defined as the total number of combinators.
 
 \\\(\Xi_1(n)\\\) is like \\\(\Xi_0\\\) but it allows use of an oracle operator \\\(\Omega\\\).
 Since the definable expressions are a superset of those of \\\(\Xi_0\\\), \\\(\Xi_1(n) \ge \Xi_0(n)\\\) for all \\\(n\\\).
+There's no algorithm I know of to define higher \\\(\Xi\\\) and whatever additional operators they get.
 
 The commonly named \\\(\Xi\\\), for whatever reason, is \\\(\Xi_1\\\).
 
@@ -114,9 +115,48 @@ I only analyze \\\(\Xi_0\\\), but keep in mind since \\\(\Xi_1(n) \ge \Xi_0(n)\\
 
 <div>
 
-Here are the existing bounds my methods were unable to beat:
-
 You can read all my rough work and explanations below, but if you just want the best numbers I could get, here's the table:
+
+| Full expression | Size | Bound set |
+|--:|:-:|:--|
+| \\\([A'] ([A] [2]) KK\\\) | 16 | \\\(\Xi_0(16) \ge 2^{2^9}+1=4^{2^8}+1=4^{4^4}+1 > f_3(2)\\\) |
+| \\\([+1R] ([A] [2]) [A] KK\\\) | 17 | \\\(\Xi_0(17) \ge A^4(4)+1 > f_3(4)\\\) |
+| \\\([+1R] ([A] [2]) [A] (SK)K\\\) | 18 | \\\(\Xi_0(18) \ge 2A^4(4)+1 > f_3(4)\\\) |
+| \\\([+1R] [2] [+1:[A]] KK\\\) | 19 | \\\(\Xi_0(19) \ge A^{256}(256)+1=A_{+1}(256)+1=A_{+1}(A^2(2))+1=A_{+2}(2)+1 > f_3(256)\\\) |
+| \\\([+1R] [2] [+1:[A']] KK\\\) | 21 | \\\(\Xi(21) \ge A'^{2^{2^6}}(2^{2^6})+1=A'\_{+1}(2^{2^6})+1=A'\_{+1}(A'^2(2))+1=A'\_{+2}(2)+1 > f\_4(2)\\\) |
+| \\\([+1R] ([A] [2]) [+1:[A]] KK\\\) | 22 | \\\(\Xi(22) \ge A_{+2}(4)+1 > f_4(3)\\\) |
+| \\\([+1R] [2] [B] KK\\\) | 25 | \\\(\Xi_0(25) >f_{\omega+1}(2)\\\) |
+| \\\([+1R] [2] [+1:[B]] KK\\\) | 30 | \\\(\Xi_0(30) >f_{\omega+2}(2)\\\) |
+| \\\([+1R] [2] [+1:[+1:[B]]] KK\\\) | 35 | \\\(\Xi_0(35) >f_{\omega+3}(2)\\\) |
+| \\\([+1R] [2] [\omega^2 C] KK\\\) | 38 | \\\(\Xi_0(38) > f_{\omega^2+1}(2)\\\) |
+| \\\([+1R] ([A] [2]) [\omega^2 C] KK\\\) | 41 | \\\(\Xi_0(41) > f_{\omega^2+1}(4)\\\) |
+| \\\([+1R] [2] [+1:[\omega^2 C]] KK\\\) | 43 | \\\(\Xi_0(43) > f_{\omega^2+2}(2)\\\) |
+| \\\([+1R] ([A] [2]) [+1:[\omega^2 C]] KK\\\) | 46 | \\\(\Xi_0(46) > f_{\omega^2+2}(4)\\\) |
+| \\\([+1R] [2] [+2:[\omega^2 C]] KK\\\) | 48 | \\\(\Xi_0(48) > f_{\omega^2+3}(2)\\\) |
+| \\\([+1R] [2] [\omega^3 C] KK\\\) | 51 | \\\(\Xi_0(51) > f_{\omega^3+1}(2)\\\) |
+| \\\([+1R] ([A] [2]) [\omega^3 C] KK\\\) | 54 | \\\(\Xi_0(54) > f_{\omega^3+1}(4)\\\) |
+| \\\([+1R] [2] [\omega^\omega C] KK\\\) | 56 | \\\(\Xi_0(56) > f_{\omega^\omega+1}(2)\\\) |
+| \\\([+1R] ([A] [2]) [\omega^\omega C] KK\\\) | 59 | \\\(\Xi_0(59) > f_{\omega^\omega+1}(4)\\\) |
+| \\\([+1R] [2] [+1:[\omega^\omega C]] KK\\\) | 61 | \\\(\Xi_0(61) > f_{\omega^\omega+2}(2)\\\) |
+| \\\([+1R] ([A] [2]) [+1:[\omega^\omega C]] KK\\\) | 64 | \\\(\Xi_0(64) > f_{\omega^\omega+2}(4)\\\) |
+| \\\([+1R] [2] [+2:[\omega^\omega C]] KK\\\) | 66 | \\\(\Xi_0(66) > f_{\omega^\omega+3}(2)\\\) |
+| \\\([+1R] ([A] [2]) [+2:[\omega^\omega C]] KK\\\) | 69 | \\\(\Xi_0(69) > f_{\omega^\omega+3}(4)\\\) |
+| \\\([+1R] [2] [+\omega:[\omega^\omega C]] KK\\\) | 70 | \\\(\Xi_0(70) > f_{\omega^\omega+\omega+1}(2)\\\) |
+| \\\([+1R] ([A] [2]) [+\omega:[\omega^\omega C]] KK\\\) | 73 | \\\(\Xi_0(73) > f_{\omega^\omega+\omega+1}(4)\\\) |
+| \\\([+1R] [2] [+\omega+1:[\omega^\omega C]] KK\\\) | 75 | \\\(\Xi_0(75) > f_{\omega^\omega+\omega+2}(2)\\\) |
+| \\\([+1R] ([A] [2]) [+\omega+1:[\omega^\omega C]] KK\\\) | 78 | \\\(\Xi_0(78) > f_{\omega^\omega+\omega+2}(4)\\\) |
+| \\\([+1R] [2] [+\omega+2:[\omega^\omega C]] KK\\\) | 80 | \\\(\Xi_0(80) > f_{\omega^\omega+\omega+3}(2)\\\) |
+| \\\([+1R] [2] [+\omega^2:[\omega^\omega C]] KK\\\) | 83 | \\\(\Xi_0(83) > f_{\omega^\omega+\omega^2+1}(2)\\\) |
+| \\\([+1R] [2] ([\times\omega] [\omega^\omega C]) KK\\\) | 85 | \\\(\Xi_0(85) > f_{\omega^{\omega+1} +1}(2)\\\) |
+| \\\([+1R] [2] [\omega^{\omega^\omega} C] KK\\\) | 117 | \\\(\Xi_0(117) > f_{\omega^{\omega^\omega}+1}(2)\\\) |
+| \\\([+1R] [2] [E:A] KK\\\) | 2120 | \\\(\Xi_0(2120) >f_{\varepsilon_0}(5)\\\) |
+| \\\([+1R] ([A] [2]) [E:A] KK\\\) | 2123 | \\\(\Xi_0(2123) >f_{\varepsilon_0+1}(3)\\\) |
+| \\\([+1R] ([A] [2]) ([\times \omega] [E] [A]) KK\\\) | 2171 | \\\(\Xi_0(2171) >f_{\varepsilon_0 \omega+1}(3) = f_{\omega^{\varepsilon_0+1}+1}(3)\\\) |
+| \\\([+1R] ([A] [2]) ([2] [\times \omega] [E] [A]) KK\\\) | 2177 | \\\(\Xi_0(2177) >f_{\varepsilon_0 \omega^2+1}(3) = f_{\omega^{\varepsilon_0+2}+1}(3)\\\) |
+| \\\([+1R] ([A] [2]) ([D] [\times \omega] [E] [A]) KK\\\) | 2201 | \\\(\Xi_0(2201) >f_{\varepsilon_0 \omega^\omega+1}(3) = f_{\omega^{\varepsilon_0+\omega}+1}(3)\\\) |
+| \\\([+1R] ([A] [2]) ([2] [D] [\times \omega] [E] [A]) KK\\\) | 2207 | \\\(\Xi_0(2207) >f_{\varepsilon_0 \omega^{\omega^2}+1}(3) = f_{\omega^{\varepsilon_0+\omega^2}+1}(3)\\\) |
+
+All macro definitions can be found in the rough work section below.
 
 </div>
 
@@ -615,6 +655,7 @@ Values are formatted as inline code rather than math to allow easier copying.
 | `[w^w C]` | `45` |
 | `[x a^w]` | `31 + #[x a]` |
 | `[D]` | `59 = 59` |
+| `[w^w^w C]` | `106 = 11 + #[D] + #[x w] + #[+1]` |
 
 </div>
 
@@ -830,6 +871,7 @@ This applies to \\\([E:A]\\\) as well.
 | \\\([+1R] ([A] [2]) ([\times \omega] [E] [A])\\\) | \\\(2169\\\) | \\\(>f_{\varepsilon_0 \omega+1}(3) = f_{\omega^{\varepsilon_0+1}+1}(3)\\\) |
 | \\\([+1R] ([A] [2]) ([2] [\times \omega] [E] [A])\\\) | \\\(2175\\\) | \\\(>f_{\varepsilon_0 \omega^2+1}(3) = f_{\omega^{\varepsilon_0+2}+1}(3)\\\) |
 | \\\([+1R] ([A] [2]) ([D] [\times \omega] [E] [A])\\\) | \\\(2199\\\) | \\\(>f_{\varepsilon_0 \omega^\omega+1}(3) = f_{\omega^{\varepsilon_0+\omega}+1}(3)\\\) |
+| \\\([+1R] ([A] [2]) ([2] [D] [\times \omega] [E] [A])\\\) | \\\(2205\\\) | \\\(>f_{\varepsilon_0 \omega^{\omega^2}+1}(3) = f_{\omega^{\varepsilon_0+\omega^2}+1}(3)\\\) |
 
 Let's follow what happens here.
 

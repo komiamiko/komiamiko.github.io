@@ -134,7 +134,7 @@ class expr(object):
                 stack.append([])
             elif c == ')':
                 part = stack.pop()
-                ex = expr(part[0].head, part[1:])
+                ex = expr(part[0].head, part[0].calls + tuple(part[1:]))
                 stack[-1].append(ex)
             else:
                 stack[-1].append(expr(c))
