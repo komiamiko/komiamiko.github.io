@@ -1,0 +1,1 @@
+<div style="background:rgba(255,255,255,0.667);border-radius:0.5em;padding:0.5em;">
