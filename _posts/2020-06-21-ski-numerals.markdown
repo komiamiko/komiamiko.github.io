@@ -75,7 +75,7 @@ What we informally call "evaluation" of these rules is formally called "beta-red
 One would beta-reduce an SKI expression until no further rules can be applied,
 which occurs when none of the combinators have enough arguments to use their rule.
 Conventionally, we beta-reduce at the leftmost possible sub-expression.
-For example, starting with \\\(SSS(SI)S\\\), here is a the order of steps until it is maximally beta-reduced:
+For example, starting with \\\(SSS(SI)S\\\), here is the order of steps until it is maximally beta-reduced:
 
 ```
 SSS(SI)S
@@ -819,7 +819,7 @@ We avoid using the actual addition and subtraction operator, since we can usuall
 At a time like this, I really wish I had an optimizing SKI compiler.
 Here I am doing my best to hand optimize it, ignoring numerous other branches in the tree of possibilities which could possibly lead to a more optimized version, just taking the smallest expression I can get for each part and then linking with its dependencies.
 
-I am by no means claiming the final expression I get is optimal
+I am by no means claiming the final expression I get is optimal.
 It is likely easy to squeeze it down smaller even with no new constructions just by inlining and optimizing.
 I'm just here to say "it can be done in this many combinators".
 
