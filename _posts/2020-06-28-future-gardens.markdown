@@ -178,8 +178,8 @@ When you're ready, you can reveal the ordinals that have been there all along.
 
 <label for="fgardens-display-kind">Text display mode:</label>
 <select name="fgardens-display-kind" id="fgardens-display-kind-selector">
-  <option value="FANCY" selected="selected">Flowery names</option>
-  <option value="ORDINAL">Ordinals</option>
+  <option value="fancy" selected="selected">Flowery names</option>
+  <option value="ordinal">Ordinals</option>
 </select>
 
 </div>
@@ -399,7 +399,46 @@ While a lot of content is created programmatically combining a regular structure
 
 <div>
 
-TODO talk about egyptian fractions, ODE, and upgrade efficiency
+You've probably caught on to the oddly regular sequence of costs of plants.
+Where does this come from?
+It's actually [Sylvester's sequence](https://en.wikipedia.org/wiki/Sylvester%27s_sequence),
+and before I can explain why it made a great fit for this, I first need to explain ordinary differential equations.
+
+Let's say we have some kind of resource and an autoclicker for it, with the ability to spend the resource to gain more of the autoclicker.
+At perfect (*100%*) "efficiency", *1* unit of resource buys *1* autoclicker.
+If purchases are done optimally, this results in exponential growth - no surprise there.
+What happens when the "efficiency" is less than *1* though?
+At *50%* efficiency, we're taking the square root - *16* units of resources invested only gives *4* autoclickers.
+This clearly isn't capable of exponential growth, but just how fast does it grow?
+We can figure out by solving the first order ordinary differential equation (ODE) *f'(t) = f(t)<sup>1/2</sup>* with initial value *f(0) = 1*, and turns out it's proportional to *t<sup>2</sup>*.
+This makes sense - it means *f'(t)* is proportional to *t*, which correctly is of the same order as *f(t)<sup>1/2</sup> = t<sup>2 × (1/2)</sup> = t*.
+In general, if the efficiency is *E*, then the ODE looks like *f'(t) = f(t)<sup>E</sup>*, and the resulting growth rate is *f(t) ~ t<sup>1/(1 - E)</sup>*.
+As expected, the closer you get to perfect efficiency, the faster the growth.
+
+The first part of making our incremental system is choosing the multipliers, or equivalently, choosing the efficiency.
+Upgrades come in discrete packets that each have a cost *C*, so to make the efficiency not perfect, we should choose a multiplier *M* less than *C*.
+In the end, I chose the curve *M = C - sqrt(C) + 1* because it was dead simple and it has desirable characteristics.
+Simple is good here because it prevents people from accusing me of hand massaging the curves.
+This starts with pretty bad efficiency - *M = 1.59* at *C = 2*, and *M = 2.27* at *C = 3* - but importantly, as we go up, the efficiency converges to *1*.
+This seems like a good design decision, as higher *C* upgrades appear less often, so it feels like they should be closer to perfect to help "fill in the gaps".
+
+The final piece that makes it all work is blending all the factors together, and this is where Sylvester's sequence comes in.
+Denote Sylvester's sequence as *S<sub>0</sub> = 2, S<sub>1</sub> = 3, S<sub>2</sub> = 7, ...*.
+They have a really neat property that *1/S<sub>0</sub> + 1/S<sub>1</sub> + ...* converges to *1* from below as fast as possible.
+We use *1/S<sub>n</sub>* as the weight when we distribute - the *2* factor gets *1/2* of its strength, the *3* factor gets *1/3* of its strength, the *7* factor gets *1/7* of its strength, and so on.
+This way, *1* unit total of strength can be said to be distributed evenly over the infinite sequence.
+This distributing makes it look a bit bad mannered - each time you buy a *2<sup>k</sup>*, it only multiplies your income by *1.26*, and when you buy a *3<sup>k</sup>*, it only multiplies your income by *1.31*.
+Even so, the overall efficiency of this whole series with the weighted distribution is about *0.72719*, meaning the growth exponent is about *3.6656*.
+This is actually quite generous for a first run!
+
+Besides having nice math properties, using Sylvester's sequence as the bases also makes for naturally interesting spacing of milestones.
+It's not quite repetitive, things don't line up, but there's no randomness and no fine tuning, just some simple math.
+
+I just need to point out one more thing for this story to be complete.
+As you'd notice if you played the game for a while, having higher ordinals makes lower tiers go by faster.
+This is because I added a few more terms to the equation so that the efficiency can increase when you have some higher ordinals.
+It was a bit difficult balancing my desire as a game creator to fine tune the equation and my more mathematical desire for a simple and "natural" equation, but in the end I think I struck a good compromise.
+It still has the spirit of the original equation and has a gentle curve which increases in efficiency as you feed it more multipliers.
 
 </div>
 
@@ -481,8 +520,8 @@ Instead the time step is done using an event-based method.
 The game looks for the next major milestone, such as gaining 1 unit of the next higher currency, and estimates the time until that event would be reached.
 If the event takes longer to reach than the time step, we look for the next smaller milestone and try again with that.
 If the event can be reached in that timespan, the game jumps to that event and the time taken is deducted.
-There's also some more clever logic to estimate the most of the highest currency that can be gained within the timespan, and in one jump fastforward to that much gained.
-This event based system ensures the passage of time is accurate whether you're watching the game or offline for a long time.
+There's also some more clever logic to estimate the most of the highest currency that can be gained within the timespan, and in one jump fastforward to that much gained, so it's not a pure event-based method like I described, but at its core it is still event-based.
+This event-based system ensures the passage of time is accurate whether you're watching the game or offline for a long time.
 
 Another interesting thing is how it handles challenges.
 It's not computationally feasible for the game to judge what challenges are easier and figure out the completion order for itself - but it will remember the order you completed challenges in, and if it's more optimal than not doing the challenges, it will use your challenge order in the estimation.
