@@ -14,6 +14,176 @@ categories: games
 
 <div>
 
+<div class="no-js">
+This app requires JavaScript to run.
+</div>
+
+## Writing your own story
+{: #writing-own-story}
+
+{% include collapser.markdown %}
+
+<div>
+
+The world around you blossoms with diversity.
+An artist carefully sculpting the figure of a dragon,
+a conjurer patiently mentoring a group of aspiring students,
+a traveller carrying rare minerals from a distant land,
+a crafter experimenting with a new tool design...
+and a lot of people who are ready to fight.
+They represent leaves within a vast tree of possibilities.
+Ever person you see could have been you,
+but that's not how it turned out, now is it?
+What did you choose instead?
+What was your calling?
+
+Plants.
+It was plants.
+You're not the only person to grow and study plants,
+but these are your gardens, and they are home to you.
+Besides, with the unique abilities you've gained up to now,
+you're certain you can go where no botanist (one who studies plants) has gone before.
+Where will this take you?
+Only time will tell.
+
+Your garden contains plants nobody has ever seen before.
+You are the first to name and describe them.
+What is a <span id="fgardens-inject-name-0"></span>,
+or a <span id="fgardens-inject-name-1"></span>?
+I can't answer that for you.
+This is your story now.
+Inspired by whimsical plant names, you write your own tales as you go.
+
+</div>
+
+## It begins with a plant
+{: #fgardens-section-first}
+
+{% include collapser.markdown %}
+
+<div id="fgardens-container-group-0">
+
+</div>
+
+## The future is now
+{: #future-now}
+
+{% include collapser.markdown %}
+
+<div>
+
+TODO future gardens
+
+</div>
+
+## Your future gardens
+{: #fgardens-section-second}
+
+{% include collapser.markdown %}
+
+<div id="fgardens-container-group-1">
+
+</div>
+
+## A new theory, a new model
+{: #models-theories}
+
+{% include collapser.markdown %}
+
+<div>
+
+TODO models!
+
+</div>
+
+## A comfortable place to study
+{: #fgardens-section-challenge}
+
+{% include collapser.markdown %}
+
+<div id="fgardens-container-models">
+
+</div>
+
+## A challenge for yourself
+{: #challenge-yourself}
+
+{% include collapser.markdown %}
+
+<div>
+
+TODO global pinning, challenges, etc
+
+</div>
+
+## Never, yet eventual
+{: #never-eventual}
+
+{% include collapser.markdown %}
+
+<div>
+
+TODO eventual gardens!
+
+</div>
+
+## Distanced a world away
+{: #fgardens-section-third}
+
+{% include collapser.markdown %}
+
+<div id="fgardens-container-group-2">
+
+</div>
+
+## If things had gone differently
+{: #different-timelines}
+
+{% include collapser.markdown %}
+
+<div>
+
+TODO resetting game for real, and kept histories, and impredicative leap past the end
+
+</div>
+
+## Specks in the past
+{: #fgardens-section-history}
+
+{% include collapser.markdown %}
+
+<div id="fgardens-container-history">
+
+</div>
+
+## Marking your steps
+{: #marking-steps}
+
+{% include collapser.markdown %}
+
+<div>
+
+TODO commonalities between runs, ordinal theory
+
+</div>
+
+## How far you've come
+{: #fgardens-section-ordinal-counter}
+
+{% include collapser.markdown %}
+
+<div id="fgardens-container-ordinal-counter">
+
+When you're ready, you can reveal the ordinals that have been there all along.
+
+<label for="fgardens-display-kind">Text display mode:</label>
+<select name="fgardens-display-kind" id="fgardens-display-kind-selector">
+  <option value="FANCY" selected="selected">Flowery names</option>
+  <option value="ORDINAL">Ordinals</option>
+</select>
+
+</div>
+
 </div>
 
 # Developer commentary
@@ -197,7 +367,7 @@ To make ordinals appear large, you shouldn't let the player climb to large ordin
 I don't think the slow-growing hierarchy is sufficient to give players a sense of scale, since numbers don't go up.
 The Hardy hierarchy is alright, so I decided to go for some variant of it as the underlying hierarchy.
 
-I made a decision in planning for the game to go up to *ω<sup>ω<sup>ω</sup></sup>*, though the end of content happens already well before that.
+I made a decision in planning for the game to go up to *ω<sup>ω<sup>2</sup></sup>*, though the end of content happens already well before that.
 The hierarchy was carefully designed so it'd appear to go faster up to *ω<sup>ω</sup>*, but after that, progress would appear to slow down, and further progress would seem difficult.
 It's not because of some hardcoded brake in the game.
 In fact, undoubtedly, your ordinal is getting larger at an accelerating rate.
@@ -264,7 +434,7 @@ Still, there's enough options here to ensure diversity.
 If a program fails the checks and we can't trivially fix it, we just generate a new one and try again.
 After a program passes type checking, it then gets transpiled into an abstract syntax tree (AST).
 Finally, we perform optimizations.
-While the optimization engine does occasionally allow stupid things to slip through, it will at least catch a lot of basic things, like changing "not even" into "odd".
+While the optimization engine does occasionally allow stupid things to slip through, it will at least do a lot of basic things like boolean logic simplification.
 
 There's one more exotic optimization done.
 Since challenges are only allowed to affect lower tiers, this means some ordinal predicates will always be true or false.
@@ -285,7 +455,39 @@ That's just how it is when you aren't handcrafting all the challenges.
 
 <div>
 
-TODO talk about fastforwarding, common numerical ODE pitfalls, game memory with optimizing challenges
+Consider this scenario, which sounds plausibly like it comes from an actual incremental game:
+
+> You start with 0 clips, 1 worker bot, and 1 factory.
+> Clips increase at a rate of *#bots*, bots increase at a rate of *#factory*, and factories increase at a rate of *log2(#bots)*.
+
+Don't mind that a continuous domain doesn't actually make sense at these small numbers.
+When the numbers get large enough, it's about the same as if it was continuous.
+
+After 1 hour (3600 seconds), we'll have 166 billion clips, 145 million bots, and 86 thousand factories.
+That sounds entirely reasonable, and it's what you'd expect to happen.
+Unfortunately what a lot of games do is just extrapolate based on the rate at the last time step.
+In this case, it would say the rates are *(1, 1, 0)*, so after 1 hour you should have *(0, 1, 1) + 3600 × (1, 1, 0) = (3600, 3601, 1)* of the appropriate resources.
+
+"Can't you just take more steps?"
+
+Taking more steps would indeed improve the accuracy, but it isn't very efficient.
+What I just described is the [Euler method](https://en.wikipedia.org/wiki/Euler_method),
+which is a first order method, meaning that if your time step is *h*, then the global truncation error, which is how far off you are after stepping all the way to a fixed target time, is proportional to *h*, or *O(h)* as we say.
+If you use twice as many samples, the error only gets cut in half.
+
+[RK4 (explicit Runge-Kutta 4)](https://en.wikipedia.org/wiki/Runge-Kutta) is what I would be talking about here, but actually the ODE model does not apply very well for this game.
+The hierarchy is rather discretized and there's a lot of jumps.
+Instead the time step is done using an event-based method.
+The game looks for the next major milestone, such as gaining 1 unit of the next higher currency, and estimates the time until that event would be reached.
+If the event takes longer to reach than the time step, we look for the next smaller milestone and try again with that.
+If the event can be reached in that timespan, the game jumps to that event and the time taken is deducted.
+There's also some more clever logic to estimate the most of the highest currency that can be gained within the timespan, and in one jump fastforward to that much gained.
+This event based system ensures the passage of time is accurate whether you're watching the game or offline for a long time.
+
+Another interesting thing is how it handles challenges.
+It's not computationally feasible for the game to judge what challenges are easier and figure out the completion order for itself - but it will remember the order you completed challenges in, and if it's more optimal than not doing the challenges, it will use your challenge order in the estimation.
+This is why I recommend if you're doing a serious run to always try the challenges, and complete all the easy ones.
+It will actually make progress go faster.
 
 </div>
 
