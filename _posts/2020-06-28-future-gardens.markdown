@@ -25,34 +25,22 @@ This app requires JavaScript to run.
 
 <div>
 
-The world around you blossoms with diversity.
-An artist carefully sculpting the figure of a dragon,
-a conjurer patiently mentoring a group of aspiring students,
-a traveller carrying rare minerals from a distant land,
-a crafter experimenting with a new tool design...
-and a lot of people who are ready to fight.
-They represent leaves within a vast tree of possibilities.
-Ever person you see could have been you,
-but that's not how it turned out, now is it?
-What did you choose instead?
-What was your calling?
+Diversity blossoms around you in town, <br/>
+Artists, enchanters, architects and more. <br/>
+Each person a role that could have been you, <br/>
+But plants were your calling, it's just what you do.
 
-Plants.
-It was plants.
-You're not the only person to grow and study plants,
-but these are your gardens, and they are home to you.
-Besides, with the unique abilities you've gained up to now,
-you're certain you can go where no botanist (one who studies plants) has gone before.
+You're not the first to grow and study plants, <br/>
+But these are your gardens, and they are your home. <br/>
+Your unique powers can take you further than others. <br/>
 Where will this take you?
 Only time will tell.
 
-Your garden contains plants nobody has ever seen before.
-You are the first to name and describe them.
-What is a <span id="fgardens-inject-name-0"></span>,
-or a <span id="fgardens-inject-name-1"></span>?
-I can't answer that for you.
-This is your story now.
-Inspired by whimsical plant names, you write your own tales as you go.
+In your gardens are plants never seen before. <br/>
+A <span id="fgardens-inject-name-0"></span>,
+a <span id="fgardens-inject-name-1"></span>. <br/>
+First named by you, with flowery whimsy. <br/>
+This is your story, that you write as you go.
 
 </div>
 
@@ -554,11 +542,6 @@ If the event takes longer to reach than the time step, we look for the next smal
 If the event can be reached in that timespan, the game jumps to that event and the time taken is deducted.
 There's also some more clever logic to estimate the most of the highest currency that can be gained within the timespan, and in one jump fastforward to that much gained, so it's not a pure event-based method like I described, but at its core it is still event-based.
 This event-based system ensures the passage of time is accurate whether you're watching the game or offline for a long time.
-
-Another interesting thing is how it handles challenges.
-It's not computationally feasible for the game to judge what challenges are easier and figure out the completion order for itself - but it will remember the order you completed challenges in, and if it's more optimal than not doing the challenges, it will use your challenge order in the estimation.
-This is why I recommend if you're doing a serious run to always try the challenges, and complete all the easy ones.
-It will actually make progress go faster.
 
 </div>
 
