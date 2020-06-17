@@ -72,7 +72,25 @@ Inspired by whimsical plant names, you write your own tales as you go.
 
 <div>
 
-TODO future gardens
+Every day, your gardens grow more, <br/>
+Bountiful nature and plants to explore. <br/>
+Even so, your gardens grow slow. <br/>
+Sometimes you wish it were not so.
+
+Legends tell of a regretful fool, <br/>
+Who once chose wrong and wished to go back. <br/>
+What's done is done, the past set in stone, <br/>
+But the future is still open, an opportunity to make your own.
+
+Your abilities give you new options here, <br/>
+With much effort bringing the far future near. <br/>
+A lifetime's collection condensed into one, <br/>
+A goal that would otherwise never be done.
+
+On this new quest you look forward again, <br/>
+A future of futures, a most distant door. <br/>
+Reaching your goal, you rebuild again, <br/>
+Finding yourself in your future gardens once more.
 
 </div>
 
@@ -92,7 +110,14 @@ TODO future gardens
 
 <div>
 
-TODO models!
+Theories, you're no stranger to them, <br/>
+What one fails to capture, another amends. <br/>
+Your current model falls rather short, <br/>
+Some plants you can't name, no means to the end. <br/>
+With research, you can create a new model, <br/>
+A new comprehension to help you build more. <br/>
+For that research, you need some plant samples. <br/>
+Lucky for you, the minimum is ample.
 
 </div>
 
@@ -112,7 +137,14 @@ TODO models!
 
 <div>
 
-TODO global pinning, challenges, etc
+One day, you thought of a new kind of spell. <br/>
+You tried it at home, but it did nothing and fell. <br/>
+Even far from your gardens, every time it would fail, <br/>
+As if across worlds they held fast to your tail. <br/>
+You would need to destroy your lower gardens, <br/>
+And abide by the strict terms of the spell, <br/>
+But if you could return and finish casting, <br/>
+The reward would be great, you can already tell.
 
 </div>
 
@@ -174,7 +206,7 @@ TODO commonalities between runs, ordinal theory
 
 <div id="fgardens-container-ordinal-counter">
 
-When you're ready, you can reveal the ordinals that have been there all along.
+When you're ready, you can reveal the ordinals that you've been collecting all along.
 
 <label for="fgardens-display-kind">Text display mode:</label>
 <select name="fgardens-display-kind" id="fgardens-display-kind-selector">
