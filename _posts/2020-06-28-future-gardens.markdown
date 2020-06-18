@@ -101,7 +101,8 @@ Finding yourself in your future gardens once more.
 Theories, you're no stranger to them, <br/>
 What one fails to capture, another amends. <br/>
 Your current model falls rather short, <br/>
-Some plants you can't name, no means to the end. <br/>
+Some plants you can't name, no means to the end.
+
 With research, you can create a new model, <br/>
 A new comprehension to help you build more. <br/>
 For that research, you need some plant samples. <br/>
@@ -128,7 +129,8 @@ Lucky for you, the minimum is ample.
 One day, you thought of a new kind of spell. <br/>
 You tried it at home, but it did nothing and fell. <br/>
 Even far from your gardens, every time it would fail, <br/>
-As if across worlds they held fast to your tail. <br/>
+As if across worlds they held fast to your tail.
+
 You would need to destroy your lower gardens, <br/>
 And abide by the strict terms of the spell, <br/>
 But if you could return and finish casting, <br/>
@@ -143,7 +145,20 @@ The reward would be great, you can already tell.
 
 <div>
 
-TODO eventual gardens!
+Every day, no matter how high you build, <br/>
+The sky remains above you still. <br/>
+A height you reach eventually, <br/>
+But in your lifetime would never see.
+
+Futures of futures and stacking some more, <br/>
+A thousand lifetimes, it's still not enough. <br/>
+Out of reach for your simple steps, <br/>
+Truly, reaching this milestone is tough.
+
+Even so, you would not lose hope. <br/>
+That garden is eventual, different from never. <br/>
+With new models, patience, and care, <br/>
+It will not be out of reach forever.
 
 </div>
 
@@ -163,7 +178,17 @@ TODO eventual gardens!
 
 <div>
 
-TODO resetting game for real, and kept histories, and impredicative leap past the end
+You think about how things could have gone, <br/>
+Not different choices, but if the rules were different. <br/>
+A new kind of magic will let you do just that, <br/>
+To give up this timeline, and in a new world start again.
+
+You would lose all that you built up so far, <br/>
+Your mana, your gardens, all you did create. <br/>
+Never to return, this world becomes history, <br/>
+Your memories and knowledge are all you can keep. <br/>
+Even your models won't work where you'll go, <br/>
+With new rules, new plants and challenges await.
 
 </div>
 
@@ -183,7 +208,25 @@ TODO resetting game for real, and kept histories, and impredicative leap past th
 
 <div>
 
-TODO commonalities between runs, ordinal theory
+Coming this far, you've made some good memories. <br/>
+Recounting your tales, you begin new research. <br/>
+Searching for patterns, stripping away details, <br/>
+Seeing, across worlds, what never changes.
+
+Your mana goes up, counting one two, <br/>
+Jumping to infinity, your future gardens, <br/>
+Counting up again, to a larger infinity, <br/>
+Vaulting toward your eventual gardens.
+
+Plants out of the picture, just symbols on parchment, <br/>
+You explore the infinities for mathematical interest, <br/>
+Creating systematic names for all of your gardens, <br/>
+All that you have, and all that you'll ever have.
+
+You study infinities, detached from your gardens, <br/>
+Their regular properties, where higher to go. <br/>
+The magic to get there far eludes you, <br/>
+But at least your scheme can map it out.
 
 </div>
 
