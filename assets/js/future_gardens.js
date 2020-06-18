@@ -119,8 +119,8 @@
    * Relatively sensitive to input differences in both inputs.
    */
   let randomConcatState = function(s, t) {
-    for(let i = 0; i < 4; ++i) {
-      s[0] += t[i];
+    for(let i = 0; i < 8; ++i) {
+      s[0] += t[i & 3];
       s[1] ^= s[0] << 5;
       s[0] *= 0x7097f;
       s[1] *= 0x41481;
