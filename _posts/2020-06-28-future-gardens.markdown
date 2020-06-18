@@ -18,6 +18,9 @@ categories: games
 This app requires JavaScript to run.
 </div>
 
+<div id="fgardens-browser-notice">
+</div>
+
 ## Writing your own story
 {: #writing-own-story}
 
@@ -197,7 +200,40 @@ With new rules, new plants and challenges await.
 
 {% include collapser.markdown %}
 
+<div>
+
 <div id="fgardens-container-history">
+
+</div>
+
+<div id="fgardens-container-reset" style="display:none;">
+
+<div id="fgardens-reset-key-display">
+</div>
+
+<label for="fgardens-reset-key-entry">Please enter the numbers above to confirm you want to reset</label>
+<input type="text" id="fgardens-reset-key-entry" name="fgardens-reset-key-entry">
+
+</div>
+
+<input type="button" value="Reset game with new seed" onclick="gardens.sendResetGame()">
+
+</div>
+
+<label for="fgardens-settings-seed">World seed</label>
+<input type="text" id="fgardens-settings-seed" name="fgardens-settings-seed">
+<input type="button" value="Generate a new seed" onclick="gardens.sendNewSeedCasual()">
+
+Any seed is fine for casual play.
+For more competitive use, the game creator only officially endorses seeds which follow a specific format and meet a hash-based proof of work (POW).
+In a setting where multiple people are to use the same seed, it is recommended to use the name of the event or group in place of the individual player's name.
+
+Generation of this seed may take some time depending on your computer.
+When the seed is ready, it will be entered into the seed box.
+
+<label for="fgardens-settings-name">Your name</label>
+<input type="text" id="fgardens-settings-name" name="fgardens-settings-name">
+<input type="button" value="Generate verified seed" onclick="gardens.sendNewSeedVerified()">
 
 </div>
 
