@@ -627,3 +627,5 @@ This event-based system ensures the passage of time is accurate whether you're w
 </div>
 
 </div>
+
+<script src="/assets/js/future_gardens.js"></script>
