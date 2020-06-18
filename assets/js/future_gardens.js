@@ -86,4 +86,60 @@
     'wick', 'wood', 'wort', 'yam', 'yarrow', 'zia']
     ;
   
+  /**
+   * From a string, derive a random state.
+   * Random state is 128 bits - length 4 array of int32
+   * Not extremely sensitive to differences in input, but good enough.
+   */
+  let randomDeriveState = function(text) {
+    let t = new TextEncoder().encode(text);
+    let tn = t.length;
+    let s = new Uint32Array(4);
+    s[1] = tn + 1;
+    for(let i = 0; i < tn; ++i) {
+      s[0] += t[i];
+      s[1] ^= s[0] << 5;
+      s[0] *= 0x7edf1;
+      s[1] *= 0x636f7;
+      s[3] ^= s[0];
+      s[2] ^= s[1];
+      s[3] ^= s[3] >>> 24;
+      s[2] ^= s[2] >>> 13;
+      s[1] += s[3];
+      s[0] += s[2];
+    }
+    return s;
+  }
+  
+  /**
+   * From an ordered pair (s, t) of random states,
+   * modify s = H(s || t) in place,
+   * where H is some unspecified hash function.
+   * Then, return s.
+   * Relatively sensitive to input differences in both inputs.
+   */
+  let randomConcatState = function(s, t) {
+    for(let i = 0; i < 4; ++i) {
+      s[0] += t[i];
+      s[1] ^= s[0] << 5;
+      s[0] *= 0x7097f;
+      s[1] *= 0x41481;
+      s[3] ^= s[0];
+      s[2] ^= s[1];
+      s[3] ^= s[3] >>> 24;
+      s[2] ^= s[2] >>> 13;
+      s[1] += s[3];
+      s[0] += s[2];
+    }
+    return s;
+  }
+  
+  /**
+   * Get a value in the range [0, n) based on the
+   * current random state s
+   */
+  let randomGetNext = function(s, n) {
+    return s[3] % n;
+  }
+  
 }(window.gardens = window.gardens || {}));
