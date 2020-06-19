@@ -1,7 +1,7 @@
 /*
  * Main script for the Future Gardens webapp,
  * a plant-themed incremental game with more than omega prestige layers.
- * 
+ *
  * Copyright (c) 2020 Komi Amiko
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -28,10 +28,12 @@
  */
 (function(gardens) {
   
+  // --- core utilities and constants ---
+  
   /*
    * Plant names are composed by concatenating a random prefix and suffix
    */
-  let poolPlantNamePrefix = 
+  let poolPlantNamePrefix =
     ['absin', 'abyss', 'aca', 'acic', 'acon', 'alarm', 'altis', 'amber', 'anemoni', 'anger',
     'anop', 'apri', 'arau', 'arch', 'arken', 'armil', 'aroma', 'arrow', 'artemi', 'arven',
     'ash', 'aster', 'astra', 'bald', 'band', 'basi', 'beam', 'bear', 'bird', 'bitter',
@@ -66,7 +68,7 @@
     'wandering', 'watching', 'water', 'welwits', 'west', 'whisk', 'will', 'winged', 'winter',
     'wish', 'witch', 'wolf', 'worm', 'year', 'zingi']
     ;
-  let poolPlantNameSuffix = 
+  let poolPlantNameSuffix =
     ['ala', 'all', 'ao', 'arum', 'aspen', 'bab', 'ball', 'balloon', 'bane', 'bean', 'berale',
     'berry', 'bifera', 'blood', 'bract', 'bulb', 'burst', 'cachrys', 'cana', 'cane', 'cap',
     'carpa', 'carpus', 'cedar', 'cell', 'chia', 'chilos', 'cimum', 'cone', 'conia', 'coral',
@@ -140,6 +142,155 @@
    */
   let randomGetNext = function(s, n) {
     return s[3] % n;
+  }
+  
+  /**
+   * Concatenate 2 Uint8Array instances.
+   */
+  let concatBytes = function(s, t) {
+    let sn = s.length;
+    let tn = t.length;
+    let r = new Uint8Array(sn + tn);
+    r.set(s);
+    r.set(t, sn);
+    return r;
+  }
+  
+  /**
+   * Generate n strong random bytes.
+   */
+  let randomBytes = function(n) {
+    s = new Uint8Array(n);
+    window.crypto.getRandomValues(s);
+    return s;
+  }
+  
+  // --- other useful utilities ---
+  
+  /**
+   * Clear a DOM element's children.
+   */
+  let clearChildren = function(el) {
+    while(el.lastElementChild) {
+      el.removeChild(el.lastElementChild);
+    }
+  }
+  
+  /**
+   * Commonly used, make a single paragraph node
+   */
+  let makep = function(text) {
+    let textEl = document.createTextNode(text);
+    let paraEl = document.createElement("p");
+    paraEl.appendChild(textEl);
+    return paraEl;
+  }
+  
+  /**
+   * Derive a random seed from a name and a 128-bit
+   * (16 byte) salt as a Uint8Array.
+   */
+  let randomSeedStringFromName = function(name, s) {
+    let t = new TextEncoder().encode(name);
+    let tn = t.length;
+    if(s === undefined) {
+      s = randomBytes(16);
+    }
+    let salt = "";
+    for(let i = 0; i < 16; ++i) {
+      salt += s[i].toString(16).padStart(2, '0');
+    }
+    return tn.toString() + ":" + name + ":" + salt;
+  }
+  
+  let randomSeedVerifiedIters = 0;
+  let randomSeedVerifiedTick = 0;
+  
+  /**
+   * Callback-based loop used to generate a verified seed.
+   */
+  let randomSeedVerifiedGenerationLoop = function(name, salt) {
+    let seedString = randomSeedStringFromName(name, salt);
+    let seedBytes = new TextEncoder().encode(seedString);
+    let prefix = new TextEncoder().encode("Future Gardens verified seed");
+    let message1 = concatBytes(prefix, seedBytes);
+    window.crypto.subtle.digest("SHA-256", message1).then(
+      function(hash1) {
+        hash1 = new Uint8Array(hash1);
+        let message2 = concatBytes(prefix, hash1);
+        window.crypto.subtle.digest("SHA-256", message2).then(
+          function(hash) {
+            hash = new Uint8Array(hash);
+            let tickNow = window.performance.now();
+            let accept = (hash[0] | hash[1]) === 0;
+            ++randomSeedVerifiedIters;
+            let seedEl = document.getElementById("fgardens-settings-seed");
+            let notifyEl = document.getElementById("fgardens-settings-verified-seed-display");
+            if(seedEl.value !== "") {
+            } else if(accept) {
+              seedEl.value = seedString;
+              clearChildren(notifyEl);
+              notifyEl.appendChild(makep("Generated seed in "
+                + randomSeedVerifiedIters.toString() + " attempts, in "
+                + ((tickNow - randomSeedVerifiedTick) / 1000).toFixed(2) + " seconds: "
+                + seedString));
+            } else {
+              for(let i = 0; i < 16; ++i) {
+                ++salt[i];
+                if(salt[i] !== 0)break;
+              }
+              randomSeedVerifiedGenerationLoop(name, salt);
+            }
+          }
+        );
+      }
+    );
+  }
+  
+  // --- gameplay handling ---
+  
+  // --- external signal handlers, actual implementation ---
+  
+  /**
+   * Generate a new seed and put it in the seed box.
+   */
+  let sendNewSeedCasual = function() {
+    let nameEl = document.getElementById("fgardens-settings-name");
+    let name = nameEl.value;
+    let seedString = randomSeedStringFromName(name);
+    let seedEl = document.getElementById("fgardens-settings-seed");
+    seedEl.value = seedString;
+  }
+  
+  /**
+   * Generate a new seed that meets the verification requirements.
+   */
+  let sendNewSeedVerified = function() {
+    let nameEl = document.getElementById("fgardens-settings-name");
+    let name = nameEl.value;
+    let seedEl = document.getElementById("fgardens-settings-seed");
+    seedEl.value = "";
+    let notifyEl = document.getElementById("fgardens-settings-verified-seed-display");
+    clearChildren(notifyEl);
+    notifyEl.appendChild(makep("Generating verified seed..."));
+    randomSeedVerifiedIters = 0;
+    randomSeedVerifiedTick = window.performance.now();
+    let salt = randomBytes(16);
+    randomSeedVerifiedGenerationLoop(name, salt);
+  }
+  
+  // --- external signal handlers, visible to outside ---
+  
+  gardens.extSendNewSeedCasual = function() {
+    sendNewSeedCasual();
+  }
+  
+  gardens.extSendNewSeedVerified = function() {
+    sendNewSeedVerified();
+  }
+  
+  gardens.extSendResetGame = function() {
+    sendResetGame();
   }
   
 }(window.gardens = window.gardens || {}));
