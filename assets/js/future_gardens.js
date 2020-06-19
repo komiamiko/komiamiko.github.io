@@ -222,8 +222,9 @@
           function(hash) {
             hash = new Uint8Array(hash);
             let tickNow = window.performance.now();
-            let accept = (hash[0] | hash[1]) === 0;
-            ++randomSeedVerifiedIters;
+            let accept = (hash[0] | hash[1] | hash[2] & 240) === 0;
+            let nIters = ++randomSeedVerifiedIters;
+            let nTick = randomSeedVerifiedTick;
             let seedEl = document.getElementById("fgardens-settings-seed");
             let notifyEl = document.getElementById("fgardens-settings-verified-seed-display");
             if(seedEl.value !== "") {
@@ -231,10 +232,17 @@
               seedEl.value = seedString;
               clearChildren(notifyEl);
               notifyEl.appendChild(makep("Generated seed in "
-                + randomSeedVerifiedIters.toString() + " attempts, in "
-                + ((tickNow - randomSeedVerifiedTick) / 1000).toFixed(2) + " seconds: "
+                + nIters.toString() + " attempts, in "
+                + ((tickNow - nTick) / 1000).toFixed(2) + " seconds: "
                 + seedString));
             } else {
+              if((nIters & 0xffff) === 0) {
+                clearChildren(notifyEl);
+                notifyEl.appendChild(makep("Still trying to generate a seed!"))
+                notifyEl.appendChild(makep("So far, used "
+                  + nIters.toString() + " attempts, in "
+                  + ((tickNow - nTick) / 1000).toFixed(2) + " seconds"));
+              }
               for(let i = 0; i < 16; ++i) {
                 ++salt[i];
                 if(salt[i] !== 0)break;
@@ -275,8 +283,16 @@
     notifyEl.appendChild(makep("Generating verified seed..."));
     randomSeedVerifiedIters = 0;
     randomSeedVerifiedTick = window.performance.now();
-    let salt = randomBytes(16);
-    randomSeedVerifiedGenerationLoop(name, salt);
+    /*
+     * You'd think that since it's asynchronous (not multi-threaded!)
+     * making multiple "workers" wouldn't make it any faster.
+     * In practice, it does get faster (5x on my machine -Komi).
+     * We create several workers to try and saturate the potential speed.
+     */
+    for(let i = 0; i < 16; ++i) {
+      let salt = randomBytes(16);
+      randomSeedVerifiedGenerationLoop(name, salt);
+    }
   }
   
   // --- external signal handlers, visible to outside ---
