@@ -216,16 +216,16 @@ With new rules, new plants and challenges await.
 
 </div>
 
-<input type="button" value="Reset game with new seed" onclick="gardens.sendResetGame()">
+<input type="button" value="Reset game with new seed" onclick="gardens.extSendResetGame()">
 
 </div>
 
 <label for="fgardens-settings-seed">World seed</label>
 <input type="text" id="fgardens-settings-seed" name="fgardens-settings-seed">
-<input type="button" value="Generate a new seed" onclick="gardens.sendNewSeedCasual()">
+<input type="button" value="Generate a new seed" onclick="gardens.extSendNewSeedCasual()">
 
 Any seed is fine for casual play.
-For more competitive use, the game creator only officially endorses seeds which follow a specific format and meet a hash-based proof of work (POW).
+For more competitive use, the game creator only officially endorses seeds meeting certain requirements, which the game will indicate are "verified".
 In a setting where multiple people are to use the same seed, it is recommended to use the name of the event or group in place of the individual player's name.
 
 Generation of this seed may take some time depending on your computer.
@@ -233,7 +233,10 @@ When the seed is ready, it will be entered into the seed box.
 
 <label for="fgardens-settings-name">Your name</label>
 <input type="text" id="fgardens-settings-name" name="fgardens-settings-name">
-<input type="button" value="Generate verified seed" onclick="gardens.sendNewSeedVerified()">
+<input type="button" value="Generate verified seed" onclick="gardens.extSendNewSeedVerified()">
+
+<div id="fgardens-settings-verified-seed-display">
+</div>
 
 </div>
 
