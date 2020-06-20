@@ -92,7 +92,7 @@
    * The first 11 values of Sylvester's sequence,
    * which are all of them that fit in a float.
    */
-  let sylvester = [
+  const sylvester = [
     2,
     3,
     7,
@@ -105,6 +105,12 @@
     1.6550664732451996e+104,
     2.7392450308603032e+208,
     ];
+  
+  /**
+   * = 2^1000
+   * Numbers are usually capped here in regular play.
+   */
+  const normLimit = 1.0715086071862673e+301;
   
   /**
    * From a string, derive a random state.
@@ -552,24 +558,55 @@
   }
   
   /**
+   * Get a garden. If not present, returns a freshly created blank
+   * garden, changes to which will not be reflected in the GameState.
+   * If you know you'll be modifying the garden immediately, pass make=1
+   * instead, which will cause the garden to be added.
+   */
+  const getGarden = function(gardens, make) {
+    let index = bsearch(gardens, 0, gardens.length, ordinal, function(u, v){return ordCmp(u[0], v) < 0;});
+    if(index < gardens.length && ordCmp(gardens[index][0], ordinal) === 0) {
+      return gardens[index];
+    }
+    let g = makeGarden(ordinal);
+    if(make) {
+      gardens.splice(index, 0, g);
+    }
+    return g;
+  }
+  
+  /**
    * Low-ish level helper.
    * With the current gardens, for the specified ordinal,
    * to gain to specified amount of mana, what is required?
    * Returns 0 to indicate it is free, 1 to indicate it is not possible,
    * otherwise is in the form [ordinal, mana], which is guaranteed
    * to be a lesser ordinal.
+   * Ignores boost scaling.
    */
   const enterGardenRequired = function(gardens, ordinal, addMana) {
-    // TODO logic!
+    let x = ordinal[0], y = ordinal[1];
+    if(y === 0 && x === 0)return addMana===1?0:1;
+    let imana = getGarden(gardens, ordinal);
+    if(x !== 0) {
+      let exp = 30 + (imana + 1) * (addMana - 1);
+      if(exp >= normLimit)return 1;
+      let cost = Math.pow(2, exp);
+      return [[x-1,y], cost];
+    }
+    let step = 3 + imana;
+    return [[step,y-1], 2];
   }
   
   /**
    * Low-ish level helper.
    * With the current gardens, how much mana for the specified ordinal
    * can be redeemed at once?
+   * Ignores boost scaling.
    */
   const enterGardenReady = function(gardens, ordinal) {
-    if(cmpOrd([0,0], ordinal) === 0)return 1;// placeholder to help testing
+    let x = ordinal[0], y = ordinal[1]; // wy + x
+    if(y === 0 && x === 0)return 1;
     return 0;// TODO placeholder
   }
   
@@ -663,9 +700,9 @@
     let ordinalEnc = encodeOrdinal(ordinal);
     let gardenPrefix = getGardenPrefix(ordinal);
     // build big stuff
-    let outerEl = document.createElement("blockquote");
+    let outerEl = document.createElement("div");
     let idpfx = outerEl.id = "fgardens-garden-" + ordinalEnc;
-    outerEl.style["font-style"] = "normal";
+    outerEl.className = "fgardens-lblock variant-1"
     let titleEl = document.createElement("h3");
     titleEl.appendChild(document.createTextNode(upperWords(getGardenName(ordinal))));
     outerEl.appendChild(titleEl);
@@ -675,16 +712,22 @@
     mpEl.style["display"] = "grid";
     mpEl.style["grid-template-columns"] = "repeat(3, 1fr)";
     let manaEl = document.createElement("div");
+    manaEl.className = "fgardens-lblock variant-2";
     manaEl.appendChild(document.createTextNode(upperWords(joinWords(gardenPrefix, "mana"))));
     manaEl.appendChild(document.createElement("br"));
     manaEl.appendChild(domExprFromNumber(mana));
     manaEl.appendChild(document.createElement("br"));
+    let manaReady = enterGardenReady(gardens, ordinal);
     manaEl.appendChild(makeDomButton(
-      document.createTextNode("Get 1"), // TODO use actual ready value
+      document.createTextNode("Get " + manaReady.toString()),
       undefined // TODO actual incrementer
     ));
+    let reqNext = enterGardenRequired(gardens, ordinal, manaReady + 1);
     manaEl.appendChild(document.createElement("br"));
-    manaEl.appendChild(document.createTextNode("Free")); // TODO make it based on requirements
+    manaEl.appendChild(document.createTextNode(
+      manaReady===0?"Free":manaReady===1?"Cannot get more at once":
+        "Need " + reqNext[1].toString() + " " + joinWords(getGardenPrefix(reqNext[0]), "mana")
+    ));
     mpEl.appendChild(manaEl);
     outerEl.appendChild(mpEl);
     return outerEl;
@@ -739,11 +782,9 @@
         let ao = aos[j];
         if(ao in cgardensKeys)continue;
         cgardensKeys[ao] = 1;
-        if(enterGardenReady(gardens, ao)) {
-          cgardens.splice(
-            bsearch(gardens, 0, gardens.length, ao, function(u, v){return ordCmp(u[0],v) < 0;}),
-            0, makeGarden(ao));
-        }
+        cgardens.splice(
+          bsearch(gardens, 0, gardens.length, ao, function(u, v){return ordCmp(u[0],v) < 0;}),
+          0, makeGarden(ao));
       }
     }
     if(cgardens.length === 0) {
@@ -829,10 +870,22 @@
   }
   
   /**
+   * Call this once to add the CSS file to the doc.
+   */
+  const applyStyles = function() {
+    let styleEl = document.createElement("link");
+    styleEl.setAttribute("rel", "stylesheet");
+    styleEl.setAttribute("type", "text/css");
+    styleEl.setAttribute("href", "/assets/css/future_gardens.css");
+    document.head.appendChild(styleEl);
+  }
+  
+  /**
    * Call this once when the page is loaded to start up the game.
    */
   const initGame = function() {
     checkCompatibility();
+    applyStyles();
     loadGame();
     
   }

@@ -1,0 +1,22 @@
+.fgardens-lblock.variant-1 {
+  border-color: #a9e533;
+}
+
+.fgardens-lblock.variant-2 {
+  border-color: #ffc514;
+}
+
+.fgardens-lblock.variant-3 {
+  border-color: #ff986e;
+}
+
+.fgardens-lblock.variant-4 {
+  border-color: #ff81d6;
+}
+
+.fgardens-lblock {
+  border-width: 0 0 0 3px;
+  border-style: solid;
+  margin: 0;
+  padding: 0 0 0 20px;
+}
