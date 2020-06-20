@@ -539,8 +539,8 @@ This is actually quite generous for a first run!
 Besides having nice math properties, using Sylvester's sequence as the bases also makes for naturally interesting spacing of milestones.
 It's not quite repetitive, things don't line up, but there's no randomness and no fine tuning, just some simple math.
 
-Only the first *5* values of Sylvester's sequence are actually used, since further ones would contribute so little to the multiplier as to be useless.
-The remaining *5* values have been slightly increased to compensate, so the efficiency overall is still *0.72719*.
+Only the first *5* values of Sylvester's sequence (*2, 3, 7, 43, 1807*) are actually used, since further ones would contribute so little to the multiplier as to be nearly useless.
+The remaining *5* values have been very slightly increased to compensate, so the efficiency overall is still the same as if the sequence wasn't truncated.
 
 I just need to point out one more thing for this story to be complete.
 As you'd notice if you played the game for a while, having higher ordinals makes lower tiers go by faster.
