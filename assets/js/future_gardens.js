@@ -273,6 +273,25 @@
     return document.cookie = key + "=" + value;
   }
   
+  /**
+   * Low level binary search routine.
+   * Returns index i in [l, r] where i
+   * is how many elements in a satisfy
+   * lt(a, v)
+   * lt should be used as less than or less than or equal to
+   */
+  const bsearch = function(a, l, r, v, lt) {
+    while(l < r) {
+      let m = (l + r) >>> 1;
+      if(lt(a[m], v)) {
+        l = m + 1;
+      } else {
+        r = m;
+      }
+    }
+    return l;
+  }
+  
   // --- other useful utilities ---
   
   /**
@@ -282,6 +301,21 @@
     if(!a)return b;
     if(!b)return a;
     return a + " " + b;
+  }
+  
+  /**
+   * Convert first letter of whole string to uppercase
+   */
+  const upperFirst = function(s) {
+    if(!s)return s;
+    return s[0].toUpperCase() + s.slice(1);
+  }
+  
+  /**
+   * Convert first letter of each word to uppercase
+   */
+  const upperWords = function(s) {
+    return s.replace(/\b\w/g, l => l.toUpperCase());
   }
   
   /**
@@ -367,6 +401,27 @@
   }
   
   /**
+   * Helper to make a DOM button node with inner content
+   * and function to call when clicked
+   */
+  const makeDomButton = function(inner, onclick) {
+    let result = document.createElement("button");
+    result.type = "button";
+    result.appendChild(inner);
+    result.addEventListener("mousedown", onclick); // use onmousedown to be more responsive
+    return result;
+  }
+  
+  /**
+   * Compares ordinals a and b in the usual way.
+   */
+  const ordCmp = function(a, b) {
+    let diff = a[1] - b[1];
+    if(diff)return diff;
+    return a[0] - b[0];
+  }
+  
+  /**
    * Derive a random seed from a name and a 128-bit
    * (16 byte) salt as a Uint8Array.
    */
@@ -443,6 +498,15 @@
   let cacheGardenPrefix, cachePlantNameIndex;
   
   /**
+   * Make a blank garden.
+   */
+  const makeGarden = function(ordinal) {
+    let plants = new Uint32Array(sylvester.length);
+    let comp = new Uint8Array(sylvester.length);
+    return [ordinal, 0, plants, comp, undefined];
+  }
+  
+  /**
    * Lightweight container for the inner game state -
    * plants, gardens, challenges, etc.
    * It won't contain things like the update time, best challenge order, etc.
@@ -488,6 +552,28 @@
   }
   
   /**
+   * Low-ish level helper.
+   * With the current gardens, for the specified ordinal,
+   * to gain to specified amount of mana, what is required?
+   * Returns 0 to indicate it is free, 1 to indicate it is not possible,
+   * otherwise is in the form [ordinal, mana], which is guaranteed
+   * to be a lesser ordinal.
+   */
+  const enterGardenRequired = function(gardens, ordinal, addMana) {
+    // TODO logic!
+  }
+  
+  /**
+   * Low-ish level helper.
+   * With the current gardens, how much mana for the specified ordinal
+   * can be redeemed at once?
+   */
+  const enterGardenReady = function(gardens, ordinal) {
+    if(cmpOrd([0,0], ordinal) === 0)return 1;// placeholder to help testing
+    return 0;// TODO placeholder
+  }
+  
+  /**
    * Get the prefix for a particular garden, based on the ordinal.
    */
   const getGardenPrefix = function(ordinal) {
@@ -526,6 +612,9 @@
     cacheGardenPrefix[ordinal] = result;
     return result;
   }
+  const getGardenName = function(ordinal) {
+    return joinWords(getGardenPrefix(ordinal), "gardens");
+  }
   
   /**
    * Get the name of a particular plant.
@@ -558,6 +647,47 @@
       poolPlantNamePrefix[ipfx[plantIndex]] +
       poolPlantNameSuffix[isfx[plantIndex]]
     );
+  }
+  
+  /**
+   * Given a garden, build a DOM node for it.
+   */
+  const makeDomGarden = function(garden) {
+    // grab garden data
+    let ordinal = garden[0];
+    let mana = garden[1];
+    let plants = garden[2];
+    let challengeCompl = garden[3];
+    let challengeActive = garden[4];
+    // get some local vars
+    let ordinalEnc = encodeOrdinal(ordinal);
+    let gardenPrefix = getGardenPrefix(ordinal);
+    // build big stuff
+    let outerEl = document.createElement("blockquote");
+    let idpfx = outerEl.id = "fgardens-garden-" + ordinalEnc;
+    outerEl.style["font-style"] = "normal";
+    let titleEl = document.createElement("h3");
+    titleEl.appendChild(document.createTextNode(upperWords(getGardenName(ordinal))));
+    outerEl.appendChild(titleEl);
+    // mana and plants share a grid with auto wrapping
+    let mpEl = document.createElement("div");
+    mpEl.id = idpfx + "-mp";
+    mpEl.style["display"] = "grid";
+    mpEl.style["grid-template-columns"] = "repeat(3, 1fr)";
+    let manaEl = document.createElement("div");
+    manaEl.appendChild(document.createTextNode(upperWords(joinWords(gardenPrefix, "mana"))));
+    manaEl.appendChild(document.createElement("br"));
+    manaEl.appendChild(domExprFromNumber(mana));
+    manaEl.appendChild(document.createElement("br"));
+    manaEl.appendChild(makeDomButton(
+      document.createTextNode("Get 1"), // TODO use actual ready value
+      undefined // TODO actual incrementer
+    ));
+    manaEl.appendChild(document.createElement("br"));
+    manaEl.appendChild(document.createTextNode("Free")); // TODO make it based on requirements
+    mpEl.appendChild(manaEl);
+    outerEl.appendChild(mpEl);
+    return outerEl;
   }
   
   /**
@@ -595,6 +725,47 @@
     clearChildren(ijn1);
     ijn1.appendChild(document.createTextNode(getPlantName([0,0], 1)));
     // make gardens
+    let cgardensKeys = {};
+    let cgardens = [];
+    let gardens = lastGameState.gardens;
+    let gn = gardens.length;
+    for(let i = 0; i < gn; ++i) {
+      let g = gardens[i];
+      let o = g[0];
+      cgardens.push(g);
+      cgardensKeys[o] = 1;
+      let aos = [[o[0]+1,o[1]],[0,o[1]+1]];
+      for(let j = 0; j < aos.length; ++j) {
+        let ao = aos[j];
+        if(ao in cgardensKeys)continue;
+        cgardensKeys[ao] = 1;
+        if(enterGardenReady(gardens, ao)) {
+          cgardens.splice(
+            bsearch(gardens, 0, gardens.length, ao, function(u, v){return ordCmp(u[0],v) < 0;}),
+            0, makeGarden(ao));
+        }
+      }
+    }
+    if(cgardens.length === 0) {
+      cgardens.push(makeGarden([0,0]));
+    }
+    clearChildren(document.getElementById("fgardens-container-group-2"));
+    clearChildren(document.getElementById("fgardens-container-group-1"));
+    clearChildren(document.getElementById("fgardens-container-group-0"));
+    gn = cgardens.length;
+    for(let i = 0; i < gn; ++i) {
+      let g = cgardens[i];
+      let o = g[0];
+      let gtcontainer;
+      if(ordCmp([0,1], o) <= 0) { // t2 garden in UI
+        gtcontainer = document.getElementById("fgardens-container-group-2");
+      } else if(ordCmp([1,0], o) <= 0) { // t1 garden in UI
+        gtcontainer = document.getElementById("fgardens-container-group-1");
+      } else { // t0 garden in UI
+        gtcontainer = document.getElementById("fgardens-container-group-0");
+      }
+      gtcontainer.appendChild(makeDomGarden(g));
+    }
   }
   
   /**
