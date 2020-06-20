@@ -89,8 +89,9 @@
     ;
   
   /**
-   * The first 11 values of Sylvester's sequence,
-   * which are all of them that fit in a float.
+   * The first 5 values of Sylvester's sequence.
+   * More can fit in a float, but they'd contribute
+   * so little boost that we don't bother including them.
    */
   const sylvester = [
     2,
@@ -98,12 +99,17 @@
     7,
     43,
     1807,
-    3263443,
-    10650056950807,
-    1.1342371305542185e+26,
-    1.2864938683278672e+52,
-    1.6550664732451996e+104,
-    2.7392450308603032e+208,
+    ];
+  
+  /**
+   * Corresponding plant boost base.
+   */
+  const boostBase = [
+    1.2592800377900963,
+    1.3138458210347692,
+    1.2708659952951022,
+    1.0879022759778099,
+    1.004145915356579,
     ];
   
   /**
@@ -585,13 +591,13 @@
    * Compute the inner boost.
    */
   const getBoostInner = function(g) {
-    let s = sylvester;
+    let s = boostBase;
     let sn = s.length;
     let mult = 1;
     let plants = g[2];
     for(let i = 0; i < sn; ++i) {
       let x = s[i];
-      let y = Math.pow(x - Math.sqrt(x) + 1, plants[i] / x);
+      let y = Math.pow(x, plants[i]);
       mult *= y;
     }
     mult = Math.min(normLimit, mult);
@@ -731,11 +737,12 @@
     titleEl.appendChild(document.createTextNode(upperWords(getGardenName(ordinal))));
     outerEl.appendChild(titleEl);
     // mana and plants share a grid with auto wrapping
-    let mpEl = document.createElement("div");
+    let mpEl = document.createElement("div"); // [mana, p0, p1, ...]
     mpEl.id = idpfx + "-mp";
-    mpEl.style["display"] = "grid";
-    mpEl.style["grid-template-columns"] = "repeat(3, 1fr)";
-    let manaEl = document.createElement("div");
+    mpEl.className = "fgardens-mp";
+    // make mana
+    let manaEl = document.createElement("div"); // [.. nmana . button . req]
+    manaEl.id = idpfx + "-mana";
     manaEl.className = "fgardens-lblock variant-2";
     manaEl.appendChild(document.createTextNode(upperWords(joinWords(gardenPrefix, "mana"))));
     manaEl.appendChild(document.createElement("br"));
@@ -752,11 +759,48 @@
     ));
     let reqNext = enterGardenRequired(gardens, ordinal, manaReady + 1);
     manaEl.appendChild(document.createElement("br"));
-    manaEl.appendChild(document.createTextNode(
-      reqNext===0?"Free":reqNext===1?"Cannot get more at once":
-        "Need " + reqNext[1].toString() + " " + joinWords(getGardenPrefix(reqNext[0]), "mana to get more at once")
-    ));
+    manaEl.appendChild(
+      mana>=normLimit?document.createTextNode("Already maxed"):
+      reqNext===0?document.createTextNode("Free"):
+      reqNext===1?document.createTextNode("Cannot get more at once"):
+      function(){
+        let all = document.createElement("span");
+        all.appendChild(document.createTextNode("Need "));
+        all.appendChild(domExprFromNumber(reqNext[1]));
+        all.appendChild(document.createTextNode(" " + joinWords(getGardenPrefix(reqNext[0]), "mana to get more at once")));
+        return all;
+      }()
+    );
     mpEl.appendChild(manaEl);
+    // make plants
+    for(let i = 0; i < plants.length; ++i) {
+      let rank = plants[i];
+      let plantEl = document.createElement("div"); // [rank ...... cost]
+      plantEl.id = idpfx + "-plant-" + i.toString();
+      plantEl.className = "fgardens-lblock variant-3";
+      plantEl.appendChild(document.createTextNode(rank===0?"No":"Rank "+rank.toString()));
+      plantEl.appendChild(document.createTextNode(" "+getPlantName(ordinal, i)));
+      plantEl.appendChild(document.createElement("br"));
+      plantEl.appendChild(document.createTextNode("Grants +" + ((boostBase[i]-1)*100).toFixed(1) + "% power per rank"));
+      plantEl.appendChild(document.createElement("br"));
+      plantEl.appendChild(makeDomButton(
+        document.createTextNode("Increase rank"),
+        undefined // TODO actual incrementer
+      ));
+      plantEl.appendChild(document.createElement("br"));
+      let reqNext = Math.pow(sylvester[i], rank+1);
+      plantEl.appendChild(
+        reqNext>normLimit?document.createTextNode("Already maxed"):
+        function(){
+          let all = document.createElement("span");
+          all.appendChild(document.createTextNode("Need "));
+          all.appendChild(domExprFromNumber(reqNext));
+          all.appendChild(document.createTextNode(" " + joinWords(getGardenPrefix(ordinal), "mana")));
+          return all;
+        }()
+      );
+      mpEl.appendChild(plantEl);
+    }
     outerEl.appendChild(mpEl);
     return outerEl;
   }

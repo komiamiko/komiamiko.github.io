@@ -3,15 +3,27 @@
 }
 
 .fgardens-lblock.variant-2 {
-  border-color: #ffc514;
+  border-color: #f9ce00;
 }
 
 .fgardens-lblock.variant-3 {
-  border-color: #ff986e;
+  border-color: #ffaf41;
 }
 
 .fgardens-lblock.variant-4 {
+  border-color: #ff8d86;
+}
+
+.fgardens-lblock.variant-5 {
   border-color: #ff81d6;
+}
+
+.fgardens-lblock.variant-6 {
+  border-color: #ff98ff;
+}
+
+.fgardens-lblock.variant-7 {
+  border-color: #cfbdff;
 }
 
 .fgardens-lblock {
@@ -19,4 +31,10 @@
   border-style: solid;
   margin: 0;
   padding: 0 0 0 20px;
+}
+
+.fgardens-mp {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
 }
