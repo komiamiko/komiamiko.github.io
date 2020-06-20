@@ -274,7 +274,10 @@ But at least your scheme can map it out.
 
 {% include collapser.markdown %}
 
+<div>
+
 <div id="fgardens-container-ordinal-counter">
+</div>
 
 When you're ready, you can reveal the ordinals that you've been collecting all along.
 
@@ -283,8 +286,6 @@ When you're ready, you can reveal the ordinals that you've been collecting all a
   <option value="fancy" selected="selected">Flowery names</option>
   <option value="ordinal">Ordinals</option>
 </select>
-
-</div>
 
 </div>
 
