@@ -179,7 +179,7 @@
    */
   const randomBytes = function(n) {
     s = new Uint8Array(n);
-    window.crypto.getRandomValues(s);
+    crypto.getRandomValues(s);
     return s;
   }
   
@@ -218,11 +218,23 @@
   const decodeInt = function(si) {
     let r = si[0];
     let i = si[1];
-    let t = window.parseInt(r.substring(i, i + 2), 32);
+    let t = parseInt(r.substring(i, i + 2), 32);
     i += 2;
-    let n = window.parseInt(r.substring(i, i + t), 32);
+    let n = parseInt(r.substring(i, i + t), 32);
     si[1] = i + t;
     return n;
+  }
+  
+  /**
+   * Get/set cookie value as string.
+   */
+  const cookieGet = function(key) {
+    let cookie = document.cookie;
+    if(!cookie)return "";
+    return cookie.split('; ').find(row => row.startsWith(key + "=")).split("=")[1]
+  }
+  const cookieSet = function(key, value) {
+    return document.cookie = key + "=" + value;
   }
   
   // --- other useful utilities ---
@@ -237,43 +249,13 @@
   }
   
   /**
-   * Commonly used, make a single paragraph node
-   */
-  const makep = function(text) {
-    let textEl = document.createTextNode(text);
-    let paraEl = document.createElement("p");
-    paraEl.appendChild(textEl);
-    return paraEl;
-  }
-  
-  /**
-   * Convert a number to a DOM element displaying that number.
-   * Intended for numbers that may potentially be very large.
-   */
-  const domNumberToString = function(n) {
-    n = Math.floor(n);
-    // limiting to 4 digits is best for quick reading
-    if(n < 10000) {
-      return document.createTextNode(n.toString());
-    } else {
-      let l = window.Math.log2(n);
-      let r = document.createElement("span");
-      r.appendChild(document.createTextNode("2"));
-      let s = document.createElement("sup");
-      s.appendChild(document.createTextNode(l.toFixed(2)));
-      r.appendChild(s);
-      return r;
-    }
-  }
-  
-  /**
    * Get an expression for the addition of 2 expressions, as DOM elements.
    * Performs basic simplification.
    */
-  const domAdd = function(a, b) {
+  const domExprAdd = function(a, b) {
     // degenerate cases: 0 + x, x + 0
-    if(a.nodeName === "#text" && a.textContent === "0")return b;
-    if(b.nodeName === "#text" && b.textContent === "0")return a;
+    if(a.nodeName === "#text" && a.nodeValue === "0")return b;
+    if(b.nodeName === "#text" && b.nodeValue === "0")return a;
     // general case
     let r = document.createElement("span");
     r.appendChild(a);
@@ -287,13 +269,13 @@
    * Performs basic simplification.
    * Uses implicit multiplication, so no multiplication symbol is added.
    */
-  const domMul = function(a, b) {
+  const domExprMul = function(a, b) {
     // degenerate cases: 0 x, x 0
-    if(a.nodeName === "#text" && a.textContent === "0")return a;
-    if(b.nodeName === "#text" && b.textContent === "0")return b;
+    if(a.nodeName === "#text" && a.nodeValue === "0")return a;
+    if(b.nodeName === "#text" && b.nodeValue === "0")return b;
     // degenerate cases: 1 x, x 1
-    if(a.nodeName === "#text" && a.textContent === "1")return b;
-    if(b.nodeName === "#text" && b.textContent === "1")return a;
+    if(a.nodeName === "#text" && a.nodeValue === "1")return b;
+    if(b.nodeName === "#text" && b.nodeValue === "1")return a;
     // general case
     let r = document.createElement("span");
     r.appendChild(a);
@@ -305,13 +287,13 @@
    * Get an expression for the power of 2 expressions, as DOM elements.
    * Performs basic simplification.
    */
-  const domPow = function(a, b) {
+  const domExprPow = function(a, b) {
     // degenerate cases: 0^x, 1^x
-    if(a.nodeName === "#text" && (a.textContent === "0" || a.textContent === "1"))return a;
+    if(a.nodeName === "#text" && (a.nodeValue === "0" || a.nodeValue === "1"))return a;
     // degenerate cases: x^1
-    if(b.nodeName === "#text" && b.textContent === "1")return a;
+    if(b.nodeName === "#text" && b.nodeValue === "1")return a;
     // degenerate cases: x^0
-    if(b.nodeName === "#text" && b.textContent === "0")return document.createTextNode("1");
+    if(b.nodeName === "#text" && b.nodeValue === "0")return document.createTextNode("1");
     // general case
     let r = document.createElement("span");
     r.appendChild(a);
@@ -319,6 +301,24 @@
     s.appendChild(b);
     r.appendChild(s);
     return r;
+  }
+  
+  /**
+   * Convert a number to a DOM element displaying that number.
+   * Intended for numbers that may potentially be very large.
+   */
+  const domExprFromNumber = function(n) {
+    n = Math.floor(n);
+    // limiting to 4 digits is best for quick reading
+    if(n < 10000) {
+      return document.createTextNode(n.toString());
+    } else {
+      let l = Math.log2(n);
+      return domExprPow(
+        document.createTextNode("2"),
+        document.createTextNode(l.toFixed(2))
+      );
+    }
   }
   
   /**
@@ -349,14 +349,14 @@
     let seedBytes = new TextEncoder().encode(seedString);
     let prefix = new TextEncoder().encode("Future Gardens verified seed");
     let message1 = concatBytes(prefix, seedBytes);
-    window.crypto.subtle.digest("SHA-256", message1).then(
+    crypto.subtle.digest("SHA-256", message1).then(
       function(hash1) {
         hash1 = new Uint8Array(hash1);
         let message2 = concatBytes(prefix, hash1);
-        window.crypto.subtle.digest("SHA-256", message2).then(
+        crypto.subtle.digest("SHA-256", message2).then(
           function(hash) {
             hash = new Uint8Array(hash);
-            let tickNow = window.performance.now();
+            let tickNow = performance.now();
             let accept = (hash[0] | hash[1] | hash[2] & 240) === 0;
             let nIters = ++randomSeedVerifiedIters;
             let nTick = randomSeedVerifiedTick;
@@ -393,6 +393,9 @@
   
   // --- gameplay handling ---
   
+  let gameRandomSeed, gameRandomState, gameRandomHash;
+  let lastGameState, lastGameTime;
+  
   /**
    * Lightweight container for the inner game state -
    * plants, gardens, challenges, etc.
@@ -403,7 +406,11 @@
    * Prefer to use patches and undo them later.
    *
    * As implemented:
-   * gardens = array of [ordinal, mana, plants, ]
+   * gardens = array of [ordinal, mana, plants, challenge completions, active challenge]
+   * mana = number of mana
+   * ordinal = array of [x, y] meaning wx + y
+   * plants = array of [nplants0, plants1, ...] can be 0
+   * challenge completions = array of [comp0, comp1, ...] can be 0
    */
   const GameState = class {
     /**
@@ -432,6 +439,68 @@
     }
   }
   
+  /**
+   * Reset the game.
+   * Writes history of current timeline (if any),
+   * then starts a new timeline.
+   * All caches will be cleared, and game state will be reset.
+   */
+  const resetGame = function() {
+    // create record, if there is any state
+    if(lastGameState !== undefined) {
+      // TODO
+    }
+    // clear all caches
+    gameRandomHash = undefined;
+    // make blank state
+    gameRandomSeed = document.getElementById("fgardens-settings-seed").value;
+    gameRandomState = randomDeriveState(gameRandomState);
+    lastGameState = new GameState();
+    lastGameTime = Date.now();
+  }
+  
+  /**
+   * Do all setup needed to get the game to a valid starting state,
+   * from an arbitrary (possibly unitialized) current state.
+   */
+  const setupGameFirstTime = function() {
+    // handle name and seed
+    let nameEl = document.getElementById("fgardens-settings-name");
+    let name = nameEl.value = "anonymous";
+    let seedString = randomSeedStringFromName(name);
+    let seedEl = document.getElementById("fgardens-settings-seed");
+    seedEl.value = seedString;
+    // invoke a reset
+    resetGame();
+  }
+  
+  /**
+   * Load the game from the cookie.
+   */
+  const loadGame = function() {
+    let savePack = cookieGet("future_gardens_local");
+    if(savePack === "") {
+      setupGameFirstTime();
+      return;
+    }
+    // TODO actual load
+  }
+  
+  /**
+   * Save the game to the cookie.
+   */
+  const saveGame = function() {
+    // TODO actual save
+  }
+  
+  /**
+   * Call this once when the page is loaded to start up the game.
+   */
+  const initGame = function() {
+    loadGame();
+    
+  }
+  
   // --- external signal handlers, actual implementation ---
   
   /**
@@ -457,7 +526,7 @@
     clearChildren(notifyEl);
     notifyEl.appendChild(document.createTextNode("Generating verified seed..."));
     randomSeedVerifiedIters = 0;
-    randomSeedVerifiedTick = window.performance.now();
+    randomSeedVerifiedTick = performance.now();
     /*
      * You'd think that since it's asynchronous (not multi-threaded!)
      * making multiple "workers" wouldn't make it any faster.
@@ -483,5 +552,9 @@
   gardens.extSendResetGame = function() {
     sendResetGame();
   }
+  
+  // --- game start up ---
+  
+  window.onload = initGame;
   
 }(window.gardens = window.gardens || {}));
