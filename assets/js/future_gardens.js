@@ -163,6 +163,22 @@
   }
   
   /**
+   * Get a permutation of length n from a using state s.
+   */
+  const randomGetPermutePartial = function(s, a, n) {
+    if(a.length < n)return undefined;
+    let result = [];
+    let counter = 0;
+    while(result.length < n) {
+      let k = randomGetNext(randomConcatState(s, randomDeriveState(counter.toString())), a.length);
+      ++counter;
+      if(result.includes(k))continue;
+      result.push(k);
+    }
+    return result;
+  }
+  
+  /**
    * Concatenate 2 Uint8Array instances.
    */
   const concatBytes = function(s, t) {
@@ -226,18 +242,47 @@
   }
   
   /**
+   * Encode/decode ordinal
+   */
+  const encodeOrdinal = function(ordinal) {
+    return encodeInt(ordinal[1]) + encodeInt(ordinal[0]);
+  }
+  const decodeOrdinal = function(si) {
+    let y = decodeInt(si);
+    let x = decodeInt(si);
+    return [x, y];
+  }
+  
+  /**
    * Get/set cookie value as string.
    */
   const cookieGet = function(key) {
+    let kpfx = key + "=";
     let cookie = document.cookie;
-    if(!cookie)return "";
-    return cookie.split('; ').find(row => row.startsWith(key + "=")).split("=")[1]
+    let decls = cookie.split("; ");
+    let dn = decls.length;
+    for(let i = 0; i < dn; ++i) {
+      let d = decls[i];
+      if(d.startsWith(kpfx)) {
+        return d.substring(kpfx.length);
+      }
+    }
+    return "";
   }
   const cookieSet = function(key, value) {
     return document.cookie = key + "=" + value;
   }
   
   // --- other useful utilities ---
+  
+  /**
+   * Join words separated by a space, but if one is empty, just return the other.
+   */
+  const joinWords = function(a, b) {
+    if(!a)return b;
+    if(!b)return a;
+    return a + " " + b;
+  }
   
   /**
    * Clear a DOM element's children.
@@ -395,6 +440,7 @@
   
   let gameRandomSeed, gameRandomState, gameRandomHash;
   let lastGameState, lastGameTime;
+  let cacheGardenPrefix, cachePlantNameIndex;
   
   /**
    * Lightweight container for the inner game state -
@@ -407,10 +453,12 @@
    *
    * As implemented:
    * gardens = array of [ordinal, mana, plants, challenge completions, active challenge]
-   * mana = number of mana
-   * ordinal = array of [x, y] meaning wx + y
-   * plants = array of [nplants0, plants1, ...] can be 0
-   * challenge completions = array of [comp0, comp1, ...] can be 0
+   *   sorted by ascending ordinal
+   * mana = number of mana, can be 0 or higher
+   * ordinal = array of [x, y] meaning wy + x
+   * plants = array of [nplants0, plants1, ...] can be 0 or higher
+   * challenge completions = array of [comp0, comp1, ...] can be 0 or 1
+   * active challenge = index of active challenge, or undefined
    */
   const GameState = class {
     /**
@@ -440,6 +488,116 @@
   }
   
   /**
+   * Get the prefix for a particular garden, based on the ordinal.
+   */
+  const getGardenPrefix = function(ordinal) {
+    if(ordinal in cacheGardenPrefix) {
+      return cacheGardenPrefix[ordinal];
+    }
+    let x = ordinal[0], y = ordinal[1]; // wy + x
+    let z;
+    let first = "";
+    z = x % 35;
+    x = (x - z) / 35;
+    if(z < 4) {
+      let a = [];
+      while(z > 0) {
+        --z;
+        a.push("future");
+      }
+      first = a.join(" ");
+    } else {
+      first = "hyper-" + z.toString() + " future";
+    }
+    if(x > 0) {
+      first = joinWords(first, (x > 1?x.toString()+"-":"") + "stable");
+    }
+    let second = "";
+    z = y % 6;
+    y = (y - z) / 6;
+    if(y > 0)++z;
+    if(z > 0) {
+      second = (z > 1?"hyper-"+z.toString()+" ":"") + "eventual";
+    }
+    if(y > 0) {
+      second = joinWords((y > 1?y.toString()+"-":"") + "recursive", second);
+    }
+    let result = joinWords(first, second);
+    cacheGardenPrefix[ordinal] = result;
+    return result;
+  }
+  
+  /**
+   * Get the name of a particular plant.
+   */
+  const getPlantName = function(ordinal, plantIndex) {
+    if(ordinal in cachePlantNameIndex) {
+      let ipack = cachePlantNameIndex[ordinal];
+      return joinWords(
+        getGardenPrefix(ordinal),
+        poolPlantNamePrefix[ipack[0][plantIndex]] +
+        poolPlantNameSuffix[ipack[1][plantIndex]]
+      );
+    }
+    let rand0 = gameRandomState, rand1;
+    rand0 = randomConcatState(rand0, randomDeriveState("plant name"));
+    rand0 = randomConcatState(rand0, randomDeriveState(encodeOrdinal(ordinal)));
+    let ipfx = randomGetPermutePartial(
+      randomConcatState(rand0, randomDeriveState("prefix")),
+      poolPlantNamePrefix,
+      sylvester.length
+    );
+    let isfx = randomGetPermutePartial(
+      randomConcatState(rand0, randomDeriveState("suffix")),
+      poolPlantNameSuffix,
+      sylvester.length
+    );
+    cachePlantNameIndex[ordinal] = [ipfx,isfx];
+    return joinWords(
+      getGardenPrefix(ordinal),
+      poolPlantNamePrefix[ipfx[plantIndex]] +
+      poolPlantNameSuffix[isfx[plantIndex]]
+    );
+  }
+  
+  /**
+   * Check browser compatibility. On fail, put up a notice.
+   */
+  const checkCompatibility = function() {
+    if(window === undefined || document === undefined) {
+      throw "Missing window or document. Game cannot run.";
+    }
+    let notifyEl = document.getElementById("fgardens-browser-notice");
+    clearChildren(notifyEl);
+    let globals = ['crypto', 'Date', 'Math', 'parseInt',
+      'TextEncoder', 'Uint8Array', 'Uint32Array'];
+    let unsupported = [];
+    for(let i = 0; i < globals.length; ++i) {
+      let g = window[globals[i]];
+      if(g === undefined)unsupported.push(globals[i]);
+    }
+    if(unsupported.length !== 0) {
+      notifyEl.appendChild(document.createTextNode("Missing globals: " + unsupported.join(", ")));
+      notifyEl.appendChild(document.createElement("br"));
+      notifyEl.appendChild(document.createTextNode("Your browser may be unable to run this game."));
+    }
+  }
+  
+  /**
+   * Clear and remake all game elements related to the UI.
+   */
+  const rebuildUIAll = function() {
+    // fill in story elements etc
+    let ijn0 = document.getElementById("fgardens-inject-name-0");
+    clearChildren(ijn0);
+    ijn0.appendChild(document.createTextNode(getPlantName([0,0], 0)));
+    let ijn1 = document.getElementById("fgardens-inject-name-1");
+    clearChildren(ijn1);
+    ijn1.appendChild(document.createTextNode(getPlantName([0,0], 1)));
+    // make gardens
+  }
+  
+  /**
    * Reset the game.
    * Writes history of current timeline (if any),
    * then starts a new timeline.
@@ -452,9 +610,14 @@
     }
     // clear all caches
     gameRandomHash = undefined;
+    cacheGardenPrefix = {};
+    cachePlantNameIndex = {};
     // make blank state
     gameRandomSeed = document.getElementById("fgardens-settings-seed").value;
-    gameRandomState = randomDeriveState(gameRandomState);
+    gameRandomState = randomConcatState(
+      randomDeriveState("Future Gardens"),
+      randomDeriveState(gameRandomSeed)
+    );
     lastGameState = new GameState();
     lastGameTime = Date.now();
   }
@@ -481,9 +644,10 @@
     let savePack = cookieGet("future_gardens_local");
     if(savePack === "") {
       setupGameFirstTime();
-      return;
+    } else {
+      // TODO actual load
     }
-    // TODO actual load
+    rebuildUIAll();
   }
   
   /**
@@ -497,6 +661,7 @@
    * Call this once when the page is loaded to start up the game.
    */
   const initGame = function() {
+    checkCompatibility();
     loadGame();
     
   }

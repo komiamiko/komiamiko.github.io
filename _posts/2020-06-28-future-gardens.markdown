@@ -19,6 +19,8 @@ This app requires JavaScript to run.
 </div>
 
 <div id="fgardens-browser-notice">
+The game needs to check browser compatibility. <br/>
+If you don't see a result here and the page already loaded some time ago, there was likely a catastrophic failure.
 </div>
 
 ## Writing your own story
