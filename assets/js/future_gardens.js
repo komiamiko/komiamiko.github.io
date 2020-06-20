@@ -509,7 +509,7 @@
   const makeGarden = function(ordinal) {
     let plants = new Uint32Array(sylvester.length);
     let comp = new Uint8Array(sylvester.length);
-    return [ordinal, 0, plants, comp, undefined];
+    return [ordinal, 0, plants, comp, undefined, 1];
   }
   
   /**
@@ -522,13 +522,14 @@
    * Prefer to use patches and undo them later.
    *
    * As implemented:
-   * gardens = array of [ordinal, mana, plants, challenge completions, active challenge]
+   * gardens = array of [ordinal, mana, plants, challenge completions, active challenge, boost]
    *   sorted by ascending ordinal
    * mana = number of mana, can be 0 or higher
    * ordinal = array of [x, y] meaning wy + x
    * plants = array of [nplants0, plants1, ...] can be 0 or higher
    * challenge completions = array of [comp0, comp1, ...] can be 0 or 1
    * active challenge = index of active challenge, or undefined
+   * boost = boost from above multiplier
    */
   const GameState = class {
     /**
@@ -568,11 +569,33 @@
     if(index < gardens.length && ordCmp(gardens[index][0], ordinal) === 0) {
       return gardens[index];
     }
+    let boostAbove = 1;
+    if(index < gardens.length) {
+      let h = gardens[index];
+      boostAbove = h[5] * getBoostInner(h);
+    }
     let g = makeGarden(ordinal);
     if(make) {
       gardens.splice(index, 0, g);
     }
     return g;
+  }
+  
+  /**
+   * Compute the inner boost.
+   */
+  const getBoostInner = function(g) {
+    let s = sylvester;
+    let sn = s.length;
+    let mult = 1;
+    let plants = g[2];
+    for(let i = 0; i < sn; ++i) {
+      let x = s[i];
+      let y = Math.pow(x - Math.sqrt(x) + 1, plants[i] / x);
+      mult *= y;
+    }
+    mult = Math.min(normLimit, mult);
+    return mult;
   }
   
   /**
@@ -696,6 +719,7 @@
     let plants = garden[2];
     let challengeCompl = garden[3];
     let challengeActive = garden[4];
+    let boostAbove = garden[5];
     // get some local vars
     let ordinalEnc = encodeOrdinal(ordinal);
     let gardenPrefix = getGardenPrefix(ordinal);
@@ -718,15 +742,19 @@
     manaEl.appendChild(domExprFromNumber(mana));
     manaEl.appendChild(document.createElement("br"));
     let manaReady = enterGardenReady(gardens, ordinal);
+    let manaReadyPost = Math.min(normLimit, manaReady * boostAbove * getBoostInner(garden));
+    let manaReadyInnerEl = document.createElement("span");
+    manaReadyInnerEl.appendChild(document.createTextNode("Get "));
+    manaReadyInnerEl.appendChild(domExprFromNumber(manaReadyPost));
     manaEl.appendChild(makeDomButton(
-      document.createTextNode("Get " + manaReady.toString()),
+      manaReadyInnerEl,
       undefined // TODO actual incrementer
     ));
     let reqNext = enterGardenRequired(gardens, ordinal, manaReady + 1);
     manaEl.appendChild(document.createElement("br"));
     manaEl.appendChild(document.createTextNode(
-      manaReady===0?"Free":manaReady===1?"Cannot get more at once":
-        "Need " + reqNext[1].toString() + " " + joinWords(getGardenPrefix(reqNext[0]), "mana")
+      reqNext===0?"Free":reqNext===1?"Cannot get more at once":
+        "Need " + reqNext[1].toString() + " " + joinWords(getGardenPrefix(reqNext[0]), "mana to get more at once")
     ));
     mpEl.appendChild(manaEl);
     outerEl.appendChild(mpEl);
