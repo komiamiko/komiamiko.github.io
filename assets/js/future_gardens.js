@@ -652,7 +652,8 @@
   const enterGardenRequired = function(gardens, ordinal, addMana) {
     let x = ordinal[0], y = ordinal[1];
     if(y === 0 && x === 0)return addMana===1?0:1;
-    let imana = getGarden(gardens, ordinal);
+    let garden = getGarden(gardens, ordinal);
+    let imana = garden[1];
     if(x !== 0) {
       let exp = 30 + (imana + 1) * (addMana - 1);
       if(exp >= normLimit)return 1;
