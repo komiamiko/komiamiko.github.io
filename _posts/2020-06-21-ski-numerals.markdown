@@ -151,8 +151,8 @@ You can read all my rough work and explanations below, but if you just want the 
 | \\\([+1R] [2] [+\omega^2:[\omega^\omega C]] KK\\\) | 83 | \\\(\Xi_0(83) > f_{\omega^\omega+\omega^2+1}(2)\\\) |
 | \\\([+1R] [2] ([\times\omega] [\omega^\omega C]) KK\\\) | 85 | \\\(\Xi_0(85) > f_{\omega^{\omega+1} +1}(2)\\\) |
 | \\\([+1R] [2] [\omega^{\omega^\omega} C] KK\\\) | 117 | \\\(\Xi_0(117) > f_{\omega^{\omega^\omega}+1}(2)\\\) |
-| \\\([+1R] [2] [E:A] KK\\\) | 2120 | \\\(\Xi_0(2120) >f_{\varepsilon_0}(5)\\\) |
-| \\\([+1R] ([A] [2]) [E:A] KK\\\) | 2123 | \\\(\Xi_0(2123) >f_{\varepsilon_0+1}(3)\\\) |
+| \\\([+1R] [2] [+\varepsilon_0:A] KK\\\) | 2120 | \\\(\Xi_0(2120) >f_{\varepsilon_0}(5)\\\) |
+| \\\([+1R] ([A] [2]) [+\varepsilon_0:A] KK\\\) | 2123 | \\\(\Xi_0(2123) >f_{\varepsilon_0+1}(3)\\\) |
 | \\\([+1R] ([A] [2]) ([\times \omega] [+\varepsilon_0] [A]) KK\\\) | 2171 | \\\(\Xi_0(2171) >f_{\varepsilon_0 \omega+1}(3) = f_{\omega^{\varepsilon_0+1}+1}(3)\\\) |
 | \\\([+1R] ([A] [2]) ([2] [\times \omega] [+\varepsilon_0] [A]) KK\\\) | 2177 | \\\(\Xi_0(2177) >f_{\varepsilon_0 \omega^2+1}(3) = f_{\omega^{\varepsilon_0+2}+1}(3)\\\) |
 | \\\([+1R] ([A] [2]) ([D] [\times \omega] [+\varepsilon_0] [A]) KK\\\) | 2201 | \\\(\Xi_0(2201) >f_{\varepsilon_0 \omega^\omega+1}(3) = f_{\omega^{\varepsilon_0+\omega}+1}(3)\\\) |
@@ -834,7 +834,7 @@ Here's the plan before optimizing argument order by hand:
 | `[m1]` | `m,u,c,f,b,n,d -> mmucfd([--](uucbdn))` | | |
 | `[m]` | `m,u,c,f,b,n -> [=0]nb([m1]mucfbn(fb))` | | |
 | `[E1:f]` | `m,n -> mm[u][c]f[2]n` | |
-| `[E:f]` | `n -> [E1:f][m]n` | |
+| `[+e0:f]` | `n -> [E1:f][m]n` | |
 
 Unlike in previous examples, there's now cyclic dependencies.
 This forces me to reorder `[u],[c],[c1],[c2]` all in one shot.
@@ -851,13 +851,13 @@ Here's after reordering the arguments, stripping out some parts, and actually bu
 | `[m1]` | `n,u,c,m,d,b,f -> mfb([--](unbdcu))mcu` | `S(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(K(S(K(S(K(S(KS)))))))(S(K(S(K(S(K(S(K(S(KS)))))))))(S(K(S(K(S(K(S(K(S(K(S(KS)))))))))))(S(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(K(S(K(S(K(S(KS)))))))(S(K(S(K(S(K(S(K(S(KS)))))))))(S(K(S(K(S(K(S(K(S(K(S(KS)))))))))))(S(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(K(S(K(S(K(S(KS)))))))(S(K(S(K(S(K(S(K(S(KS)))))))))(S(K(S(K(S(K(S(K(S(K(S(KS)))))))))))(S(K(S(K(S(K(S(S(KS)(S(KK)(S(KS)(S(K(S(KS)))(S(S(KS)(S(KK)S))(KK))))))))))))(S(K(S(K(S(KK)))))(S(K(S(K(S(K(S(K(S(KK)))))))))(S(K(S(K(S(K(S(K(S(K[--])))))))))(S(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(K(S(K(S(K(S(KS)))))))(S(S(KS)(S(K(S(KS)))(S(K(S(KK)))(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(S(KS)(S(K(S(KS)))(S(K(S(KK)))(S(K(S(KS)))(S(K(SI))K)))))(K(KK))))))))(K(K(S(KK)K))))))))(K(S(KK)(S(KK)K))))))))))))))(K(K(K(S(KK)(S(KK)K))))))))))))(K(K(S(KK)(S(KK)(S(KK)K))))))))))))(K(S(KK)(S(KK)(S(KK)(S(KK)K)))))` | `382 = 334 + #[--]` |
 | `[m]` | `f,b,n,m,c,u -> [=0]nb([m1]nucm(fb)bf)` | `S(K(S(S(KS)(S(K(S(KS)))(S(K(S(KK)))(S(K(S(KS)))(S(K(S(KK)))(S(K(S(KS)))(S(K(S(KK)))(S(K(S[=0]))K))))))))))(S(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(K(S(K(S(K(S(KS)))))))(S(K(S(K(S(K(S(K(S(KS)))))))))(S(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(K(S(K(S(K(S(KS)))))))(S(K(S(K(S(K(S(K(S(KS)))))))))(S(K(S(K(S(S(KS)(S(K(S(KS)))(S(K(S(K(S(KS)))))(S(S(KS)(S(KK)(S(KS)(S(K(S(KS)))(S(S(KS)(S(KK)(S(KS)[m1])))(KK))))))(K(S(KK)K))))))))))(S(K(S(KK)))(S(K(S(KK)))(S(K(S(KK)))(S(KK)))))))))))(K(S(KK)(S(KK)(S(KK)K))))))))))(S(KK)(S(KK)(S(KK)(S(KK)K)))))` | `597 = 206 + #[=0] + #[m1]` |
 | `[E1:f]` | `m,n -> mf[2]nm[c][u]` | `S(S(KS)(S(S(KS)(S(S(KS)(S(SI(Kf))(K[2])))K))(K(K[c]))))(K(K[u]))` | `1509 + #[f] = 22 + #[f] + #[2] + #[c] + #[u]` |
-| `[E:f]` | `n -> [E1:f][m]n` | `[E1:f][m]` | `2106 + #[f] = #[E1:f] + #[m]` |
+| `[+e0:f]` | `n -> [E1:f][m]n` | `[E1:f][m]` | `2106 + #[f] = #[E1:f] + #[m]` |
 
 </div>
 
 We've built a variant Goodstein sequence in SKI now, with a little over 2000 combinators.
 I'm sure that number can go down, but I'm not interested in doing more work here.
-Optimizing and compiling `[E:f]` by hand like this, even with the `ski_tools.py` script to help with the tedious task of binding variables, was already difficult.
+Optimizing and compiling `[+e0:f]` by hand like this, even with the `ski_tools.py` script to help with the tedious task of binding variables, was already difficult.
 Perhaps new work later around SKI compilers would help us get the combinator down and build stronger constructions.
 
 </div>
@@ -870,12 +870,12 @@ Perhaps new work later around SKI compilers would help us get the combinator dow
 <div>
 
 The awkward thing about the Goodstein function \\\(G\\\) is it grows just slower than \\\(\varepsilon_0\\\) - \\\(G(2\uparrow \uparrow n) \approx f_{\varepsilon_0}(n)\\\).
-This applies to \\\([E:A]\\\) as well.
+This applies to \\\([+\varepsilon_0:A]\\\) as well.
 
 | Expression | Size | Value |
 |--:|:-:|:--|
-| \\\([+1R] [2] [E:A]\\\) | \\\(2118\\\) | \\\(>f_{\varepsilon_0}(5)\\\) |
-| \\\([+1R] ([A] [2]) [E:A]\\\) | \\\(2121\\\) | \\\(>f_{\varepsilon_0+1}(3)\\\) |
+| \\\([+1R] [2] [+\varepsilon_0:A]\\\) | \\\(2118\\\) | \\\(>f_{\varepsilon_0}(5)\\\) |
+| \\\([+1R] ([A] [2]) [+\varepsilon_0:A]\\\) | \\\(2121\\\) | \\\(>f_{\varepsilon_0+1}(3)\\\) |
 | \\\([+1R] ([A] [2]) ([\times \omega] [+\varepsilon_0] [A])\\\) | \\\(2169\\\) | \\\(>f_{\varepsilon_0 \omega+1}(3) = f_{\omega^{\varepsilon_0+1}+1}(3)\\\) |
 | \\\([+1R] ([A] [2]) ([2] [\times \omega] [+\varepsilon_0] [A])\\\) | \\\(2175\\\) | \\\(>f_{\varepsilon_0 \omega^2+1}(3) = f_{\omega^{\varepsilon_0+2}+1}(3)\\\) |
 | \\\([+1R] ([A] [2]) ([D] [\times \omega] [+\varepsilon_0] [A])\\\) | \\\(2199\\\) | \\\(>f_{\varepsilon_0 \omega^\omega+1}(3) = f_{\omega^{\varepsilon_0+\omega}+1}(3)\\\) |
@@ -883,12 +883,12 @@ This applies to \\\([E:A]\\\) as well.
 
 Let's follow what happens here.
 
-In the first run of \\\([E:A]\\\), \\\(n\\\) starts at \\\(2\\\), and the base starts at \\\(2\\\).
+In the first run of \\\([+\varepsilon_0:A]\\\), \\\(n\\\) starts at \\\(2\\\), and the base starts at \\\(2\\\).
 The base gets bumped up to \\\(4\\\), so \\\(n\\\) goes to \\\(4\\\), then \\\(n\\\) decrements to \\\(3\\\).
 After this \\\(n\\\) only decreases, but the base keeps blowing up - to \\\(A^4(2)\\\), actually.
 Finally, that base is returned.
 
-To place the final value after the second \\\([E:A]\\\), we'll want to know what ordinal it starts at.
+To place the final value after the second \\\([+\varepsilon_0:A]\\\), we'll want to know what ordinal it starts at.
 
 \\\[\begin{eqnarray}
 A^4(2) &= A^3(2^2) \\\\\\
