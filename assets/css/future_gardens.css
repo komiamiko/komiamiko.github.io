@@ -38,3 +38,8 @@
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 20px;
 }
+
+.ordinal-display-large {
+  font-size: 300%;
+  text-align: center;
+}

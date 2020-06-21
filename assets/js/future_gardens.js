@@ -118,6 +118,8 @@
    */
   const normLimit = 1.0715086071862673e+301;
   
+  const ordinalColorRamp = chroma.cubehelix().start(120).rotations(-3).lightness([0.8,0.2]);
+  
   /**
    * From a string, derive a random state.
    * Random state is 128 bits - length 4 array of int32
@@ -331,6 +333,20 @@
     }
     return l;
   }
+  /**
+   * Like bsearch but using a function instead of an indexable
+   */
+  const bsearchz = function(f, l, r, v, lt) {
+    while(l < r) {
+      let m = (l + r) >>> 1;
+      if(lt(f(m), v)) {
+        l = m + 1;
+      } else {
+        r = m;
+      }
+    }
+    return l;
+  }
   
   // --- other useful utilities ---
   
@@ -533,8 +549,8 @@
   
   // --- gameplay handling ---
   
-  let gameRandomSeed, gameRandomState, gameRandomHash;
-  let lastGameState, lastGameTime;
+  let gameRandomSeed, gameRandomState, gameRandomHash, gameRandomIsVerified;
+  let lastGameState, lastGameTime, totalRunTime;
   let cacheGardenPrefix, cachePlantNameIndex;
   
   /**
@@ -564,6 +580,8 @@
    * challenge completions = array of [comp0, comp1, ...] can be 0 or 1
    * active challenge = index of active challenge, or undefined
    * boost = boost from above multiplier
+   * Important: it is required that all gardens held in the gardens array are non-empty
+   *   Multiple other implementations can and do assume this!
    */
   const GameState = class {
     /**
@@ -633,6 +651,23 @@
   }
   
   /**
+   * Calculate how much mana was spent on plants.
+   */
+  const getManaSpent = function(g) {
+    let total = 0;
+    let plants = g[2];
+    for(let i = 0; i < plants.length; ++i) {
+      let base = sylvester[i];
+      let n = plants[i];
+      if(n > 0) {
+        total += base * (1 - Math.pow(base, n)) / (1 - base);
+      }
+    }
+    total = Math.round(total); // correct for fp errors
+    return total;
+  }
+  
+  /**
    * Entirely remove gardens below the ordinal.
    */
   const destroyGardensLower = function(gardens, ordinal) {
@@ -655,7 +690,7 @@
     let garden = getGarden(gardens, ordinal);
     let imana = garden[1];
     if(x !== 0) {
-      let exp = 30 + (imana + 1) * (addMana - 1);
+      let exp = 18 + (imana + 1) * (addMana - 1);
       if(exp >= normLimit)return 1;
       let cost = Math.pow(2, exp);
       return [[x-1,y], cost];
@@ -673,7 +708,80 @@
   const enterGardenReady = function(gardens, ordinal) {
     let x = ordinal[0], y = ordinal[1]; // wy + x
     if(y === 0 && x === 0)return 1;
-    return 0;// TODO placeholder
+    let garden = getGarden(gardens, ordinal);
+    let imana = garden[1];
+    if(x !== 0) {
+      let stepDown = [[x-1],y];
+      let h = getGarden(gardens, stepDown);
+      let batchSize = bsearchz(
+        function(batchSize){return Math.pow(2, 18 + (imana + 1) * batchSize);},
+        0,
+        1000,
+        h[1],
+        function(u, v){return u <= v;}
+      );
+      return batchSize;
+    }
+    let gindex = bsearch(gardens, 0, gardens.length, ordinal, function(u, v){return u[0] < v;});
+    if(gindex === 0)return 0;
+    let h = gardens[gindex-1];
+    let step = 3 + imana;
+    let stepDown = [step,y-1];
+    if(ordCmp(h[0], stepDown) < 0)return 0;
+    let offset = h[0][0] - step;
+    if(h[1] + getManaSpent(h) >= 2)offset += 1;
+    return offset;
+  }
+  
+  /**
+   * Make a DOM element which is the score ordinal for this game.
+   * Optionally use fancier display formatting.
+   */
+  const makeDomScoreOrdinalFromPacked = function(pack, useFancy) {
+    let result = domExprFromNumber(0);
+    for(let i = 0; i < pack.length; ++i) {
+      let ip = pack[i];
+      let x = ip[0], y = ip[1], n = ip[2];
+      let extend = domExprMul(
+        domExprPow(
+          document.createTextNode("ω"),
+          domExprAdd(
+            domExprMul(
+              document.createTextNode("ω"),
+              domExprFromNumber(y)
+            ),
+            domExprFromNumber(x)
+          )
+        ),
+        domExprFromNumber(n)
+      );
+      if(useFancy && (extend.nodeName !== "#text" || extend.nodeValue !== "0")) {
+        // we can paint it!
+        extend = (function(el){let wrap = document.createElement("span");wrap.appendChild(el);return wrap;})(extend);
+        let cp0 = 1-2/(y+2), cp1 = 1-2/(y+3);
+        let t = cp0 + (cp1-cp0) * (1-7/(x+7));
+        extend.style["color"] = ordinalColorRamp(t).css();
+        if(t > 0.5) { // need glow for contrast
+          extend.style["text-shadow"] = "0 0 0.1em white";
+        }
+      }
+      result = domExprAdd(
+        extend,
+        result
+      );
+    }
+    return result;
+  }
+  const makeDomScoreOrdinalFromGardens = function(gardens, useFancy) {
+    let pack = [];
+    for(let i = 0; i < gardens.length; ++i) {
+      let g = gardens[i];
+      let x = g[0][0];
+      let y = g[0][1];
+      let n = g[1] + getManaSpent(g);
+      pack.push([x,y,n]);
+    }
+    return makeDomScoreOrdinalFromPacked(pack, useFancy);
   }
   
   /**
@@ -851,7 +959,7 @@
     }
     let notifyEl = document.getElementById("fgardens-browser-notice");
     clearChildren(notifyEl);
-    let globals = ['crypto', 'Date', 'Math', 'Number', 'parseInt', 'performance',
+    let globals = ['chroma', 'crypto', 'Date', 'Math', 'Number', 'parseInt', 'performance',
       'TextEncoder', 'Uint8Array', 'Uint32Array'];
     let unsupported = [];
     for(let i = 0; i < globals.length; ++i) {
@@ -886,18 +994,23 @@
       let o = g[0];
       cgardens.push(g);
       cgardensKeys[o] = 1;
+    }
+    for(let i = 0; i < gn; ++i) {
+      let g = gardens[i];
+      let o = g[0];
       let aos = [[o[0]+1,o[1]],[0,o[1]+1]];
       for(let j = 0; j < aos.length; ++j) {
         let ao = aos[j];
         if(ao in cgardensKeys)continue;
         cgardensKeys[ao] = 1;
         cgardens.splice(
-          bsearch(gardens, 0, gardens.length, ao, function(u, v){return ordCmp(u[0],v) < 0;}),
+          bsearch(cgardens, 0, cgardens.length, ao, function(u, v){return ordCmp(u[0],v) < 0;}),
           0, makeGarden(ao));
       }
     }
-    if(cgardens.length === 0) {
-      cgardens.push(makeGarden([0,0]));
+    // always add first gardens to bootstrap
+    if(!([0,0] in cgardensKeys)) {
+      cgardens.splice(0, 0, getGarden(gardens, [0,0]));
     }
     clearChildren(document.getElementById("fgardens-container-group-2"));
     clearChildren(document.getElementById("fgardens-container-group-1"));
@@ -916,6 +1029,10 @@
       }
       gtcontainer.appendChild(makeDomGarden(gardens, g));
     }
+    // make ordinal
+    ordDisplayEl = document.getElementById("fgardens-container-ordinal-counter");
+    clearChildren(ordDisplayEl);
+    ordDisplayEl.appendChild(makeDomScoreOrdinalFromGardens(gardens, 1));
   }
   
   /**
@@ -948,6 +1065,7 @@
       topGarden[1] += tickUp;
       return [wstate, elapsed];
     }
+    // TODO handle higher case
   }
   
   /**
@@ -955,12 +1073,14 @@
    */
   const gameLoop = function() {
     let tstart = performance.now();
-    let tnow = Date.now();
-    let diffs = (tnow - lastGameTime) / 1000;
+    let tnow = Date.now() / 1000;
+    let diffs = tnow - lastGameTime;
     let oldGameState = lastGameState;
     let updated = tryUpdateStateTime(oldGameState, diffs);
+    diffs = updated[1];
     lastGameState = updated[0];
-    lastGameTime += updated[1] * 1000;
+    lastGameTime += diffs;
+    totalRunTime += diffs;
     rebuildUIUpdated(oldGameState, lastGameState);
     let tend = performance.now();
     let delay = (tend - tstart) * 10 + 500; // adaptive tick rate
@@ -989,7 +1109,8 @@
       randomDeriveState(gameRandomSeed)
     );
     lastGameState = new GameState();
-    lastGameTime = Date.now();
+    lastGameTime = Date.now() / 1000;
+    totalRunTime = 0;
   }
   
   /**
@@ -1000,9 +1121,10 @@
     // handle name and seed
     let nameEl = document.getElementById("fgardens-settings-name");
     let name = nameEl.value = "anonymous";
-    let seedString = randomSeedStringFromName(name);
+    let seedString = randomSeedStringFromName(name) + "z";
     let seedEl = document.getElementById("fgardens-settings-seed");
     seedEl.value = seedString;
+    gameRandomIsVerified = false;
     // invoke a reset
     resetGame();
   }
@@ -1097,7 +1219,11 @@
     if(manaReady === 0)return;
     let garden = getGarden(gardens, ordinal, 1);
     let boostAbove = garden[5];
-    let manaReadyPost = Math.min(normLimit, manaReady * boostAbove * getBoostInner(garden));
+    let boostHere = boostAbove * getBoostInner(garden);
+    if(gameRandomIsVerified &&
+      (boostAbove > 1 || ordCmp([0,0],ordinal) === 0 &&
+        (boostHere > 1 || garden[1] >= 2)))return; // disallow extra clicks
+    let manaReadyPost = Math.min(normLimit, manaReady * boostHere);
     garden[1] = Math.min(normLimit, garden[1] + manaReadyPost);
     let wstate = new GameState(lastGameState);
     destroyGardensLower(wstate.gardens, ordinal);

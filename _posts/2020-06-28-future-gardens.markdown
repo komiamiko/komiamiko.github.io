@@ -205,7 +205,6 @@ With new rules, new plants and challenges await.
 <div>
 
 <div id="fgardens-container-history">
-
 </div>
 
 <div id="fgardens-container-reset" style="display:none;">
@@ -220,14 +219,13 @@ With new rules, new plants and challenges await.
 
 <input type="button" value="Reset game with new seed" onclick="gardens.extSendResetGame()">
 
-</div>
-
 <label for="fgardens-settings-seed">World seed</label>
 <input type="text" id="fgardens-settings-seed" name="fgardens-settings-seed">
 <input type="button" value="Generate a new seed" onclick="gardens.extSendNewSeedCasual()">
 
 Any seed is fine for casual play.
 For more competitive use, the game creator only officially endorses seeds meeting certain requirements, which the game will indicate are "verified".
+Verified seeds come with some gameplay adjustments, such as only allowing the minimum number of clicks.
 In a setting where multiple people are to use the same seed, it is recommended to use the name of the event or group in place of the individual player's name.
 
 Generation of this seed may take some time depending on your computer.
@@ -278,7 +276,7 @@ But at least your scheme can map it out.
 
 <div>
 
-<div id="fgardens-container-ordinal-counter">
+<div id="fgardens-container-ordinal-counter" class="ordinal-display-large">
 </div>
 
 When you're ready, you can reveal the ordinals that you've been collecting all along.
@@ -288,6 +286,8 @@ When you're ready, you can reveal the ordinals that you've been collecting all a
   <option value="fancy" selected="selected">Flowery names</option>
   <option value="ordinal">Ordinals</option>
 </select>
+
+</div>
 
 </div>
 
@@ -637,4 +637,5 @@ This event-based system ensures the passage of time is accurate whether you're w
 
 </div>
 
+<script id="chromajs-script" src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.0/chroma.min.js"></script>
 <script src="/assets/js/future_gardens.js"></script>
