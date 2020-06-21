@@ -913,7 +913,7 @@ We've already used over \\\(2000\\\) combinators, and it won't take that many mo
 | Operator | Definition | As SKI | Size |
 |--:|:-:|:-:|:--|
 | `[E1]` | `m,f,n -> mf[2]nm[c][u]` | `S(S(KS)(S(K(S(KS)))(S(S(KS)(S(K(S(KS)))(S(S(KS)(S(K(S(KS)))(SS(K(K[2])))))(S(KK)K))))(K(K(K[c]))))))(K(K(K[u])))` | `1528 = 41 + #[2] + #[c] + #[u]` |
-| `[+\varepsilon_0]` | `f,n -> [E1][m]fn` | `[E1][m]` | `2125 = #[E1] + #[m]` |
+| `[+e0]` | `f,n -> [E1][m]fn` | `[E1][m]` | `2125 = #[E1] + #[m]` |
 
 Using these, I named some more numbers.
 It's just giving ideas; I know they're not optimal.
