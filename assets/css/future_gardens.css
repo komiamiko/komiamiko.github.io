@@ -43,3 +43,17 @@
   font-size: 300%;
   text-align: center;
 }
+
+.fgardens-text-outline {
+  text-shadow: 0.025em 0.000em 0 #e8e8e8, 0.018em 0.018em 0 #e8e8e8, 0.000em 0.025em 0 #e8e8e8,
+  -0.018em 0.018em 0 #e8e8e8, -0.025em 0.000em 0 #e8e8e8, -0.018em -0.018em 0 #e8e8e8,
+  -0.000em -0.025em 0 #e8e8e8, 0.018em -0.018em 0 #e8e8e8, 0.050em 0.000em 0 #e8e8e8,
+  0.048em 0.013em 0 #e8e8e8, 0.043em 0.025em 0 #e8e8e8, 0.035em 0.035em 0 #e8e8e8,
+  0.025em 0.043em 0 #e8e8e8, 0.013em 0.048em 0 #e8e8e8, 0.000em 0.050em 0 #e8e8e8,
+  -0.013em 0.048em 0 #e8e8e8, -0.025em 0.043em 0 #e8e8e8, -0.035em 0.035em 0 #e8e8e8,
+  -0.043em 0.025em 0 #e8e8e8, -0.048em 0.013em 0 #e8e8e8, -0.050em 0.000em 0 #e8e8e8,
+  -0.048em -0.013em 0 #e8e8e8, -0.043em -0.025em 0 #e8e8e8, -0.035em -0.035em 0 #e8e8e8,
+  -0.025em -0.043em 0 #e8e8e8, -0.013em -0.048em 0 #e8e8e8, -0.000em -0.050em 0 #e8e8e8,
+  0.013em -0.048em 0 #e8e8e8, 0.025em -0.043em 0 #e8e8e8, 0.035em -0.035em 0 #e8e8e8,
+  0.043em -0.025em 0 #e8e8e8, 0.048em -0.013em 0 #e8e8e8;
+}

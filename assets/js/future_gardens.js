@@ -121,6 +121,9 @@
    */
   const normLimit = 1.0715086071862673e+301;
   
+  /**
+   * From 0 at 0 to w^w^2 at 1
+   */
   const ordinalColorRamp = chroma.cubehelix().start(120).rotations(-3).lightness([0.8,0.2]);
   
   /**
@@ -764,8 +767,8 @@
         let cp0 = 1-2/(y+2), cp1 = 1-2/(y+3);
         let t = cp0 + (cp1-cp0) * (1-7/(x+7));
         extend.style["color"] = ordinalColorRamp(t).css();
-        if(t > 0.5) { // need glow for contrast
-          extend.style["text-shadow"] = "0 0 0.1em white";
+        if(t > 0.5) { // need text outline for contrast
+          extend.className = "fgardens-text-outline";
         }
       }
       result = domExprAdd(
