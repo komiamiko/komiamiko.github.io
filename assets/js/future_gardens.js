@@ -26,7 +26,7 @@
 /**
  * Self-executing anonymous function to contain the game's namespace.
  */
-(function(gardens) {
+(function(publicNamespace) {
   
   // --- core utilities and constants ---
   
@@ -216,6 +216,7 @@
    * End primitives are not copied, since they are immutable anyway.
    */
   const copyNested = function(a) {
+    if(!a)return a;
     let an = a.length;
     if(an === undefined) { // not an array
       return a;
@@ -254,6 +255,26 @@
   }
   
   /**
+   * Decode an int, but if something goes wrong it returns undefined instead.
+   * Index is unspecified in that case.
+   */
+  const decodeIntChecked = function(si) {
+    let r = si[0];
+    let i = si[1];
+    if(r.length < i + 2)return undefined;
+    let p = r.substring(i, i + 2);
+    if(! /^[0-9a-w]*$/g.test(p))return undefined;
+    let t = parseInt(p, 32);
+    i += 2;
+    if(r.length < i + t)return undefined;
+    p = r.substring(i, i + t);
+    if(! /^[0-9a-w]*$/g.test(p))return undefined;
+    let n = parseInt(p, 32);
+    si[1] = i + t;
+    return n;
+  }
+  
+  /**
    * Encode/decode ordinal
    */
   const encodeOrdinal = function(ordinal) {
@@ -262,6 +283,13 @@
   const decodeOrdinal = function(si) {
     let y = decodeInt(si);
     let x = decodeInt(si);
+    return [x, y];
+  }
+  const decodeOrdinalChecked = function(si) {
+    let y = decodeIntChecked(si);
+    if(y === undefined)return undefined;
+    let x = decodeIntChecked(si);
+    if(x === undefined)return undefined;
     return [x, y];
   }
   
@@ -334,8 +362,8 @@
    * Clear a DOM element's children.
    */
   const clearChildren = function(el) {
-    while(el.lastElementChild) {
-      el.removeChild(el.lastElementChild);
+    while(el.lastChild) {
+      el.removeChild(el.lastChild);
     }
   }
   
@@ -570,7 +598,7 @@
    * If you know you'll be modifying the garden immediately, pass make=1
    * instead, which will cause the garden to be added.
    */
-  const getGarden = function(gardens, make) {
+  const getGarden = function(gardens, ordinal, make) {
     let index = bsearch(gardens, 0, gardens.length, ordinal, function(u, v){return ordCmp(u[0], v) < 0;});
     if(index < gardens.length && ordCmp(gardens[index][0], ordinal) === 0) {
       return gardens[index];
@@ -602,6 +630,14 @@
     }
     mult = Math.min(normLimit, mult);
     return mult;
+  }
+  
+  /**
+   * Entirely remove gardens below the ordinal.
+   */
+  const destroyGardensLower = function(gardens, ordinal) {
+    let index = bsearch(gardens, 0, gardens.length, ordinal, function(u, v){return ordCmp(u[0], v) < 0;});
+    gardens.splice(0, index);
   }
   
   /**
@@ -718,7 +754,7 @@
   /**
    * Given a garden, build a DOM node for it.
    */
-  const makeDomGarden = function(garden) {
+  const makeDomGarden = function(gardens, garden) {
     // grab garden data
     let ordinal = garden[0];
     let mana = garden[1];
@@ -755,7 +791,7 @@
     manaReadyInnerEl.appendChild(domExprFromNumber(manaReadyPost));
     manaEl.appendChild(makeDomButton(
       manaReadyInnerEl,
-      undefined // TODO actual incrementer
+      function(){publicNamespace.extSendTakeMana(ordinalEnc);}
     ));
     let reqNext = enterGardenRequired(gardens, ordinal, manaReady + 1);
     manaEl.appendChild(document.createElement("br"));
@@ -785,7 +821,7 @@
       plantEl.appendChild(document.createElement("br"));
       plantEl.appendChild(makeDomButton(
         document.createTextNode("Increase rank"),
-        undefined // TODO actual incrementer
+        (function(j){return function(){publicNamespace.extSendTakePlant(ordinalEnc, j);}})(i)
       ));
       plantEl.appendChild(document.createElement("br"));
       let reqNext = Math.pow(sylvester[i], rank+1);
@@ -814,7 +850,7 @@
     }
     let notifyEl = document.getElementById("fgardens-browser-notice");
     clearChildren(notifyEl);
-    let globals = ['crypto', 'Date', 'Math', 'parseInt',
+    let globals = ['crypto', 'Date', 'Math', 'Number', 'parseInt', 'performance',
       'TextEncoder', 'Uint8Array', 'Uint32Array'];
     let unsupported = [];
     for(let i = 0; i < globals.length; ++i) {
@@ -877,8 +913,57 @@
       } else { // t0 garden in UI
         gtcontainer = document.getElementById("fgardens-container-group-0");
       }
-      gtcontainer.appendChild(makeDomGarden(g));
+      gtcontainer.appendChild(makeDomGarden(gardens, g));
     }
+  }
+  
+  /**
+   * Rebuild the UI. Where possible, only update what changed.
+   * Not only is rebuilding the DOM slow, it's disruptive.
+   */
+  const rebuildUIUpdated = function(prevState, newState) {
+    rebuildUIAll(); // TODO only update where needed
+  }
+  
+  /**
+   * Attempt to update a game state with a certain amount of time passed.
+   * Returns array [modified state, actual time simulated].
+   * Original state will be left unchanged.
+   */
+  const tryUpdateStateTime = function(state, time) {
+    // create a new working copy of the state
+    let wstate = new GameState(state);
+    let gardens = wstate.gardens;
+    // no gardens, nothing to update
+    if(gardens.length === 0)return [wstate, time];
+    let topGarden = gardens[gardens.length-1];
+    let topOrd = topGarden[0];
+    // handle degenerate case
+    if(ordCmp([0,0], topOrd) === 0) {
+      let mult = getBoostInner(topGarden) - 1; // production rate
+      if(mult === 0)return [wstate, time];
+      let tickUp = Math.floor(time * mult);
+      let elapsed = tickUp / mult;
+      topGarden[1] += tickUp;
+      return [wstate, elapsed];
+    }
+  }
+  
+  /**
+   * Main game loop function. Always running.
+   */
+  const gameLoop = function() {
+    let tstart = performance.now();
+    let tnow = Date.now();
+    let diffs = (tnow - lastGameTime) / 1000;
+    let oldGameState = lastGameState;
+    let updated = tryUpdateStateTime(oldGameState, diffs);
+    lastGameState = updated[0];
+    lastGameTime += updated[1] * 1000;
+    rebuildUIUpdated(oldGameState, lastGameState);
+    let tend = performance.now();
+    let delay = (tend - tstart) * 10 + 500; // adaptive tick rate
+    setTimeout(gameLoop, delay);
   }
   
   /**
@@ -959,7 +1044,7 @@
     checkCompatibility();
     applyStyles();
     loadGame();
-    
+    gameLoop();
   }
   
   // --- external signal handlers, actual implementation ---
@@ -1000,18 +1085,81 @@
     }
   }
   
+  /**
+   * Attempt to take mana at the specified garden.
+   */
+  const sendTakeMana = function(ordinalEnc) {
+    if(typeof ordinalEnc !== "string")return;
+    let ordinal = decodeOrdinalChecked([ordinalEnc, 0]);
+    let gardens = lastGameState.gardens;
+    let manaReady = enterGardenReady(gardens, ordinal);
+    if(manaReady === 0)return;
+    let garden = getGarden(gardens, ordinal, 1);
+    let boostAbove = garden[5];
+    let manaReadyPost = Math.min(normLimit, manaReady * boostAbove * getBoostInner(garden));
+    garden[1] = Math.min(normLimit, garden[1] + manaReadyPost);
+    let wstate = new GameState(lastGameState);
+    destroyGardensLower(wstate.gardens, ordinal);
+    let oldGameState = lastGameState;
+    lastGameState = wstate;
+    rebuildUIUpdated(oldGameState, wstate);
+  }
+  
+  /**
+   * Attempt to take a specified plant of the specified garden.
+   */
+  const sendTakePlant = function(ordinalEnc, index) {
+    if(typeof ordinalEnc !== "string" ||
+       typeof index !== "number" ||
+       !Number.isFinite(index) ||
+       !Number.isInteger(index) ||
+       index < 0 ||
+       index >= sylvester.length)return;
+    let ordinal = decodeOrdinalChecked([ordinalEnc, 0]);
+    let gardens = lastGameState.gardens;
+    let garden = getGarden(gardens, ordinal);
+    let mana = garden[1];
+    if(mana === 0)return;
+    let plants = garden[2];
+    let cost = Math.pow(sylvester[index], plants[index]+1);
+    if(mana < cost)return;
+    let wstate = new GameState(lastGameState);
+    gardens = wstate.gardens;
+    let gindex = bsearch(gardens, 0, gardens.length, ordinal, function(u, v){return ordCmp(u[0], v) < 0;});
+    garden = wstate.gardens[gindex];
+    garden[1] -= cost;
+    ++garden[2][index];
+    let above = garden[5] * getBoostInner(garden);
+    for(let j = gindex-1; j >= 0; --j) {
+      let h = gardens[j];
+      h[5] = above;
+      above *= getBoostInner(h);
+    }
+    let oldGameState = lastGameState;
+    lastGameState = wstate;
+    rebuildUIUpdated(oldGameState, wstate);
+  }
+  
   // --- external signal handlers, visible to outside ---
   
-  gardens.extSendNewSeedCasual = function() {
+  publicNamespace.extSendNewSeedCasual = function() {
     sendNewSeedCasual();
   }
   
-  gardens.extSendNewSeedVerified = function() {
+  publicNamespace.extSendNewSeedVerified = function() {
     sendNewSeedVerified();
   }
   
-  gardens.extSendResetGame = function() {
+  publicNamespace.extSendResetGame = function() {
     sendResetGame();
+  }
+  
+  publicNamespace.extSendTakeMana = function(ordinalEnc) {
+    sendTakeMana(ordinalEnc);
+  }
+  
+  publicNamespace.extSendTakePlant = function(ordinalEnc, index) {
+    sendTakePlant(ordinalEnc, index);
   }
   
   // --- game start up ---
