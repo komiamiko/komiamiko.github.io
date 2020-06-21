@@ -153,10 +153,10 @@ You can read all my rough work and explanations below, but if you just want the 
 | \\\([+1R] [2] [\omega^{\omega^\omega} C] KK\\\) | 117 | \\\(\Xi_0(117) > f_{\omega^{\omega^\omega}+1}(2)\\\) |
 | \\\([+1R] [2] [E:A] KK\\\) | 2120 | \\\(\Xi_0(2120) >f_{\varepsilon_0}(5)\\\) |
 | \\\([+1R] ([A] [2]) [E:A] KK\\\) | 2123 | \\\(\Xi_0(2123) >f_{\varepsilon_0+1}(3)\\\) |
-| \\\([+1R] ([A] [2]) ([\times \omega] [E] [A]) KK\\\) | 2171 | \\\(\Xi_0(2171) >f_{\varepsilon_0 \omega+1}(3) = f_{\omega^{\varepsilon_0+1}+1}(3)\\\) |
-| \\\([+1R] ([A] [2]) ([2] [\times \omega] [E] [A]) KK\\\) | 2177 | \\\(\Xi_0(2177) >f_{\varepsilon_0 \omega^2+1}(3) = f_{\omega^{\varepsilon_0+2}+1}(3)\\\) |
-| \\\([+1R] ([A] [2]) ([D] [\times \omega] [E] [A]) KK\\\) | 2201 | \\\(\Xi_0(2201) >f_{\varepsilon_0 \omega^\omega+1}(3) = f_{\omega^{\varepsilon_0+\omega}+1}(3)\\\) |
-| \\\([+1R] ([A] [2]) ([2] [D] [\times \omega] [E] [A]) KK\\\) | 2207 | \\\(\Xi_0(2207) >f_{\varepsilon_0 \omega^{\omega^2}+1}(3) = f_{\omega^{\varepsilon_0+\omega^2}+1}(3)\\\) |
+| \\\([+1R] ([A] [2]) ([\times \omega] [+\varepsilon_0] [A]) KK\\\) | 2171 | \\\(\Xi_0(2171) >f_{\varepsilon_0 \omega+1}(3) = f_{\omega^{\varepsilon_0+1}+1}(3)\\\) |
+| \\\([+1R] ([A] [2]) ([2] [\times \omega] [+\varepsilon_0] [A]) KK\\\) | 2177 | \\\(\Xi_0(2177) >f_{\varepsilon_0 \omega^2+1}(3) = f_{\omega^{\varepsilon_0+2}+1}(3)\\\) |
+| \\\([+1R] ([A] [2]) ([D] [\times \omega] [+\varepsilon_0] [A]) KK\\\) | 2201 | \\\(\Xi_0(2201) >f_{\varepsilon_0 \omega^\omega+1}(3) = f_{\omega^{\varepsilon_0+\omega}+1}(3)\\\) |
+| \\\([+1R] ([A] [2]) ([2] [D] [\times \omega] [+\varepsilon_0] [A]) KK\\\) | 2207 | \\\(\Xi_0(2207) >f_{\varepsilon_0 \omega^{\omega^2}+1}(3) = f_{\omega^{\varepsilon_0+\omega^2}+1}(3)\\\) |
 
 </div>
 
@@ -276,7 +276,7 @@ We can try building bigger numbers.
 
 That's enough counting, since by now we have enough combinators to perform a more clever construction.
 
-Also, when we eventually get to creating the \\\(\Xi_0\\\) lower bounds, we can fill in gaps by doing ex. \\\([n]KK, [n](SK)K, [n](S(SK))K, \cdots\\\).
+Also, when we eventually get to creating the \\\(\Xi_0\\\) lower bounds, we can fill in gaps by doing ex. \\\([n]KK, [n] (SK)K, [n] (S(SK))K, \cdots\\\).
 This will get you marginally larger numbers.
 To be specific, if the next lower record was \\\(M+1\\\), this fills in \\\(2M+1, 3M+1, \cdots\\\).
 I still record these for completeness, but only for the first few examples, since beyond that it doesn't really help the size and it takes up space in the table.
@@ -876,10 +876,10 @@ This applies to \\\([E:A]\\\) as well.
 |--:|:-:|:--|
 | \\\([+1R] [2] [E:A]\\\) | \\\(2118\\\) | \\\(>f_{\varepsilon_0}(5)\\\) |
 | \\\([+1R] ([A] [2]) [E:A]\\\) | \\\(2121\\\) | \\\(>f_{\varepsilon_0+1}(3)\\\) |
-| \\\([+1R] ([A] [2]) ([\times \omega] [E] [A])\\\) | \\\(2169\\\) | \\\(>f_{\varepsilon_0 \omega+1}(3) = f_{\omega^{\varepsilon_0+1}+1}(3)\\\) |
-| \\\([+1R] ([A] [2]) ([2] [\times \omega] [E] [A])\\\) | \\\(2175\\\) | \\\(>f_{\varepsilon_0 \omega^2+1}(3) = f_{\omega^{\varepsilon_0+2}+1}(3)\\\) |
-| \\\([+1R] ([A] [2]) ([D] [\times \omega] [E] [A])\\\) | \\\(2199\\\) | \\\(>f_{\varepsilon_0 \omega^\omega+1}(3) = f_{\omega^{\varepsilon_0+\omega}+1}(3)\\\) |
-| \\\([+1R] ([A] [2]) ([2] [D] [\times \omega] [E] [A])\\\) | \\\(2205\\\) | \\\(>f_{\varepsilon_0 \omega^{\omega^2}+1}(3) = f_{\omega^{\varepsilon_0+\omega^2}+1}(3)\\\) |
+| \\\([+1R] ([A] [2]) ([\times \omega] [+\varepsilon_0] [A])\\\) | \\\(2169\\\) | \\\(>f_{\varepsilon_0 \omega+1}(3) = f_{\omega^{\varepsilon_0+1}+1}(3)\\\) |
+| \\\([+1R] ([A] [2]) ([2] [\times \omega] [+\varepsilon_0] [A])\\\) | \\\(2175\\\) | \\\(>f_{\varepsilon_0 \omega^2+1}(3) = f_{\omega^{\varepsilon_0+2}+1}(3)\\\) |
+| \\\([+1R] ([A] [2]) ([D] [\times \omega] [+\varepsilon_0] [A])\\\) | \\\(2199\\\) | \\\(>f_{\varepsilon_0 \omega^\omega+1}(3) = f_{\omega^{\varepsilon_0+\omega}+1}(3)\\\) |
+| \\\([+1R] ([A] [2]) ([2] [D] [\times \omega] [+\varepsilon_0] [A])\\\) | \\\(2205\\\) | \\\(>f_{\varepsilon_0 \omega^{\omega^2}+1}(3) = f_{\omega^{\varepsilon_0+\omega^2}+1}(3)\\\) |
 
 Let's follow what happens here.
 
