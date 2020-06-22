@@ -302,6 +302,36 @@
   }
   
   /**
+   * argmin/argmax
+   * needs array to not be empty
+   * in case of tie, returns first
+   */
+  const argmin = function(a) {
+    let an = a.length;
+    let besti = 0, best = a[0];
+    for(let i = 1; i < an; ++i) {
+      let v = a[i];
+      if(v < best) {
+        besti = i;
+        best = v;
+      }
+    }
+    return besti;
+  }
+  const argmax = function(a) {
+    let an = a.length;
+    let besti = 0, best = a[0];
+    for(let i = 1; i < an; ++i) {
+      let v = a[i];
+      if(v > best) {
+        besti = i;
+        best = v;
+      }
+    }
+    return besti;
+  }
+  
+  /**
    * Get/set cookie value as string.
    */
   const cookieGet = function(key) {
@@ -557,10 +587,11 @@
   
   let gameRandomSeed, gameRandomState, gameRandomHash, gameRandomIsVerified;
   let lastGameState, lastGameTime, totalRunTime;
-  let cacheGardenPrefix, cachePlantNameIndex;
+  let cacheGardenPrefix, cachePlantNameIndex, cacheTimeFor1;
   
   /**
    * Make a blank garden.
+   * Note: boost above is NOT set
    */
   const makeGarden = function(ordinal) {
     let plants = new Uint32Array(sylvester.length);
@@ -630,9 +661,10 @@
     let boostAbove = 1;
     if(index < gardens.length) {
       let h = gardens[index];
-      boostAbove = h[5] * getBoostInner(h);
+      boostAbove = h[5] * getBoostInner(h[2]);
     }
     let g = makeGarden(ordinal);
+    g[5] = boostAbove;
     if(make) {
       gardens.splice(index, 0, g);
     }
@@ -641,12 +673,12 @@
   
   /**
    * Compute the inner boost.
+   * Only plants are needed.
    */
-  const getBoostInner = function(g) {
+  const getBoostInner = function(plants) {
     let s = boostBase;
     let sn = s.length;
     let mult = 1;
-    let plants = g[2];
     for(let i = 0; i < sn; ++i) {
       let x = s[i];
       let y = Math.pow(x, plants[i]);
@@ -696,12 +728,12 @@
     let garden = getGarden(gardens, ordinal);
     let imana = garden[1];
     if(x !== 0) {
-      let exp = 18 + (imana + 1) * (addMana - 1);
+      let exp = 17 + (imana + 1) * addMana;
       if(exp >= normLimit)return 1;
       let cost = Math.pow(2, exp);
       return [[x-1,y], cost];
     }
-    let step = 3 + imana;
+    let step = 2 + imana + addMana;
     return [[step,y-1], 2];
   }
   
@@ -720,10 +752,10 @@
       let stepDown = [[x-1],y];
       let h = getGarden(gardens, stepDown);
       let batchSize = bsearchz(
-        function(batchSize){return Math.pow(2, 18 + (imana + 1) * batchSize);},
+        function(batchSize){return Math.pow(2, 17 + (imana + 1) * (batchSize + 1));},
         0,
         1000,
-        h[1],
+        h[1] + getManaSpent(h),
         function(u, v){return u <= v;}
       );
       return batchSize;
@@ -731,7 +763,7 @@
     let gindex = bsearch(gardens, 0, gardens.length, ordinal, function(u, v){return u[0] < v;});
     if(gindex === 0)return 0;
     let h = gardens[gindex-1];
-    let step = 3 + imana;
+    let step = 2 + imana;
     let stepDown = [step,y-1];
     if(ordCmp(h[0], stepDown) < 0)return 0;
     let offset = h[0][0] - step;
@@ -881,7 +913,7 @@
     let ordinalEnc = encodeOrdinal(ordinal);
     let gardenPrefix = getGardenPrefix(ordinal);
     // build big stuff
-    let outerEl = document.createElement("div");
+    let outerEl = document.createElement("div"); // [. mp]
     let idpfx = outerEl.id = "fgardens-garden-" + ordinalEnc;
     outerEl.className = "fgardens-lblock variant-1"
     let titleEl = document.createElement("h3");
@@ -900,7 +932,7 @@
     manaEl.appendChild(domExprFromNumber(mana));
     manaEl.appendChild(document.createElement("br"));
     let manaReady = enterGardenReady(gardens, ordinal);
-    let manaReadyPost = Math.min(normLimit, manaReady * boostAbove * getBoostInner(garden));
+    let manaReadyPost = Math.min(normLimit, Math.floor(manaReady * boostAbove * getBoostInner(plants)));
     let manaReadyInnerEl = document.createElement("span");
     manaReadyInnerEl.appendChild(document.createTextNode("Get "));
     manaReadyInnerEl.appendChild(domExprFromNumber(manaReadyPost));
@@ -965,7 +997,7 @@
     }
     let notifyEl = document.getElementById("fgardens-browser-notice");
     clearChildren(notifyEl);
-    let globals = ['chroma', 'crypto', 'Date', 'Math', 'Number', 'parseInt', 'performance',
+    let globals = ['chroma', 'crypto', 'Date', 'Infinity', 'Math', 'Number', 'parseInt', 'performance',
       'TextEncoder', 'Uint8Array', 'Uint32Array'];
     let unsupported = [];
     for(let i = 0; i < globals.length; ++i) {
@@ -1045,8 +1077,196 @@
    * Rebuild the UI. Where possible, only update what changed.
    * Not only is rebuilding the DOM slow, it's disruptive.
    */
-  const rebuildUIUpdated = function(prevState, newState) {
-    rebuildUIAll(); // TODO only update where needed
+  const rebuildUIUpdated = function(oldState, newState) {
+    let oldgset = {}, newgset = {};
+    let oldGardens = oldState.gardens, newGardens = newState.gardens;
+    oldgset[encodeOrdinal([0,0])] = 1;
+    for(let i = 0; i < oldGardens.length; ++i) {
+      let o = oldGardens[i][0];
+      oldgset[encodeOrdinal(o)] = 1;
+      oldgset[encodeOrdinal([o[0]+1,o[1]])] = 1;
+      oldgset[encodeOrdinal([0,o[1]+1])] = 1;
+    }
+    newgset[encodeOrdinal([0,0])] = 1;
+    for(let i = 0; i < newGardens.length; ++i) {
+      let o = newGardens[i][0];
+      newgset[encodeOrdinal(o)] = 1;
+      newgset[encodeOrdinal([o[0]+1,o[1]])] = 1;
+      newgset[encodeOrdinal([0,o[1]+1])] = 1;
+    }
+    // mark hide gardens that were destroyed
+    for(let oenc in oldgset) {
+      if(oenc in newgset)continue;
+      let gid = "fgardens-garden-" + oenc;
+      let outerEl = document.getElementById(gid);
+      if(!outerEl)continue;
+      outerEl.style["display"] = "none";
+    }
+    // create gardens that don't exist yet
+    let addedset = {};
+    for(let oenc in newgset) {
+      let gid = "fgardens-garden-" + oenc;
+      let outerEl = document.getElementById(gid);
+      if(outerEl)continue;
+      addedset[oenc] = 1;
+      let o = decodeOrdinal([oenc, 0]);
+      let garden = getGarden(newGardens, o);
+      // find insertion index
+      let gtcontainer = document.getElementById(
+        ordCmp([0, 1], o) <= 0?"fgardens-container-group-2":
+        ordCmp([1, 0], o) <= 0?"fgardens-container-group-1":
+        "fgardens-container-group-0");
+      let children = gtcontainer.childNodes;
+      let insIndex = bsearch(children, 0, children.length, gid,
+        function(u, v){return u < v;});
+      let ngd = makeDomGarden(newGardens, garden);
+      if(insIndex === children.length) {
+        gtcontainer.appendChild(ngd);
+      } else {
+        gtcontainer.insertBefore(ngd, children[insIndex]);
+      }
+    }
+    // mark show gardens that were added
+    for(let oenc in newgset) {
+      if(oenc in oldgset)continue;
+      let gid = "fgardens-garden-" + oenc;
+      let outerEl = document.getElementById(gid);
+      if(!outerE)continue;
+      outerEl.style["display"] = "block";
+    }
+    // update gardens data
+    for(let ordinalEnc in newgset) {
+      if(ordinalEnc in addedset)continue;
+      let idpfx = "fgardens-garden-" + ordinalEnc;
+      let ordinal = decodeOrdinal([ordinalEnc, 0]);
+      let garden = getGarden(newGardens, ordinal);
+      let mana = garden[1];
+      let plants = garden[2];
+      let challengeCompl = garden[3];
+      let challengeActive = garden[4];
+      let boostAbove = garden[5];
+      // update mana
+      let manaEl = document.getElementById(idpfx + "-mana"); // [.. nmana . button . req]
+      manaEl.replaceChild(domExprFromNumber(mana), manaEl.childNodes[2]);
+      let manaReady = enterGardenReady(newGardens, ordinal);
+      let manaReadyPost = Math.min(normLimit, Math.floor(manaReady * boostAbove * getBoostInner(plants)));
+      let manaReadyInnerEl = manaEl.childNodes[4].childNodes[0];
+      manaReadyInnerEl.replaceChild(domExprFromNumber(manaReadyPost), manaReadyInnerEl.childNodes[1]);
+      let reqNext = enterGardenRequired(newGardens, ordinal, manaReady + 1);
+      manaEl.replaceChild(
+        mana>=normLimit?document.createTextNode("Already maxed"):
+        reqNext===0?document.createTextNode("Free"):
+        reqNext===1?document.createTextNode("Cannot get more at once"):
+        function(){
+          let all = document.createElement("span");
+          all.appendChild(document.createTextNode("Need "));
+          all.appendChild(domExprFromNumber(reqNext[1]));
+          all.appendChild(document.createTextNode(" " + joinWords(getGardenPrefix(reqNext[0]), "mana to get more at once")));
+          return all;
+        }(),
+        manaEl.childNodes[6]
+      );
+      // update plants
+      for(let i = 0; i < plants.length; ++i) {
+        let rank = plants[i];
+        let plantEl = document.getElementById(idpfx + "-plant-" + i.toString()); // [rank ...... cost]
+        plantEl.replaceChild(
+          document.createTextNode(rank===0?"No":"Rank "+rank.toString()),
+          plantEl.childNodes[0]
+        );
+        let reqNext = Math.pow(sylvester[i], rank+1);
+        plantEl.replaceChild(
+          reqNext>normLimit?document.createTextNode("Already maxed"):
+          function(){
+            let all = document.createElement("span");
+            all.appendChild(document.createTextNode("Need "));
+            all.appendChild(domExprFromNumber(reqNext));
+            all.appendChild(document.createTextNode(" " + joinWords(getGardenPrefix(ordinal), "mana")));
+            return all;
+          }(),
+          plantEl.childNodes[7]
+        );
+      }
+    }
+    // make ordinal
+    ordDisplayEl = document.getElementById("fgardens-container-ordinal-counter");
+    clearChildren(ordDisplayEl);
+    ordDisplayEl.appendChild(makeDomScoreOrdinalFromGardens(newGardens, 1));
+  }
+  
+  /**
+   * Extremely useful common approximation function -
+   * to gain 1 mana at the specified garden (ordinal)
+   * when you currently have the specified amount of mana,
+   * how long will it take?
+   * Uses the usual strategy. Batching is only efficient from 0 to 1.
+   * Approximation properties:
+   * - At start, lower are empty
+   * - Ignores boosts from above
+   * - Offset by 1 on garden 0 is ignored
+   * This reduces the amount of variables enough for the
+   * approximation to be useful and reusable.
+   * Approximation is valid when boost above is large.
+   * Returns Infinity if the value is unreachable.
+   */
+  const getTimeFor1 = function(ordinal, imana) {
+    if(ordCmp([0,0], ordinal) === 0)return 1;
+    let cacheKey = encodeOrdinal(ordinal) + encodeInt(imana);
+    if(cacheKey in cacheTimeFor1)return cacheTimeFor1[cacheKey];
+    let result;
+    if(ordCmp([1,0], ordinal) === 0) {
+      // doesn't need special rules, but optimizable
+      let exp = 18 + imana;
+      if(exp > 1000)return Infinity;
+      let target = Math.pow(2, exp);
+      let mult = 1;
+      let s = sylvester, b = boostBase;
+      let plants = new Uint32Array(s.length);
+      result = 0;
+      let cont = 1;
+      while(cont) {
+        // would it save time to buy a plant?
+        let candidates = [];
+        for(let i = 0; i < plants.length; ++i) {
+          // calculate time to buy the plant and then reach the target
+          let pcost = Math.pow(s[i],plants[i]+1);
+          let timetop;
+          if(pcost > normLimit || pcost >= target) {
+            timetop = Infinity;
+          } else {
+            timetop = pcost / mult + (target - pcost) / (mult * b[i]);
+          }
+          candidates.push(timetop);
+        }
+        candidates.push(target / mult); // reference time to beat
+        let j = argmin(candidates);
+        if(j === plants.length) {
+          // no plants were efficient to buy
+          result += candidates[j];
+          cont = 0;
+        } else {
+          // buy a plant and try again
+          let pcost = Math.pow(s[j],plants[j]+1);
+          result += pcost / mult;
+          target -= pcost; // spent mana still counts toward the goal
+          mult *= b[j];
+          ++plants[j];
+        }
+      }
+    } else if(ordCmp([2,0], ordinal) === 0) {
+      // need somewhat different handling for 0 -> 1 batching
+      // TODO
+    } else if(ordinal[0] === 0) {
+      // w limit is pretty simple
+      let step = 3 + imana;
+      // TODO
+    } else {
+      // successor
+      let exp = 18 + imana;
+      // TODO
+    }
+    cacheTimeFor1[cacheKey] = result;
+    return result;
   }
   
   /**
@@ -1064,14 +1284,77 @@
     let topOrd = topGarden[0];
     // handle degenerate case
     if(ordCmp([0,0], topOrd) === 0) {
-      let mult = getBoostInner(topGarden) - 1; // production rate
+      let mult = getBoostInner(topGarden[2]) - 1; // production rate
       if(mult === 0)return [wstate, time];
       let tickUp = Math.floor(time * mult);
       let elapsed = tickUp / mult;
-      topGarden[1] += tickUp;
+      topGarden[1] = Math.min(normLimit, topGarden[1] + tickUp);
       return [wstate, elapsed];
     }
-    // TODO handle higher case
+    // optimized case
+    if(ordCmp([1,0], topOrd) === 0) {
+      // maximize and always buy plant
+      let h = getGarden(gardens, [0,0]);
+      let plants = h[2];
+      let s = sylvester, b = boostBase;
+      let pcosts = [];
+      for(let i = 0; i < plants.length; ++i) {
+        let pcost = Math.pow(s[i],plants[i]+1);
+        if(pcost > normLimit)pcost = Infinity;
+        pcosts.push(pcost);
+      }
+      // buy cheapest plants immediately available
+      while(1) {
+        let j = argmin(pcosts);
+        let pcost = pcosts[j];
+        if(h[1] > pcost) {
+          // plant is buyable
+          h = getGarden(gardens, [0,0], 1);
+          h[1] -= pcost;
+          ++plants[j];
+          pcosts[j] *= s[j];
+        } else {
+          break;
+        }
+      }
+      // simulate time
+      let timeElapsed = 0, timeRem = time;
+      while(1) {
+        let j = argmin(pcosts);
+        let pcost = pcosts[j];
+        let mult = h[5] * getBoostInner(h[2]) - 1; // production rate
+        let tickUp = Math.floor(timeRem * mult);
+        if(tickUp === 0)return [wstate, timeElapsed];
+        let potentialMana = Math.min(normLimit, h[1] + tickUp);
+        if(potentialMana >= pcost) {
+          // can reach it, buy it and set mana to 0
+          h = getGarden(gardens, [0,0], 1);
+          plants = h[2];
+          timeElapsed += (pcost - h[1]) / mult;
+          timeRem = time - timeElapsed;
+          ++plants[j];
+          pcosts[j] *= s[j];
+          h[1] = 0;
+        } else {
+          // can't reach it, just max mana and return
+          h = getGarden(gardens, [0,0], 1);
+          h[1] = potentialMana;
+          if(tickUp > normLimit) {
+            timeElapsed = time;
+          } else {
+            timeElapsed += tickUp / mult;
+          }
+          return [wstate, timeElapsed];
+        }
+      }
+    }
+    // handle higher case
+    if(topOrd[0] === 0) {
+      // w limit is less simple, since we maximize a group instead of 1 garden
+      // TODO
+    }
+    // successor case
+    // TODO
   }
   
   /**
@@ -1108,6 +1391,7 @@
     gameRandomHash = undefined;
     cacheGardenPrefix = {};
     cachePlantNameIndex = {};
+    cacheTimeFor1 = {};
     // make blank state
     gameRandomSeed = document.getElementById("fgardens-settings-seed").value;
     gameRandomState = randomConcatState(
@@ -1225,11 +1509,11 @@
     if(manaReady === 0)return;
     let garden = getGarden(gardens, ordinal, 1);
     let boostAbove = garden[5];
-    let boostHere = boostAbove * getBoostInner(garden);
+    let boostHere = boostAbove * getBoostInner(garden[2]);
     if(gameRandomIsVerified &&
       (boostAbove > 1 || ordCmp([0,0],ordinal) === 0 &&
         (boostHere > 1 || garden[1] >= 2)))return; // disallow extra clicks
-    let manaReadyPost = Math.min(normLimit, manaReady * boostHere);
+    let manaReadyPost = Math.min(normLimit, Math.floor(manaReady * boostHere));
     garden[1] = Math.min(normLimit, garden[1] + manaReadyPost);
     let wstate = new GameState(lastGameState);
     destroyGardensLower(wstate.gardens, ordinal);
@@ -1262,11 +1546,11 @@
     garden = wstate.gardens[gindex];
     garden[1] -= cost;
     ++garden[2][index];
-    let above = garden[5] * getBoostInner(garden);
+    let above = garden[5] * getBoostInner(plants);
     for(let j = gindex-1; j >= 0; --j) {
       let h = gardens[j];
       h[5] = above;
-      above *= getBoostInner(h);
+      above *= getBoostInner(h[2]);
     }
     let oldGameState = lastGameState;
     lastGameState = wstate;
