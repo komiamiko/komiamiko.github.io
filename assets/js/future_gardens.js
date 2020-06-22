@@ -384,6 +384,13 @@
     return l;
   }
   
+  /**
+   * Get seconds since epoch
+   */
+  const getTimestamp() {
+    return Date.now() / 1000;
+  }
+  
   // --- other useful utilities ---
   
   /**
@@ -728,7 +735,7 @@
     let garden = getGarden(gardens, ordinal);
     let imana = garden[1];
     if(x !== 0) {
-      let exp = 17 + (imana + 1) * addMana;
+      let exp = 17 + (0.5 * imana + 1) * addMana;
       if(exp >= normLimit)return 1;
       let cost = Math.pow(2, exp);
       return [[x-1,y], cost];
@@ -752,7 +759,7 @@
       let stepDown = [[x-1],y];
       let h = getGarden(gardens, stepDown);
       let batchSize = bsearchz(
-        function(batchSize){return Math.pow(2, 17 + (imana + 1) * (batchSize + 1));},
+        function(batchSize){return Math.pow(2, 17 + (0.5 * imana + 1) * (batchSize + 1));},
         0,
         1000,
         h[1] + getManaSpent(h),
@@ -1216,7 +1223,7 @@
     let result;
     if(ordCmp([1,0], ordinal) === 0) {
       // doesn't need special rules, but optimizable
-      let exp = 18 + imana;
+      let exp = 18 + imana * 0.5;
       if(exp > 1000)return Infinity;
       let target = Math.pow(2, exp);
       let mult = 1;
@@ -1225,7 +1232,8 @@
       result = 0;
       let cont = 1;
       while(cont) {
-        // would it save time to buy a plant?
+        // spent mana still counts toward the goal, so buying plants is always a good idea
+        // go for the plant that saves the most time
         let candidates = [];
         for(let i = 0; i < plants.length; ++i) {
           // calculate time to buy the plant and then reach the target
@@ -1362,7 +1370,7 @@
    */
   const gameLoop = function() {
     let tstart = performance.now();
-    let tnow = Date.now() / 1000;
+    let tnow = getTimestamp();
     let diffs = tnow - lastGameTime;
     let oldGameState = lastGameState;
     let updated = tryUpdateStateTime(oldGameState, diffs);
@@ -1399,7 +1407,7 @@
       randomDeriveState(gameRandomSeed)
     );
     lastGameState = new GameState();
-    lastGameTime = Date.now() / 1000;
+    lastGameTime = getTimestamp();
     totalRunTime = 0;
   }
   
