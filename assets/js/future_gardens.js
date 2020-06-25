@@ -387,9 +387,27 @@
   /**
    * Get seconds since epoch
    */
-  const getTimestamp() {
+  const getTimestamp = function() {
     return Date.now() / 1000;
   }
+  
+  /**
+   * Order to always buy the cheapest available plant in. Pre-computed.
+   */
+  const plantOrderMinimum = (function(){
+    let result = [];
+    let costs = [];
+    for(let i = 0; i < sylvester.length; ++i) {
+      costs.push(sylvester[i]);
+    }
+    while(1) {
+      let i = argmin(costs);
+      if(costs[i] > normLimit)break;
+      result.push(i);
+      costs[i] *= sylvester[i];
+    }
+    return result;
+  })()
   
   // --- other useful utilities ---
   
@@ -1230,31 +1248,17 @@
       let s = sylvester, b = boostBase;
       let plants = new Uint32Array(s.length);
       result = 0;
-      let cont = 1;
-      while(cont) {
+      for(let k = 0; k < plantOrderMinimum.length; ++k) {
         // spent mana still counts toward the goal, so buying plants is always a good idea
         // go for the plant that saves the most time
-        let candidates = [];
-        for(let i = 0; i < plants.length; ++i) {
-          // calculate time to buy the plant and then reach the target
-          let pcost = Math.pow(s[i],plants[i]+1);
-          let timetop;
-          if(pcost > normLimit || pcost >= target) {
-            timetop = Infinity;
-          } else {
-            timetop = pcost / mult + (target - pcost) / (mult * b[i]);
-          }
-          candidates.push(timetop);
-        }
-        candidates.push(target / mult); // reference time to beat
-        let j = argmin(candidates);
-        if(j === plants.length) {
+        let j = plantOrderMinimum[k];
+        let pcost = Math.pow(s[j],plants[j]+1);
+        if(pcost >= target) {
           // no plants were efficient to buy
-          result += candidates[j];
-          cont = 0;
+          result += target / mult;
+          break;
         } else {
           // buy a plant and try again
-          let pcost = Math.pow(s[j],plants[j]+1);
           result += pcost / mult;
           target -= pcost; // spent mana still counts toward the goal
           mult *= b[j];
