@@ -335,7 +335,9 @@ The final value of \\\(N\\\) is \\\(AH(k)\\\).
 As examples, here are the first few values of \\\(AH\\\):
 
 > \\\(AH(0) = 1\\\)
+>
 > \\\(AH(1) = 1\\\)
+>
 > \\\(AH(2) = 3\\\)
 
 It only makes sense to submit one number to the ever-growing list of large numbers humans have described, since other numbers will likely be far below it or so far above it that if you replaced \\\(f_0\\\) in the fast-growing hierarchy with \\\(AH\\\) then \\\(f_\alpha(N)\\\) for reasonable ordinal \\\(\alpha\\\) and integer \\\(N\\\) it wouldn't even get close to the other number.
