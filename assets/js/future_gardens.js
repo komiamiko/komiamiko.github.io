@@ -753,7 +753,9 @@
     let garden = getGarden(gardens, ordinal);
     let imana = garden[1];
     if(x !== 0) {
-      let exp = 17 + (0.5 * imana + 1) * addMana;
+      let boostHere = Math.floor(garden[5] * getBoostInner(garden[2]));
+      let discount = 0.5 / boostHere;
+      let exp = 17 + (discount * imana + 1) * addMana;
       if(exp >= normLimit)return 1;
       let cost = Math.pow(2, exp);
       return [[x-1,y], cost];
@@ -774,10 +776,12 @@
     let garden = getGarden(gardens, ordinal);
     let imana = garden[1];
     if(x !== 0) {
+      let boostHere = Math.floor(garden[5] * getBoostInner(garden[2]));
+      let discount = 0.5 / boostHere;
       let stepDown = [[x-1],y];
       let h = getGarden(gardens, stepDown);
       let batchSize = bsearchz(
-        function(batchSize){return Math.pow(2, 17 + (0.5 * imana + 1) * (batchSize + 1));},
+        function(batchSize){return Math.pow(2, 17 + (discount * imana + 1) * (batchSize + 1));},
         0,
         1000,
         h[1] + getManaSpent(h),
@@ -957,7 +961,7 @@
     manaEl.appendChild(domExprFromNumber(mana));
     manaEl.appendChild(document.createElement("br"));
     let manaReady = enterGardenReady(gardens, ordinal);
-    let manaReadyPost = Math.min(normLimit, Math.floor(manaReady * boostAbove * getBoostInner(plants)));
+    let manaReadyPost = Math.min(normLimit, manaReady * Math.floor(boostAbove * getBoostInner(plants)));
     let manaReadyInnerEl = document.createElement("span");
     manaReadyInnerEl.appendChild(document.createTextNode("Get "));
     manaReadyInnerEl.appendChild(domExprFromNumber(manaReadyPost));
@@ -1174,7 +1178,7 @@
       let manaEl = document.getElementById(idpfx + "-mana"); // [.. nmana . button . req]
       manaEl.replaceChild(domExprFromNumber(mana), manaEl.childNodes[2]);
       let manaReady = enterGardenReady(newGardens, ordinal);
-      let manaReadyPost = Math.min(normLimit, Math.floor(manaReady * boostAbove * getBoostInner(plants)));
+      let manaReadyPost = Math.min(normLimit, manaReady * Math.floor(boostAbove * getBoostInner(plants)));
       let manaReadyInnerEl = manaEl.childNodes[4].childNodes[0];
       manaReadyInnerEl.replaceChild(domExprFromNumber(manaReadyPost), manaReadyInnerEl.childNodes[1]);
       let reqNext = enterGardenRequired(newGardens, ordinal, manaReady + 1);
@@ -1521,11 +1525,11 @@
     if(manaReady === 0)return;
     let garden = getGarden(gardens, ordinal, 1);
     let boostAbove = garden[5];
-    let boostHere = boostAbove * getBoostInner(garden[2]);
+    let boostHere = Math.floor(boostAbove * getBoostInner(garden[2]));
     if(gameRandomIsVerified &&
       (boostAbove > 1 || ordCmp([0,0],ordinal) === 0 &&
         (boostHere > 1 || garden[1] >= 2)))return; // disallow extra clicks
-    let manaReadyPost = Math.min(normLimit, Math.floor(manaReady * boostHere));
+    let manaReadyPost = Math.min(normLimit, manaReady * boostHere);
     garden[1] = Math.min(normLimit, garden[1] + manaReadyPost);
     let wstate = new GameState(lastGameState);
     destroyGardensLower(wstate.gardens, ordinal);
