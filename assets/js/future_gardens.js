@@ -537,6 +537,11 @@
     if(diff)return diff;
     return a[0] - b[0];
   }
+  const primCmp = function(a, b) {
+    if(a === b)return 0;
+    if(a < b)return -1;
+    return 1;
+  }
   
   /**
    * Derive a random seed from a name and a 128-bit
@@ -610,8 +615,10 @@
   
   // --- gameplay handling ---
   
+  const modelOrdinals = [[1,0],[2,0],[3,0],[0,1]];
+  
   let gameRandomSeed, gameRandomState, gameRandomHash, gameRandomIsVerified;
-  let lastGameState, lastGameTime, totalRunTime;
+  let lastGameState, lastGameTime, totalRunTime, globalUpgrades, globalUpgradesTimes;
   let cacheGardenPrefix, cachePlantNameIndex, cacheTimeFor1;
   
   /**
@@ -738,6 +745,13 @@
     gardens.splice(0, index);
   }
   
+  const successorTargetExp = function(boostHere, imana, addMana) {
+    let discount = 0.5 / boostHere;
+    let exp = (globalUpgrades >= 1?5.6438561897747253:21)
+      + (discount * imana + 1) * addMana;
+    return exp;
+  }
+  
   /**
    * Low-ish level helper.
    * With the current gardens, for the specified ordinal,
@@ -754,10 +768,9 @@
     let imana = garden[1];
     if(x !== 0) {
       let boostHere = Math.floor(garden[5] * getBoostInner(garden[2]));
-      let discount = 0.5 / boostHere;
-      let exp = 17 + (discount * imana + 1) * addMana;
+      let exp = successorTargetExp(boostHere, imana, addMana)
       if(exp >= normLimit)return 1;
-      let cost = Math.pow(2, exp);
+      let cost = Math.floor(Math.pow(2, exp));
       return [[x-1,y], cost];
     }
     let step = 2 + imana + addMana;
@@ -777,11 +790,10 @@
     let imana = garden[1];
     if(x !== 0) {
       let boostHere = Math.floor(garden[5] * getBoostInner(garden[2]));
-      let discount = 0.5 / boostHere;
       let stepDown = [[x-1],y];
       let h = getGarden(gardens, stepDown);
       let batchSize = bsearchz(
-        function(batchSize){return Math.pow(2, 17 + (discount * imana + 1) * (batchSize + 1));},
+        function(batchSize){return Math.floor(Math.pow(2, successorTargetExp(boostHere, imana, batchSize+1)));},
         0,
         1000,
         h[1] + getManaSpent(h),
@@ -1045,12 +1057,18 @@
    */
   const rebuildUIAll = function() {
     // fill in story elements etc
-    let ijn0 = document.getElementById("fgardens-inject-name-0");
-    clearChildren(ijn0);
-    ijn0.appendChild(document.createTextNode(getPlantName([0,0], 0)));
-    let ijn1 = document.getElementById("fgardens-inject-name-1");
-    clearChildren(ijn1);
-    ijn1.appendChild(document.createTextNode(getPlantName([0,0], 1)));
+    let injos = [[0,0],[1,0],[2,0],[3,0],[0,1]];
+    for(let i = 0; i < injos.length; ++i) {
+      let ordinal = injos[i];
+      let ordinalEnc = encodeOrdinal(ordinal);
+      for(let j = 0; j < sylvester.length; ++j) {
+        let id = "fgardens-inject-plant-name-" + ordinalEnc + "-" + j.toString();
+        let ijn = document.getElementById(id);
+        if(!ijn)continue;
+        clearChildren(ijn);
+        ijn.appendChild(document.createTextNode(getPlantName(ordinal, j)));
+      }
+    }
     // make gardens
     let cgardensKeys = {};
     let cgardens = [];
@@ -1157,7 +1175,6 @@
     }
     // mark show gardens that were added
     for(let oenc in newgset) {
-      if(oenc in oldgset)continue;
       let gid = "fgardens-garden-" + oenc;
       let outerEl = document.getElementById(gid);
       if(!outerE)continue;
@@ -1221,6 +1238,21 @@
     ordDisplayEl = document.getElementById("fgardens-container-ordinal-counter");
     clearChildren(ordDisplayEl);
     ordDisplayEl.appendChild(makeDomScoreOrdinalFromGardens(newGardens, 1));
+    // update model elements
+    for(let i = 0; i < modelOrdinals.length; ++i) {
+      let ordinal = modelOrdinals[i];
+      let ordinalEnc = encodeOrdinal(ordinal);
+      let outerEl = document.getElementById("fgardens-model-z" + ordinalEnc);
+      let buttonEl = document.getElementById("fgardens-model-button-z" + ordinalEnc);
+      let cmpr = primCmp(i, globalUpgrades);
+      outerEl.className = "fgardens-lblock variant-" + (cmpr<0?"1":cmpr===0?"2":"3");
+      clearChildren(buttonEl);
+      buttonEl.appendChild(document.createTextNode(
+        cmpr<0?"Already complete":
+        cmpr===0?"Research this model":
+        "Not available yet"
+      ));
+    }
   }
   
   /**
@@ -1245,9 +1277,9 @@
     let result;
     if(ordCmp([1,0], ordinal) === 0) {
       // doesn't need special rules, but optimizable
-      let exp = 18 + imana * 0.5;
+      let exp = successorTargetExp(1, imana, 1);
       if(exp > 1000)return Infinity;
-      let target = Math.pow(2, exp);
+      let target = Math.floor(Math.pow(2, exp));
       let mult = 1;
       let s = sylvester, b = boostBase;
       let plants = new Uint32Array(s.length);
@@ -1417,6 +1449,8 @@
     lastGameState = new GameState();
     lastGameTime = getTimestamp();
     totalRunTime = 0;
+    globalUpgrades = 0;
+    globalUpgradesTimes = [];
   }
   
   /**
@@ -1573,6 +1607,43 @@
     rebuildUIUpdated(oldGameState, wstate);
   }
   
+  /**
+   * Try to take a certain model.
+   * All models require one of the first and second plants.
+   */
+  const sendTakeModel = function(nthModel, ordinal) {
+    // check whether this model is redeemable now
+    if(globalUpgrades !== nthModel)return;
+    let gardens = lastGameState.gardens;
+    if(gardens.length === 0)return;
+    let topGarden = gardens[gardens.length-1];
+    let topOrd = topGarden[0];
+    let topPlants = topGarden[2];
+    let cmpr = ordCmp(topOrd, ordinal);
+    if(cmpr < 0 || cmpr === 0 && topPlants[0] === 0 && topPlants[1] === 0)return;
+    // player can take the model now
+    // give the model
+    ++globalUpgrades;
+    // reset gardens
+    lastGameState.gardens = [];
+    // log the time to reach
+    globalUpgradesTimes.push(Math.round(totalRunTime));
+    // rebuild UI
+    rebuildUIAll();
+  }
+  const sendTakeModelZ10 = function() {
+    sendTakeModel(0, [1,0]);
+  }
+  const sendTakeModelZ20 = function() {
+    sendTakeModel(1, [2,0]);
+  }
+  const sendTakeModelZ30 = function() {
+    sendTakeModel(2, [3,0]);
+  }
+  const sendTakeModelZ01 = function() {
+    sendTakeModel(3, [0,1]);
+  }
+  
   // --- external signal handlers, visible to outside ---
   
   publicNamespace.extSendNewSeedCasual = function() {
@@ -1593,6 +1664,22 @@
   
   publicNamespace.extSendTakePlant = function(ordinalEnc, index) {
     sendTakePlant(ordinalEnc, index);
+  }
+  
+  publicNamespace.extSendTakeModelZ10 = function() {
+    sendTakeModelZ10();
+  }
+  
+  publicNamespace.extSendTakeModelZ20 = function() {
+    sendTakeModelZ20();
+  }
+  
+  publicNamespace.extSendTakeModelZ30 = function() {
+    sendTakeModelZ30();
+  }
+  
+  publicNamespace.extSendTakeModelZ01 = function() {
+    sendTakeModelZ01();
   }
   
   // --- game start up ---

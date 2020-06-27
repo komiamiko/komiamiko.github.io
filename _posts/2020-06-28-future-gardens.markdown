@@ -42,8 +42,8 @@ Where will this take you?
 Only time will tell.
 
 In your gardens are plants never seen before. <br/>
-A <span id="fgardens-inject-name-0"></span>,
-a <span id="fgardens-inject-name-1"></span>. <br/>
+A <span id="fgardens-inject-plant-name-010010-0"></span>,
+a <span id="fgardens-inject-plant-name-010010-1"></span>. <br/>
 First named by you, with flowery whimsy. <br/>
 This is your story, that you write as you go.
 
@@ -121,6 +121,58 @@ Lucky for you, the minimum is ample.
 {% include collapser.markdown %}
 
 <div id="fgardens-container-models">
+
+<div id="fgardens-model-z010011">
+
+### Structural Decomposition
+
+Need 1 <span id="fgardens-inject-plant-name-010011-0"></span>
+and 1 <span id="fgardens-inject-plant-name-010011-1"></span>.
+
+Reduces the initial threshold for a future collapse from 2<sup>22</sup> to 100.
+
+<button type="button" onmousedown="gardens.extSendTakeModelZ10()" id="fgardens-model-button-z010011"></button>
+
+</div>
+
+<div id="fgardens-model-z010012">
+
+### Unnamed02
+
+Need 1 <span id="fgardens-inject-plant-name-010012-0"></span>
+and 1 <span id="fgardens-inject-plant-name-010012-1"></span>.
+
+???
+
+<button type="button" onmousedown="gardens.extSendTakeModelZ20()" id="fgardens-model-button-z010012"></button>
+
+</div>
+
+<div id="fgardens-model-z010013">
+
+### Unnamed03
+
+Need 1 <span id="fgardens-inject-plant-name-010013-0"></span>
+and 1 <span id="fgardens-inject-plant-name-010013-1"></span>.
+
+???
+
+<button type="button" onmousedown="gardens.extSendTakeModelZ30()" id="fgardens-model-button-z010013"></button>
+
+</div>
+
+<div id="fgardens-model-z011010">
+
+### Unnamed10
+
+Need 1 <span id="fgardens-inject-plant-name-011010-0"></span>
+and 1 <span id="fgardens-inject-plant-name-011010-1"></span>.
+
+???
+
+<button type="button" onmousedown="gardens.extSendTakeModelZ01()" id="fgardens-model-button-z011010"></button>
+
+</div>
 
 </div>
 
@@ -217,11 +269,11 @@ With new rules, new plants and challenges await.
 
 </div>
 
-<input type="button" value="Reset game with new seed" onclick="gardens.extSendResetGame()">
+<button type="button" onmousedown="gardens.extSendResetGame()">Reset game with new seed</button>
 
 <label for="fgardens-settings-seed">World seed</label>
 <input type="text" id="fgardens-settings-seed" name="fgardens-settings-seed">
-<input type="button" value="Generate a new seed" onclick="gardens.extSendNewSeedCasual()">
+<button type="button" onmousedown="gardens.extSendNewSeedCasual()">Generate a new seed</button>
 
 Any seed is fine for casual play.
 For more competitive use, the game creator only officially endorses seeds meeting certain requirements, which the game will indicate are "verified".
@@ -233,7 +285,7 @@ When the seed is ready, it will be entered into the seed box.
 
 <label for="fgardens-settings-name">Your name</label>
 <input type="text" id="fgardens-settings-name" name="fgardens-settings-name">
-<input type="button" value="Generate verified seed" onclick="gardens.extSendNewSeedVerified()">
+<button type="button" onmousedown="gardens.extSendNewSeedVerified()">Generate verified seed</button>
 
 <div id="fgardens-settings-verified-seed-display">
 </div>
@@ -557,7 +609,53 @@ It still has the spirit of the original equation and has a gentle curve which in
 
 <div>
 
-TODO talk about the tiers of play and why the models are what they are, possibly with ordinal analysis
+#### Purpose of models
+{: #models-purpose}
+
+{% include collapser.markdown %}
+
+<div>
+
+Models exist to divide the game experience into distinct tiers of play,
+each meant to present something new and exciting, make the player feel powerful,
+and simultaneously make their efforts feel inconsequential in the face of that tier's goal.
+
+</div>
+
+#### Up to Structural Decomposition
+{: #to-model-01}
+
+{% include collapser.markdown %}
+
+<div>
+
+The first tier, naturally, is focused on a single garden.
+Without ever explicitly telling the player what mana or plants are, it gives sufficient time to figure it out by experimenting.
+I wouldn't want to hold a player in the gardens for too long and have them lose interest due to an apparent lack of depth in the game or too high difficulty.
+However, it is important as part of the setup to make reaching *ω* feel difficult.
+This is their first goal, and they get a peek of what comes next.
+
+Within this first tier, reaching *ω<sup>2</sup>* is practically impossible.
+The largest *ω* batch you need to redeem at once is *31*, with power *14625.853779...* at *ω*, and with *8375* current *ω* mana.
+This yields an offset of *+38.226240...*, which far overtakes the multiplier.
+If you'll trust my calculation, it would take about *22* million times longer to reach *ω<sup>2</sup>* compared to *ω*.
+
+With the first model, the base cost is reduced to a surprisingly low *100*.
+While this is a significant improvement in the constants, it does nothing about the fast growth of the requirements - the mana cost to reach *ω<sup>N</sup>* still scales with *2 ↑↑ N*.
+Higher gardens are still out of reach, but importantly, the player is now able to reach *ω<sup>2</sup>* to obtain the next model.
+
+</div>
+
+#### Up to ???
+{: #to-model-02}
+
+{% include collapser.markdown %}
+
+<div>
+
+
+
+</div>
 
 </div>
 
