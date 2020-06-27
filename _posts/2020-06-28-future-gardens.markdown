@@ -129,7 +129,7 @@ Lucky for you, the minimum is ample.
 Need 1 <span id="fgardens-inject-plant-name-010011-0"></span>
 and 1 <span id="fgardens-inject-plant-name-010011-1"></span>.
 
-Reduces the initial threshold for a future collapse from 2<sup>22</sup> to 100.
+Reduces the initial threshold for a future collapse from 2<sup>22</sup> to 2<sup>16</sup>.
 
 <button type="button" onmousedown="gardens.extSendTakeModelZ10()" id="fgardens-model-button-z010011"></button>
 
@@ -636,11 +636,11 @@ However, it is important as part of the setup to make reaching *ω* feel difficu
 This is their first goal, and they get a peek of what comes next.
 
 Within this first tier, reaching *ω<sup>2</sup>* is practically impossible.
-The largest *ω* batch you need to redeem at once is *31*, with power *14625.853779...* at *ω*, and with *8375* current *ω* mana.
+The largest *ω* batch you need to redeem at once is *31*, with power *6955.923259...* at *ω*, and with *3147* current *ω* mana.
 This yields an offset of *+38.226240...*, which far overtakes the multiplier.
-If you'll trust my calculation, it would take about *22* million times longer to reach *ω<sup>2</sup>* compared to *ω*.
+If you'll trust my calculation, it would take about *2<sup>24.5</sup>* times longer to reach *ω<sup>2</sup>* compared to *ω*.
 
-With the first model, the base cost is reduced to a surprisingly low *100*.
+With the first model, the base cost is reduced to a lower *2<sup>16</sup>*.
 While this is a significant improvement in the constants, it does nothing about the fast growth of the requirements - the mana cost to reach *ω<sup>N</sup>* still scales with *2 ↑↑ N*.
 Higher gardens are still out of reach, but importantly, the player is now able to reach *ω<sup>2</sup>* to obtain the next model.
 

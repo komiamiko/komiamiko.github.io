@@ -747,7 +747,7 @@
   
   const successorTargetExp = function(boostHere, imana, addMana) {
     let discount = 0.5 / boostHere;
-    let exp = (globalUpgrades >= 1?5.6438561897747253:21)
+    let exp = (globalUpgrades >= 1?15:21)
       + (discount * imana + 1) * addMana;
     return exp;
   }
@@ -1177,7 +1177,7 @@
     for(let oenc in newgset) {
       let gid = "fgardens-garden-" + oenc;
       let outerEl = document.getElementById(gid);
-      if(!outerE)continue;
+      if(!outerEl)continue;
       outerEl.style["display"] = "block";
     }
     // update gardens data
@@ -1620,7 +1620,7 @@
     let topOrd = topGarden[0];
     let topPlants = topGarden[2];
     let cmpr = ordCmp(topOrd, ordinal);
-    if(cmpr < 0 || cmpr === 0 && topPlants[0] === 0 && topPlants[1] === 0)return;
+    if(cmpr < 0 || cmpr === 0 && (topPlants[0] === 0 || topPlants[1] === 0))return;
     // player can take the model now
     // give the model
     ++globalUpgrades;
