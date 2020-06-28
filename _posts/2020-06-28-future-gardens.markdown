@@ -137,12 +137,12 @@ Reduces the initial threshold for a future collapse from 2<sup>22</sup> to 2<sup
 
 <div id="fgardens-model-z010012">
 
-### Unnamed02
+### Partial Upward Isolation
 
 Need 1 <span id="fgardens-inject-plant-name-010012-0"></span>
 and 1 <span id="fgardens-inject-plant-name-010012-1"></span>.
 
-???
+Unlock challenges.
 
 <button type="button" onmousedown="gardens.extSendTakeModelZ20()" id="fgardens-model-button-z010012"></button>
 
@@ -249,7 +249,7 @@ With new rules, new plants and challenges await.
 
 </div>
 
-## Specks in the past
+## Memories you've made
 {: #fgardens-section-history}
 
 {% include collapser.markdown %}
@@ -673,13 +673,16 @@ and it's diverse enough that you can tell they aren't all premade and handcrafte
 
 Without going too much into the gritty details, I can at least describe the basic infrastructure.
 Every challenge is generated initially as a kind of special low level program, a little higher than assembly.
-This program has complexity limits, and is divided into 3 sections - retrieving data, manipulating data, and applying rules.
+This program has complexity limits, and is divided into 3 sections - retrieving data or defining constants, manipulating data, and applying rules.
 All data is strongly typed, and there are additional restrictions on what can be done.
 Still, there's enough options here to ensure diversity.
-If a program fails the checks and we can't trivially fix it, we just generate a new one and try again.
+If just one instruction fails a check, we generate a new one and check again,
+but if the code generation seems to be stuck, we try again with a fresh program.
 After a program passes type checking, it then gets transpiled into an abstract syntax tree (AST).
 Finally, we perform optimizations.
-While the optimization engine does occasionally allow stupid things to slip through, it will at least do a lot of basic things like boolean logic simplification.
+While the optimization engine does occasionally allow stupid things to slip through,
+it will at least do a lot of basic things like boolean logic simplification,
+and it can even do some simplification on infinite sets.
 
 There's one more exotic optimization done.
 Since challenges are only allowed to affect lower tiers, this means some ordinal predicates will always be true or false.
