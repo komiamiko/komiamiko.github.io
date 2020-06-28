@@ -228,11 +228,23 @@ This guess fails at the next example, or if not there, soon after.
 | \\\( \zeta_0 = \varepsilon_{\varepsilon_{\cdots}} = \varphi(2, 0) = \varphi(1, \varphi(1, \cdots)) = \psi_0(\psi_1(\psi_1(0))) = \psi_0(\psi_1(\psi_0(\psi_1(\cdots)))) \\\) | \\\( C(\Omega 2, 0) = C(\Omega + \Omega, 0) = C(C(\Omega, \Omega), 0) = C(C(C(C(\cdots, \Omega), 0), \Omega), 0) \\\) |
 | \\\( \zeta_0 2 \\\) | \\\( C(\zeta_0, \zeta_0) = C(C(C(\Omega, \Omega), 0), C(C(\Omega, \Omega), 0)) \\\) |
 | \\\( \omega^{\zeta_0 + 1} = \varphi(0, \varphi(2, 0) + 1) = \psi_0(\psi_1(\psi_1(0)) + 1) \\\) | \\\( C(\zeta_0 + 1, \zeta_0) = C(C(0, C(C(\Omega, \Omega), 0)), C(C(\Omega, \Omega), 0)) \\\) |
-| \\\( \varepsilon_{\zeta_0 + 1} = \varphi(1, \varphi(2, 0) + 1) = \psi_0(\psi_1(\psi_1(0)) + \psi_1(0)) \\\) |
-| \\\( \zeta_1 = \varphi(2, 1) = \psi_0(\psi_1(\psi_1(0)) 2) \\\) |
-| \\\( \zeta_\omega = \varphi(2, \varphi(0, 1)) = \psi_0(\psi_1(\psi_1(0) + 1)) \\\) |
-| \\\( \zeta_{\zeta_0} = \varphi(2, \varphi(2, 0)) = \psi_0(\psi_1(\psi_1(0) + \psi_0(\psi_1(\psi_1(0))))) \\\) |
-| \\\( \zeta_{\zeta_\omega} = \varphi(2, \varphi(2, \varphi(0, 1))) = \psi_0(\psi_1(\psi_1(0) + \psi_0(\psi_1(\psi_1(0) + 1)))) \\\) |
+| \\\( \varepsilon_{\zeta_0 + 1} = \varphi(1, \varphi(2, 0) + 1) = \psi_0(\psi_1(\psi_1(0)) + \psi_1(0)) \\\) | \\\( C(\Omega, \zeta_0) = C(\Omega, C(C(\Omega, \Omega), 0)) \\\) |
+| \\\( \zeta_1 = \varphi(2, 1) = \psi_0(\psi_1(\psi_1(0)) 2) \\\) | \\\( C(\Omega 2, \zeta_0) = C(C(\Omega, \Omega), C(C(\Omega, \Omega), 0)) \\\) |
+| \\\( \zeta_\omega = \varphi(2, \varphi(0, 1)) = \psi_0(\psi_1(\psi_1(0) + 1)) \\\) | \\\( C(\Omega 2 + 1, 0) = C(C(0, C(\Omega, \Omega)), 0) \\\) |
+| \\\( \zeta_{\zeta_0} = \varphi(2, \varphi(2, 0)) = \psi_0(\psi_1(\psi_1(0) + \psi_0(\psi_1(\psi_1(0))))) \\\) | \\\( C(\Omega 2 + \zeta_0, 0) = C(C(C(C(\Omega, \Omega), 0), C(\Omega, \Omega)), 0) \\\)
+| \\\( \zeta_{\zeta_\omega} = \varphi(2, \varphi(2, \varphi(0, 1))) = \psi_0(\psi_1(\psi_1(0) + \psi_0(\psi_1(\psi_1(0) + 1)))) \\\) | \\\( C(\Omega 2 + \zeta_\omega, 0) = C(C(C(C(0, C(\Omega, \Omega)), 0), C(\Omega, \Omega)), 0) \\\) |
+| \\\( \varphi(3, 0) = \psi_0(\psi_1(\psi_1(0) 2)) \\\) | \\\( C(\Omega 3, 0) = C(\Omega 2 + \Omega, 0) = C(C(\Omega, C(\Omega, \Omega)), 0) \\\) |
+| \\\( \varphi(3, 1) = \psi_0(\psi_1(\psi_1(0) 2) 2) \\\) | \\\( C(C(C(\Omega, C(\Omega, \Omega)), 0), C(C(\Omega, C(\Omega, \Omega)), 0)) \\\) |
+| \\\( \varphi(3, \varphi(0, 1)) = \psi_0(\psi_1(\psi_1(0) 2 + 1)) \\\) | \\\( C(\Omega 3 + 1, 0) = C(C(0, C(\Omega, C(\Omega, \Omega))), 0) \\\) |
+| \\\( \varphi(3, \varphi(3, 0)) = \psi_0(\psi_1(\psi_1(0) 2 + \psi_0(\psi_1(\psi_1(0) 2)))) \\\) | \\\( C(C(C(C(\Omega, C(\Omega, \Omega)), 0), C(\Omega, C(\Omega, \Omega))), 0) \\\) |
+| \\\( \varphi(3, \varphi(3, \varphi(0, 1))) = \psi_0(\psi_1(\psi_1(0) 2 + \psi_0(\psi_1(\psi_1(0) 2 + 1)))) \\\) | \\\( C(C(C(C(0, C(\Omega, C(\Omega, \Omega))), 0), C(\Omega, C(\Omega, \Omega))), 0) \\\) |
+| \\\( \varphi(4, 0) = \psi_0(\psi_1(\psi_1(0) 3)) \\\) | \\\( C(\Omega 4, 0) = C(C(\Omega, C(\Omega, C(\Omega, \Omega))), 0) \\\) |
+| \\\( \varphi(n + 1, 0) = \psi_0(\psi_1(\psi_1(0) n)) \\\) | \\\( C(\Omega (n+1), 0) = C(C(\Omega, \Omega n), 0) \\\)
+| \\\( \varphi(\varphi(0, 1), 0) = \psi_0(\psi_1(\psi_1(1))) = \psi_0(\psi_1(\psi_1(\psi_0(0)))) \\\) | \\\( C(\omega^{\Omega + 1}, 0) = C(\Omega \omega, 0) = C(C(\Omega + 1, \Omega), 0) = C(C(C(0, \Omega), \Omega), 0) \\\)
+| \\\( \varphi(\varphi(0, \varphi(0, 1)), 0) = \psi_0(\psi_1(\psi_1(\psi_0(1)))) = \psi_0(\psi_1(\psi_1(\psi_0(\psi_0(0))))) \\\) | \\\( C(C(\Omega + \omega, \Omega), 0) = C(C(C(1, \Omega), \Omega), 0) = C(C(C(C(0, 0), \Omega), \Omega), 0) \\\) |
+| \\\( \varphi(\varphi(1, 0), 0) = \psi_0(\psi_1(\psi_1(\psi_0(\psi_1(0))))) \\\) | \\\( C(C(\Omega + \varepsilon_0, \Omega), 0) = C(C(C(C(\Omega, 0), \Omega), \Omega), 0) \\\) |
+| \\\( \varphi(\varphi(\varphi(0, 1), 0), 0) = \psi_0(\psi_1(\psi_1(\psi_0(\psi_1(\psi_1(1)))))) \\\) | \\\( C(C(C(C(C(C(0, \Omega), \Omega), 0), \Omega), \Omega), 0) \\\) |
+| \\\( \Gamma_0 = \varphi(1, 0, 0) = \psi_0(\psi_1(\psi_1(\psi_1(0)))) \\\) | \\\( C(\omega^{\Omega 2}, 0) = C(\Omega^2, 0) = C(C(\Omega 2, \Omega), 0) = C(C(C(\Omega, \Omega), \Omega), 0) \\\) |
 
 </div>
 
