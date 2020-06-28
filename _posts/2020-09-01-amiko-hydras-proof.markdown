@@ -60,6 +60,8 @@ Once that was done, I was ready to attempt a proof of termination for Amiko hydr
 
 <div>
 
+All ordinals are written in Taranovsky's DORI C normal form.
+
 Let \\\(\mathbb{H}\\\) be the set of all hydras.
 Let \\\(0_H = (\star:)\\\).
 Let \\\(\chi = ?\\\) be the set of ordinals used.
@@ -91,13 +93,41 @@ There is actually nothing wrong with making this claim for all ordinals, but in 
 The only non-trivial part of this is step 3.
 I dedicate some space to defining \\\(M\\\), and the rest of the proof is for proving step 3.
 
-**Result.**
+**Hydra theorem.**
 \\\(\forall A \in \mathbb{H}, \pi(A)\\\)
 
 **Corollary.**
-Additionally (though not directly proved by these parts alone), the strength of Amiko hydras is upper-bounded at \\\(\chi\\\).
+The strength of Amiko hydras is upper-bounded at \\\(\chi\\\).
+Formally proving this requires some more technical steps, but the are not hard after the main proof is done.
 
 I must emphasize that, because \\\(M\\\) is not necessarily a bijection, \\\(\chi\\\) is only an upper bound for the strength of Amiko hydras, and actually the hydras may be weaker.
 To be precise, for the unique \\\(\chi\\\) for which a bijective \\\(M\\\) exists, the strength of Amiko hydras is exactly that \\\(\chi\\\).
+
+</div>
+
+# Definition of \\\(M\\\)
+{: #proof-hydra-map}
+
+{% include collapser.markdown %}
+
+<div>
+
+</div>
+
+# Proving the ordinal always decreases
+{: #proof-ordinal-decrease}
+
+{% include collapser.markdown %}
+
+<div>
+
+</div>
+
+# Closing notes
+{: #closing-notes}
+
+{% include collapser.markdown %}
+
+<div>
 
 </div>
