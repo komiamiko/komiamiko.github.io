@@ -64,7 +64,12 @@ All ordinals are written in Taranovsky's DoRI \\\(C\\\) normal form.
 
 Let \\\(\mathbb{H}\\\) be the set of all hydras.
 Let \\\(0_H = (\star:)\\\).
-Let \\\(\chi = ?\\\) be the set of ordinals used.
+Let \\\(\chi\\\) be the first fixed point of \\\(\alpha \mapsto C(\alpha, 0, 0)\\\),
+which is the limit of Taranovsky's DoRI \\\(C\\\).
+
+Let \\\(P\\\) be "replace all 3-tuples \\\((a, b, c)\\\) with \\\(C(a, b, c)\\\)".
+
+Define \\\(a \lessapprox b\\\) like so:
 
 **1. Definition of termination.**
 \\\(\forall A \in \mathbb{H}, \pi(A) = (A = 0_H \lor \pi(S(A)))\\\)
@@ -75,23 +80,33 @@ The hydra \\\(0_H\\\) is already considered terminated, and any other hydra term
 
 **2. Correspondence from hydras to ordinals.**
 We define a function \\\(M: \mathbb{H} \to \chi\\\) with \\\(M(0_H) = 0\\\)
+We define a function \\\(K\\\) which is like \\\(M\\\) except its output is a tuple, with \\\(M\\\) then defined as \\\(M(A) = P(K(A))\\\).
 Let \\\(\tau(\alpha) = (\forall A \in \mathbb{H}, M(A) = \alpha \implies \pi(A))\\\)
+We also fix the definition of hydra comparison as \\\((A \lesseqgtr B) = (M(A) \lesseqgtr M(B))\\\),
+which is needed because the original post on the hydras did not explicitly give a comparison algorithm.
 
 *In words, \\\(\tau\\\) is the predicate "for all hydras which correspond to this ordinal, that hydra terminates".
 There may be no such hydras, in which case it is vacuously true.*
 
-**3. Hydra step always decreases the ordinal.**
-\\\(\forall A \in (\mathbb{H} - \\\{0_H\\\}), M(S(A)) \in M(A)\\\)
+**3. Definition of sub-expression comparison.**
+\\\(a \lessapprox b \iff P(a) < P(b) \lor (P(a[0]) \leq P(b[0]) \land P(a[1]) \leq P(b[1]) \land P(a[2]) \leq P(b[2]))\\\) \\\(\land (a[0] \lessapprox b[0] \lor a[1] \lessapprox b[1] \lor a[2] \lessapprox b[2])\\\)
+
+**4. Hydra step always decreases the ordinal or a sub-expression.**
+\\\(\forall A \in (\mathbb{H} - \\\{0_H\\\}), K(S(A)) \lessapprox K(A)\\\)
 Note that \\\(S\\\) is nondeterministic due to the free variable \\\(N\\\), so there is an implied \\\(\forall N \in \mathbb{N}\\\).
 
-**4. Transfinite induction.**
+**5. Transfinite induction for termination of hydras.**
 \\\(\tau(0) \land (\forall \alpha \in \chi, (\forall \beta \in \alpha, \tau(\beta)) \implies \tau(\alpha)) \implies (\forall \alpha \in \chi, \tau(\alpha))\\\)
 
 *In words, if it holds for \\\(0\\\), and if it holds for some \\\(\alpha\\\) if it holds for all \\\(\beta\\\) below \\\(\alpha\\\), then it holds for all ordinals.
 There is actually nothing wrong with making this claim for all ordinals, but in this context, there is no point going above \\\(\chi\\\) anyway, since no hydras map to those large ordinals.*
 
-The only non-trivial part of this is step 3.
-I dedicate some space to defining \\\(M\\\), and the rest of the proof is for proving step 3.
+**6. If sub-expressions decrease, the ordinal eventually decreases.**
+There is no infinite sequence \\\(a_0, a_1, \cdots\\\) for which \\\(\forall n \in \mathbb{N}, P(a_0) = P(a_1) \land a_1 \lessapprox a_0\\\).
+The formal statement is quite long to write, but it is proven by transfinite induction on each tuple element.
+
+The only non-trivial part of this is step 4.
+I dedicate some space to defining \\\(M\\\), and the rest of the proof is for proving step 4.
 
 **Hydra theorem.**
 \\\(\forall A \in \mathbb{H}, \pi(A)\\\)
@@ -105,8 +120,124 @@ To be precise, for the unique \\\(\chi\\\) for which a bijective \\\(M\\\) exist
 
 </div>
 
-# Definition of \\\(M\\\)
+# Definition of \\\(K\\\)
 {: #proof-hydra-map}
+
+{% include collapser.markdown %}
+
+<div>
+
+Let \\\(A\\\) be the hydra of discourse.
+
+If \\\(A = 0_H\\\), then \\\(K(A) = 0\\\). Otherwise:
+
+Let \\\(\alpha \leftarrow 0\\\) be an ordinal variable.
+
+For each child \\\(B\\\) of \\\(A\\\), iterated in descending order, do:
+
+> Let \\\(D\\\) be \\\(B\\\) but with the label changed to \\\(\star\\\), which changes it into a root node.
+>
+> Let \\\(E\\\) be the label of \\\(B\\\).
+>
+> Assign \\\(\alpha \leftarrow (K(E), K(D), \alpha) \\\).
+
+Then \\\(K(A) = \alpha\\\).
+
+Note that \\\(M(E) < M(A)\\\) for all hydras \\\(A\\\).
+
+</div>
+
+# Proving the ordinal or a sub-expression always decreases
+{: #proof-ordinal-decrease}
+
+{% include collapser.markdown %}
+
+<div>
+
+## Definitions
+{: #proof-definitions}
+
+{% include collapser.markdown %}
+
+<div>
+
+Recall the definition of \\\(S\\\):
+
+> It is guaranteed if we are reducing \\\(A\\\) that it has children.
+> Let \\\(B\\\) be the \\\(A\\\)'s rightmost child, and let \\\(C\\\) be \\\(B\\\)'s label.
+>
+> **1.** If \\\(C = (\star:)\\\):
+> Search for the rightmost leaf of \\\(A\\\), but do not enter nodes with labels \\\( > (\star:)\\\).
+> Let \\\(D\\\) be this rightmost leaf (whose label is guaranteed to be \\\((\star:)\\\)).
+> 
+> **1.1.** If \\\(D\\\) has no children:
+> Let \\\(E\\\) be the parent of \\\(D\\\).
+> Remove \\\(D\\\) from \\\(E\\\).
+> If \\\(E\\\) has a parent, append \\\(N\\\) copies of \\\(E\\\) as additional children to the parent of \\\(E\\\), for some \\\(N\\\).
+> \\\(S(A)\\\) is the modified \\\(A\\\).
+>
+> **1.2.** If \\\(D\\\) has any children (which are guaranteed to have label \\\( > (\star:)\\\)):
+> Traverse up the parents from \\\(D\\\) searching for a node \\\(E\\\) satisfying \\\(E <\_{> (\star:)} D\\\) (but do not enter nodes with label \\\(> (\star:)\\\)), or if no suitable \\\(E\\\) is found, take \\\(E\\\) as the last candidate's parent (or \\\(A\\\) if it was reached) but with all children removed except for the rightmost.
+> Let \\\(D'\\\) be \\\(D\\\) but with the label changed to \\\(\star\\\).
+> Let \\\(E'\\\) be \\\(S(D')\\\) but without children whose label is \\\((\star:)\\\) and with the children of \\\(E\\\) whose labels are \\\((\star:)\\\) appended as children, and with the label of \\\(D\\\).
+> Let \\\(F = ((\star:):)\\\).
+> Do this \\\(N\\\) times, for some \\\(N\\\): "Replace \\\(F\\\) with \\\(E'\\\) where \\\(D\\\) is replaced by \\\(F\\\)."
+> Replace \\\(D\\\) with \\\(F\\\).
+> \\\(S(A)\\\) is the modified \\\(A\\\).
+>
+> **2.** If \\\(C > (\star:)\\\):
+> Go right in the tree, looking for the rightmost leaf.
+> If \\\(C\\\) has no children the search just ends there.
+>
+> **2.1.** If a node \\\(D\\\) with label \\\((\star:)\\\) is encountered, proceed as in rule **1**.
+>
+> **2.2** If we reach a leaf without ever encountering a node with label \\\((\star:)\\\):
+> Let \\\(D\\\) be this rightmost leaf.
+> Let \\\(E\\\) be the label of \\\(D\\\).
+> Traverse up the parents from \\\(D\\\) searching for a node \\\(F\\\) with \\\(G\\\) as the label of \\\(F\\\) satisfying \\\(G < E\\\), which is always guaranteed to exist, because the root always satisfies this.
+> Let \\\(H = S(E)\\\).
+> Let \\\(F'\\\) be \\\(F\\\) but with the label changed to \\\(H\\\).
+> Let \\\(I = ((\star:):)\\\).
+> Do this \\\(N\\\) times, for some \\\(N\\\): "Replace \\\(I\\\) with \\\(F'\\\) where \\\(D\\\) is replaced by \\\(I\\\)"
+> Replace \\\(D\\\) with \\\(I\\\).
+> \\\(S(A)\\\) is the modified \\\(A\\\).
+
+Recall the comparison algorithm for Taranovsky's DoRI \\\(C\\\):
+
+> If a and b are maximal in C(a, b, c), then C(a, b, c) < C(d, e, f) iff C(a, b, c) ≤ f or c < C(d, e, f) ∧ (a, b) < (c, d).
+
+*Taranovsky, 2020, Section 3.2*
+
+I refer to \\\(C(a, b, c) ≤ f\\\) as clause 1, \\\(c < C(d, e, f)\\\) as clause 2, and \\\((a, b) < (c, d)\\\) as clause 3.
+
+## Rule 1.1
+{: #proof-rule-11}
+
+{% include collapser.markdown %}
+
+<div>
+
+If \\\(E\\\) has no parent, it must be the root.
+In this case, \\\(M(A) = C(0, 0, \alpha)\\\) for some ordinal \\\(\alpha\\\), and
+\\\(M(S(A)) = \alpha\\\).
+In this case, the ordinal decreases.
+
+Suppose then that \\\(E\\\) does have a parent, \\\(F\\\).
+Let \\\(F'\\\) be \\\(F\\\) but with the label changed to \\\(\star\\\), and define \\\(E'\\\) analogously.
+Note that \\\(K(F')\\\) appears as a sub-expression in \\\(K(A)\\\).
+Let \\\(G\\\) be \\\(F\\\) after the step, and define \\\(G'\\\) analogously.
+Note that \\\(K(G')\\\) appears as a sub-expression in \\\(K(S(A))\\\).
+In this case, \\\(M(F') = C(\alpha, M(E'), \beta) = C(\alpha, C(0, 0, \gamma), \beta)\\\) for some \\\(\alpha, \beta, \gamma\\\), and
+\\\(M(G') = C(\alpha, \gamma, C(\alpha, \gamma, \cdots C(\alpha, \gamma, \beta) \cdots))\\\) with the number of nestings depending on the chosen \\\(N\\\).
+As long as there are more nestings, clause 1 is false, clause 3 is true, and clause 2 asks us to take off the outermost nesting layer.
+After doing this \\\(N\\\) times, we find \\\(M(G') < M(F') \iff \beta < C(\alpha, C(0, 0, \gamma), \beta)\\\), which is clearly true.
+\\\(F\\\) may be a sub-expression, so we cannot guarantee \\\(M(S(A)) < M(A)\\\),
+but we are sure that \\\(K(F')\\\) will decrease, so we can say \\\(K(S(A)) \lessapprox K(A)\\\).
+
+</div>
+
+## Rule 1.2
+{: #proof-rule-12}
 
 {% include collapser.markdown %}
 
@@ -114,12 +245,14 @@ To be precise, for the unique \\\(\chi\\\) for which a bijective \\\(M\\\) exist
 
 </div>
 
-# Proving the ordinal always decreases
-{: #proof-ordinal-decrease}
+## Rule 2.2
+{: #proof-rule-22}
 
 {% include collapser.markdown %}
 
 <div>
+
+</div>
 
 </div>
 
@@ -129,6 +262,8 @@ To be precise, for the unique \\\(\chi\\\) for which a bijective \\\(M\\\) exist
 {% include collapser.markdown %}
 
 <div>
+
+
 
 </div>
 
