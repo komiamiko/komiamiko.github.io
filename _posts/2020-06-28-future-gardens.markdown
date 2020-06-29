@@ -137,7 +137,7 @@ Reduces the initial threshold for a future collapse from 2<sup>22</sup> to 2<sup
 
 <div id="fgardens-model-z010012">
 
-### Partial Upward Isolation
+### Selective Upward Isolation
 
 Need 1 <span id="fgardens-inject-plant-name-010012-0"></span>
 and 1 <span id="fgardens-inject-plant-name-010012-1"></span>.
@@ -646,7 +646,7 @@ Higher gardens are still out of reach, but importantly, the player is now able t
 
 </div>
 
-#### Up to ???
+#### Up to Selective Upward Isolation
 {: #to-model-02}
 
 {% include collapser.markdown %}
