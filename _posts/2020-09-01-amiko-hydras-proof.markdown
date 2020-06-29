@@ -60,7 +60,7 @@ Once that was done, I was ready to attempt a proof of termination for Amiko hydr
 
 <div>
 
-All ordinals are written in Taranovsky's DoRI C normal form.
+All ordinals are written in Taranovsky's DoRI \\\(C\\\) normal form.
 
 Let \\\(\mathbb{H}\\\) be the set of all hydras.
 Let \\\(0_H = (\star:)\\\).
@@ -132,26 +132,26 @@ To be precise, for the unique \\\(\chi\\\) for which a bijective \\\(M\\\) exist
 
 </div>
 
-# Appendix - Taranovsky's DoRI C examples
+# Appendix - Taranovsky's DoRI \\\(C\\\) examples
 {: #appendix-taranovsky-c-examples}
 
 {% include collapser.markdown %}
 
 <div>
 
-To help understand Taranovsky's DoRI C, I provide many examples against other hopefully more familiar notations.
+To help understand Taranovsky's DoRI \\\(C\\\), I provide many examples against other hopefully more familiar notations.
 \\\(\psi\\\) refers to the extended Buchholz function.
 
-Shorthands I use for Taranovsky's DoRI C:
+Shorthands I use for Taranovsky's DoRI \\\(C\\\):
 
 * \\\(C(\alpha, \beta) = C(0, \alpha, \beta)\\\)
-* \\\(\uparrow \alpha = C(1, 0, \alpha)\\\)
+* \\\(\uparrow \alpha = C(1, 0, \alpha)\\\) (denoted instead by \\\(\alpha^+\\\) on Taranovsky's page)
 * \\\(\Uparrow \alpha = C(1, 1, \alpha)\\\)
 * \\\(\Omega = \uparrow 0\\\) (importantly, not the same as \\\(\omega_1\\\), which is what is usually meant by \\\(\Omega\\\))
 
 <div style="overflow:auto;">
 
-| In other notations | Taranovsky's DoRI C |
+| In other notations | Taranovsky's DoRI \\\(C\\\) |
 |--:|:--|
 | \\\( 0 \\\) | \\\( 0 \\\) |
 | \\\( 1 = \varphi(0, 0) = \psi_0(0) \\\) | \\\( C(0, 0) \\\) |
@@ -223,7 +223,7 @@ This guess fails at the next example, or if not there, soon after.
 
 <div style="overflow:auto;">
 
-| In other notations | Taranovsky's DoRI C |
+| In other notations | Taranovsky's DoRI \\\(C\\\) |
 |--:|:--|
 | \\\( \zeta_0 = \varepsilon_{\varepsilon_{\cdots}} = \varphi(2, 0) = \varphi(1, \varphi(1, \cdots)) = \psi_0(\psi_1(\psi_1(0))) = \psi_0(\psi_1(\psi_0(\psi_1(\cdots)))) \\\) | \\\( C(\Omega 2, 0) = C(\Omega + \Omega, 0) = C(C(\Omega, \Omega), 0) = C(C(C(C(\cdots, \Omega), 0), \Omega), 0) \\\) |
 | \\\( \zeta_0 2 \\\) | \\\( C(\zeta_0, \zeta_0) = C(C(C(\Omega, \Omega), 0), C(C(\Omega, \Omega), 0)) \\\) |
@@ -244,7 +244,57 @@ This guess fails at the next example, or if not there, soon after.
 | \\\( \varphi(\varphi(0, \varphi(0, 1)), 0) = \psi_0(\psi_1(\psi_1(\psi_0(1)))) = \psi_0(\psi_1(\psi_1(\psi_0(\psi_0(0))))) \\\) | \\\( C(C(\Omega + \omega, \Omega), 0) = C(C(C(1, \Omega), \Omega), 0) = C(C(C(C(0, 0), \Omega), \Omega), 0) \\\) |
 | \\\( \varphi(\varphi(1, 0), 0) = \psi_0(\psi_1(\psi_1(\psi_0(\psi_1(0))))) \\\) | \\\( C(C(\Omega + \varepsilon_0, \Omega), 0) = C(C(C(C(\Omega, 0), \Omega), \Omega), 0) \\\) |
 | \\\( \varphi(\varphi(\varphi(0, 1), 0), 0) = \psi_0(\psi_1(\psi_1(\psi_0(\psi_1(\psi_1(1)))))) \\\) | \\\( C(C(C(C(C(C(0, \Omega), \Omega), 0), \Omega), \Omega), 0) \\\) |
-| \\\( \Gamma_0 = \varphi(1, 0, 0) = \psi_0(\psi_1(\psi_1(\psi_1(0)))) \\\) | \\\( C(\omega^{\Omega 2}, 0) = C(\Omega^2, 0) = C(C(\Omega 2, \Omega), 0) = C(C(C(\Omega, \Omega), \Omega), 0) \\\) |
+| \\\( \textbf{Feferman–Schütte ordinal} = \Gamma_0 = \varphi(1, 0, 0) = \psi_0(\psi_1(\psi_1(\psi_1(0)))) \\\) | \\\( C(\omega^{\Omega 2}, 0) = C(\Omega^2, 0) = C(C(\Omega 2, \Omega), 0) = C(C(C(\Omega, \Omega), \Omega), 0) \\\) |
+| \\\( \varphi(\varphi(0, 1), \varphi(1, 0, 0) + 1) = \psi_0(\psi_1(\psi_1(\psi_1(0))) + \psi_1(\psi_1(1))) \\\) | \\\( C(\Omega \omega, C(\Omega^2, 0)) = C(C(C(0, \Omega), \Omega), C(C(C(\Omega, \Omega), \Omega), 0)) \\\) |
+| \\\( \Gamma_1 = \varphi(1, 0, 1) = \psi_0(\psi_1(\psi_1(\psi_1(0))) 2) \\\) | \\\( C(\Omega^2, C(\Omega^2, 0)) = C(C(C(\Omega, \Omega), \Omega), C(C(C(\Omega, \Omega), \Omega), 0)) \\\) |
+| \\\( \Gamma_\omega = \varphi(1, 0, \varphi(0, 1)) = \psi_0(\psi_1(\psi_1(\psi_1(0)) + 1)) \\\) | \\\( C(\Omega^2 + 1, 0) = C(C(0, C(C(\Omega, \Omega), \Omega)), 0) \\\) |
+| \\\( \Gamma_{\Gamma_0} = \varphi(1, 0, \varphi(1, 0, 0)) = \psi_0(\psi_1(\psi_1(\psi_1(0)) + \psi_0(\psi_1(\psi_1(\psi_1(0)))))) \\\) | \\\( C(\Omega^2 + \Gamma_0, 0) = C(C(C(C(C(\Omega, \Omega), \Omega), 0), C(C(\Omega, \Omega), \Omega)), 0) \\\) |
+| \\\( \Gamma_{\Gamma_\omega} = \varphi(1, 0, \varphi(1, 0, \varphi(0, 1))) = \psi_0(\psi_1(\psi_1(\psi_1(0)) + \psi_0(\psi_1(\psi_1(\psi_1(0)) + 1)))) \\\) | \\\( C(\Omega^2 + \Gamma_\omega, 0) = C(C(C(C(0, C(C(\Omega, \Omega), \Omega)), 0), C(C(\Omega, \Omega), \Omega)), 0) \\\) |
+| \\\( \varphi(1, 1, 0) = \psi_0(\psi_1(\psi_1(\psi_1(0)) + \psi_1(0))) \\\) | \\\( C(\Omega^2 + \Omega, 0) = C(C(\Omega, C(C(\Omega, \Omega), \Omega)), 0) \\\) |
+| \\\( \varphi(2, 0, 0) = \psi_0(\psi_1(\psi_1(\psi_1(0)) 2)) \\\) | \\\( C(\Omega^2 2, 0) = C(C(C(C(\Omega, \Omega), \Omega), C(C(\Omega, \Omega), \Omega)), 0) \\\) |
+| \\\( \varphi(\varphi(0, 1), 0, 0) = \psi_0(\psi_1(\psi_1(\psi_1(0) + 1))) \\\) | \\\( C(\Omega^2 \omega, 0) = C(\omega^{\Omega 2 + 1}, 0) = C(C(C(0, C(\Omega, \Omega)), \Omega), 0) \\\) |
+| \\\( \varphi(\varphi(1, 0, 0), 0, 0) = \psi_0(\psi_1(\psi_1(\psi_1(0) + \psi_0(\psi_1(\psi_1(\psi_1(0))))))) \\\) | \\\( C(\omega^{\Omega 2 + \varphi(1, 0, 0)}, 0) = C(C(C(C(C(C(\Omega, \Omega), \Omega), 0), C(\Omega, \Omega)), \Omega), 0) \\\) |
+| \\\( \varphi(\varphi(\varphi(0, 1), 0, 0), 0, 0) = \psi_0(\psi_1(\psi_1(\psi_1(0) + \psi_0(\psi_1(\psi_1(\psi_1(0) + 1)))))) \\\) | \\\( C(\omega^{\Omega 2 + \varphi(\varphi(0, 1), 0, 0)}, 0) = C(C(C(C(C(C(0, C(\Omega, \Omega)), \Omega), 0), C(C(\Omega, \Omega), \Omega)), \Omega), 0) \\\) |
+| \\\( \varphi\begin{bmatrix}1 \\\\\\ 3\end{bmatrix} = \varphi(1, 0, 0, 0) = \psi_0(\psi_1(\psi_1(\psi_1(0) 2))) \\\) | \\\( C(\Omega^3, 0) = C(\omega^{\Omega 3}, 0) = C(C(C(\Omega, C(\Omega, \Omega)), \Omega), 0) \\\) |
+| \\\( \varphi\begin{bmatrix}1 \\\\\\ 4\end{bmatrix} = \varphi(1, 0, 0, 0, 0) = \psi_0(\psi_1(\psi_1(\psi_1(0) 3))) \\\) | \\\( C(\Omega^4, 0) = C(\omega^{\Omega 4}, 0) = C(C(C(\Omega, C(\Omega, C(\Omega, \Omega))), \Omega), 0) \\\) |
+| \\\( \varphi\begin{bmatrix}1 \\\\\\ n + 1\end{bmatrix} = \psi_0(\psi_1(\psi_1(\psi_1(0) n))), n > 0 \\\) | \\\( C(\Omega^{n + 1}, 0) = C(C(C(\Omega, \Omega^n), \Omega), 0) \\\) |
+| \\\( \textbf{Small Veblen ordinal} = \varphi\begin{bmatrix} 1 \\\\\\ \omega \end{bmatrix} = \varphi\begin{bmatrix} 1 \\\\\\ \varphi\begin{bmatrix} 1 \\\\\\ 0 \end{bmatrix} \end{bmatrix} = \psi_0(\psi_1(\psi_1(\psi_1(1)))) \\\) | \\\( C(\Omega^\omega, 0) = C(\omega^{\Omega \omega}, 0) = C(\omega^{\omega^{\Omega + 1}}, 0) = C(C(C(C(0, \Omega), \Omega), \Omega), 0) \\\) |
+| \\\( \varphi\begin{bmatrix} 1 \\\\\\ \varphi\begin{bmatrix} 1 \\\\\\ \varphi\begin{bmatrix} 1 \\\\\\ 0 \end{bmatrix} \end{bmatrix} \end{bmatrix} = \psi_0(\psi_1(\psi_1(\psi_1(\psi_0(\psi_1(\psi_1(\psi_1(1)))))))) \\\) | \\\( C(C(C(C(C(C(C(C(0, \Omega), \Omega), \Omega), 0), \Omega), \Omega), \Omega), 0) \\\) |
+| \\\( \textbf{Large Veblen ordinal} = \psi_0(\psi_1(\psi_1(\psi_1(\psi_1(0))))) \\\) | \\\( C(\Omega^\Omega, 0) = C(\omega^{\Omega^2}, 0) = C(\omega^{\omega^{\Omega 2}}, 0) = C(C(C(C(\Omega, \Omega), \Omega), \Omega), 0) \\\) |
+| \\\( \textbf{Bachmann-Howard ordinal} = \psi_0(\psi_2(0)) \\\) | \\\( C(\uparrow\uparrow 0, 0) = C(C(1, 0, C(1, 0, 0)), 0) \\\) |
+
+</div>
+
+I find it remarkable how similar the Buchholz expressions are to the Taranovsky DoRI expressions -
+if you read Buchholz expressions left to right and Taranovsky right to left,
+\\\(\psi_0\\\) corresponds to \\\(0\\\) and \\\(\psi_1\\\) corresponds to \\\(\Omega\\\).
+
+For the few examples that Taranovsky listed, the corresponding entries in my tables match exactly, so at least to that extent I have verified my derivations are correct.
+
+The final ascent is presented separately and includes \\\(\varepsilon_0 = \psi_0(\psi_1(0))\\\) to help make the pattern obvious.
+I go beyond the normal limit of the Buchholz function using the extended Buchholz function, which doesn't arbitrarily limit the cardinal index below \\\(\omega + 1\\\).
+
+<div style="overflow:auto;">
+
+| In other notations | Taranovsky's DoRI \\\(C\\\) |
+|--:|:--|
+| \\\( \varepsilon_0 = \psi_0(\psi_1(0)) \\\) | \\\( C(\uparrow 0, 0) = C(C(1, 0, 0), 0) = C(\Omega, 0) \\\) |
+| \\\( \textbf{Bachmann-Howard ordinal} = \psi_0(\psi_2(0)) \\\) | \\\( C(\uparrow\uparrow 0, 0) = C(C(1, 0, C(1, 0, 0)), 0) \\\) |
+| \\\( \psi_0(\psi_3(0)) \\\) | \\\( C(\uparrow\uparrow\uparrow 0, 0) = C(C(1, 0, C(1, 0, C(1, 0, 0))), 0) \\\) |
+| \\\( \psi_0(\psi_\omega(0)) \\\) | \\\( C(\Uparrow 0, 0) = C(C(1, 1, 0), 0) \\\) |
+| \\\( \textbf{Takeuti-Feferman-Buchholz ordinal} = \psi_0(\psi_{\omega + 1}(0)) \\\) | \\\( C(\uparrow\Uparrow 0, 0) = C(C(1, 0, C(1, 1, 0)), 0) \\\) |
+| \\\( \psi_0(\psi_{\omega 2}(0)) \\\) | \\\( C(C(1, 1, C(1, 1, 0)), 0) \\\) |
+| \\\( \psi_0(\psi_{\omega^2}(0)) \\\) | \\\( C(C(1, 2, 0), 0) \\\) |
+| \\\( \psi_0(\psi_{\omega^\omega}(0)) \\\) | \\\( C(C(1, C(1, 0), 0), 0) \\\) |
+| \\\( \psi_0(\psi_{\omega^{\omega^\omega}}(0)) \\\) | \\\( C(C(1, C(C(1, 0), 0), 0), 0) \\\) |
+| \\\( \psi_0(\psi_{\varepsilon_0}(0)) = \psi_0(\psi_{\psi_0(\psi_1(0))}(0)) \\\) | \\\( C(C(1, C(C(1, 0, 0), 0), 0), 0) \\\) |
+| \\\( \psi_0(\psi_{\psi_0(\psi_{\psi_0(\psi_1(0))}(0))}(0)) \\\) | \\\( C(C(1, C(C(1, C(C(1, 0, 0), 0), 0), 0), 0), 0) \\\) |
+| \\\( \psi_0(\psi_{\psi_1(0)}(0)) \\\) | \\\( C(C(1, C(1, 0, 0), 0), 0) \\\) |
+
+While it is tempting to "continue the pattern" and keep going, it would be quite crude of me to write Buchholz function expressions beyond where even the extended Buchholz function is actually defined.
+I think this is a good place to stop.
+Taranovsky's DoRI \\\(C\\\) can go much higher of course - we have matched the strength of Buchholz's function using only \\\(C(\alpha, \beta, \gamma)\\\) with \\\(\alpha \leq 1\\\).
+If you are interested, you can explore that on your own.
 
 </div>
 
