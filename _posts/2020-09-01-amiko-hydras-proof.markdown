@@ -426,11 +426,11 @@ I go beyond the normal limit of the Buchholz function using the extended Buchhol
 | \\\( \psi_0(\psi_{\psi_0(\psi_{\psi_0(\psi_1(0))}(0))}(0)) \\\) | \\\( C(C(1, C(C(1, C(C(1, 0, 0), 0), 0), 0), 0), 0) \\\) |
 | \\\( \psi_0(\psi_{\psi_1(0)}(0)) \\\) | \\\( C(C(1, C(1, 0, 0), 0), 0) \\\) |
 
+</div>
+
 While it is tempting to "continue the pattern" and keep going, it would be quite crude of me to write Buchholz function expressions beyond where even the extended Buchholz function is actually defined.
 I think this is a good place to stop.
 Taranovsky's DoRI \\\(C\\\) can go much higher of course - we have matched the strength of Buchholz's function using only \\\(C(\alpha, \beta, \gamma)\\\) with \\\(\alpha \leq 1\\\).
 If you are interested, you can explore that on your own.
-
-</div>
 
 </div>
