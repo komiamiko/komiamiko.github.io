@@ -64,8 +64,7 @@ All ordinals are written in Taranovsky's DoRI \\\(C\\\) normal form.
 
 Let \\\(\mathbb{H}\\\) be the set of all hydras.
 Let \\\(0_H = (\star:)\\\).
-Let \\\(\chi\\\) be the first fixed point of \\\(\alpha \mapsto C(\alpha, 0, 0)\\\),
-which is the limit of Taranovsky's DoRI \\\(C\\\).
+Let \\\(\chi\\\) be the limit of Taranovsky's DoRI \\\(C\\\), which is the supremum of all ordinals that can be built using \\\(C\\\) and \\\(0\\\).
 
 Let \\\(P\\\) be "replace all 3-tuples \\\((a, b, c)\\\) with \\\(C(a, b, c)\\\)".
 
@@ -81,7 +80,7 @@ The hydra \\\(0_H\\\) is already considered terminated, and any other hydra term
 **2. Correspondence from hydras to ordinals.**
 We define a function \\\(M: \mathbb{H} \to \chi\\\) with \\\(M(0_H) = 0\\\)
 We define a function \\\(K\\\) which is like \\\(M\\\) except its output is a tuple, with \\\(M\\\) then defined as \\\(M(A) = P(K(A))\\\).
-Let \\\(\tau(\alpha) = (\forall A \in \mathbb{H}, M(A) = \alpha \implies \pi(A))\\\)
+Let \\\(\tau(\alpha, m) = (\forall A \in \mathbb{H}, Q(A) \le m \implies ( M(A) = \alpha \implies \pi(A)) )\\\)
 We also fix the definition of hydra comparison as \\\((A \lesseqgtr B) = (M(A) \lesseqgtr M(B))\\\),
 which is needed because the original post on the hydras did not explicitly give a comparison algorithm.
 
@@ -89,19 +88,39 @@ which is needed because the original post on the hydras did not explicitly give 
 There may be no such hydras, in which case it is vacuously true.*
 
 **3. Definition of sub-expression comparison.**
-\\\(a \lessapprox b \iff P(a) < P(b) \lor (P(a[0]) \leq P(b[0]) \land P(a[1]) \leq P(b[1]) \land P(a[2]) \leq P(b[2]))\\\) \\\(\land (a[0] \lessapprox b[0] \lor a[1] \lessapprox b[1] \lor a[2] \lessapprox b[2])\\\)
+Define \\\(a \lessapprox_= b \iff a = b \lor a \lessapprox b\\\)
+Define \\\(a \lessapprox b \iff P(a) < P(b) \lor a \neq 0 \land b \neq 0 \\\)
+\\\(\land (a[0] \lessapprox b[0] \land a[2] \lessapprox_= b[2]\\\)
+\\\(\lor a[0] \lessapprox_= b[0] \land a[1] \lessapprox b[1] \land a[2] \lessapprox_= b[2]\\\)
+\\\(\lor a[0] \lessapprox_= b[0] \land a[1] \lessapprox_= b[1] \land a[2] \lessapprox b[2])\\\)
 
-**4. Hydra step always decreases the ordinal or a sub-expression.**
-\\\(\forall A \in (\mathbb{H} - \\\{0_H\\\}), K(S(A)) \lessapprox K(A)\\\)
+*Note this clause: \\\(a[0] \lessapprox b[0] \land a[2] \lessapprox_= b[2]\\\)
+This is intentional.
+Even if the [1]-term keeps increasing, if the [0]-term at least decreases in a sub-expression,
+then the [0]-term ordinal must eventually decrease.
+At that point, we can apply \\\(\alpha_0 < \alpha_1 \land \gamma_0 \leq \gamma_1 \implies C(\alpha_0, \beta_0, \gamma_0) < C(\alpha_1, \beta_1, \gamma_1)\\\).*
+
+**4. Hydra step always decreases the ordinal or a sub-expression, given that label hydras also decrease.**
+\\\(\forall A \in (\mathbb{H} - \\\{0_H\\\}), (\forall B \in A, K(S(B)) \lessapprox K(B)) \implies K(S(A)) \lessapprox K(A)\\\)
 Note that \\\(S\\\) is nondeterministic due to the free variable \\\(N\\\), so there is an implied \\\(\forall N \in \mathbb{N}\\\).
 
-**5. Transfinite induction for termination of hydras.**
-\\\(\tau(0) \land (\forall \alpha \in \chi, (\forall \beta \in \alpha, \tau(\beta)) \implies \tau(\alpha)) \implies (\forall \alpha \in \chi, \tau(\alpha))\\\)
+**5. Definition of hydra depth.**
+\\\(Q(A) = \max \\\{ 0 \\\} \cup \\\{ Q(B) + 1 | B \in A \\\} \\\)
+
+*The depth of \\\(0_H\\\) is \\\(0\\\), and the depth of all other hydras is \\\(1\\\) more than the highest depth of any label.*
+
+**6. Transfinite induction for termination of hydras with limited depth.**
+We define \\\(R(m) = (\forall \alpha \in \chi, \tau(\alpha, m))\\\)
+Then,
+\\\(\tau(0, m) \land (\forall \alpha \in \chi, (\forall \beta \in \alpha, \tau(\beta, m)) \implies \tau(\alpha, m)) \implies R(m)\\\)
 
 *In words, if it holds for \\\(0\\\), and if it holds for some \\\(\alpha\\\) if it holds for all \\\(\beta\\\) below \\\(\alpha\\\), then it holds for all ordinals.
 There is actually nothing wrong with making this claim for all ordinals, but in this context, there is no point going above \\\(\chi\\\) anyway, since no hydras map to those large ordinals.*
 
-**6. If sub-expressions decrease, the ordinal eventually decreases.**
+**7. Induction on depth for termination of hydras.**
+\\\((R(0) \land \forall m \in \mathbb{N}, R(m) \implies R(m+1)) \implies \forall m \in \mathbb{N}, R(m)\\\)
+
+**8. If sub-expressions decrease, the ordinal eventually decreases.**
 There is no infinite sequence \\\(a_0, a_1, \cdots\\\) for which \\\(\forall n \in \mathbb{N}, P(a_0) = P(a_1) \land a_1 \lessapprox a_0\\\).
 The formal statement is quite long to write, but it is proven by transfinite induction on each tuple element.
 
@@ -142,8 +161,6 @@ For each child \\\(B\\\) of \\\(A\\\), iterated in descending order, do:
 > Assign \\\(\alpha \leftarrow (K(E), K(D), \alpha) \\\).
 
 Then \\\(K(A) = \alpha\\\).
-
-Note that \\\(M(E) < M(A)\\\) for all hydras \\\(A\\\).
 
 </div>
 
@@ -208,6 +225,8 @@ Recall the comparison algorithm for Taranovsky's DoRI \\\(C\\\):
 
 *Taranovsky, 2020, Section 3.2*
 
+This holds for \\\(C(a, b, c)\\\) if \\\(a, b\\\) are maximal and \\\(c\\\) is minimal (which defines the normal form).
+
 I refer to \\\(C(a, b, c) ≤ f\\\) as clause 1, \\\(c < C(d, e, f)\\\) as clause 2, and \\\((a, b) < (c, d)\\\) as clause 3.
 
 ## Rule 1.1
@@ -243,6 +262,8 @@ but we are sure that \\\(K(F')\\\) will decrease, so we can say \\\(K(S(A)) \les
 
 <div>
 
+
+
 </div>
 
 ## Rule 2.2
@@ -252,18 +273,49 @@ but we are sure that \\\(K(F')\\\) will decrease, so we can say \\\(K(S(A)) \les
 
 <div>
 
-</div>
+Let \\\(f_{Z, k}(b) = C(a, b, c)\\\) be a family of functions, where,
+if \\\(Y\\\) is the node reached by repeatedly taking the rightmost child \\\(k\\\) times starting with \\\(Z\\\),
+\\\(c\\\) is what \\\(K(Y)\\\) would be if the rightmost child of \\\(Y\\\) was removed,
+and \\\(a = K(X)\\\) where \\\(X\\\) is the label of the rightmost child of \\\(Y\\\).
+Let \\\(f_{Z, m:k} = (f_{Z, m} \circ f_{Z, m+1} \circ \cdots \circ f_{Z, k-3} \circ f_{Z, k-2} \circ f_{Z, k-1})\\\).
+Observe \\\(b_0 \lessapprox b_1 \implies f_{Z, k}(b_0) \lessapprox f_{Z, k}(b_1)\\\),
+and additionally \\\(b_0 \lessapprox b_1 \implies f_{Z, m:k}(b_0) \lessapprox f_{Z, m:k}(b_1)\\\).
+
+Let \\\(g(X, Y)\\\) be the edge distance between nodes \\\(X, Y\\\).
+Observe \\\(K(A) = f_{A, 0:g(A, D)}(0)\\\).
+
+Let \\\(h_{Z, k}(b, a) = C(a, b, c)\\\), with \\\(c\\\) defined analogously to how it is defined in \\\(f\\\).
+Let \\\(h_{Z, m:k} = (f_{Z, m} \circ f_{Z, m+1} \circ \cdots \circ f_{Z, k-3} \circ f_{Z, k-2}) \circ h_{Z, k-1}\\\),
+and if \\\(m=k\\\), then \\\(h_{Z, m:k}(b, a) = b\\\) instead.
+Observe \\\(b_0 \lessapprox b_1 \implies h_{Z, k}(b_0, a) \lessapprox f_{Z, k}(b_1, a)\\\).
+Observe \\\(a_0 \lessapprox a_1 \implies h_{Z, k}(b_0, a_0) \lessapprox h_{Z, k}(b_1, a_1)\\\).
+Same applies for \\\(h_{Z, m:k}\\\).
+
+Let \\\(i_{Z, m:k}(b, a_0, a_1, \cdots, a_{j-1}) = h_{Z, m:k}(h_{Z, m:k}(\cdots h_{Z, m:k}(b, a_{j-1}) \cdots, a_1), a_0)\\\).
+
+Observe \\\(K(A) = h_{A, 0:g(A, F)}(h_{F, 0:g(F,D)}(0, K(E)), K(G))\\\).
+Observe \\\(K(S(A)) = h_{A, 0:g(A, F)}(0, 0)\\\) if \\\(N = 0\\\), in which case it is obvious that \\\(K(S(A)) \lessapprox K(A)\\\).
+Then, consider \\\(N > 0\\\), where \\\(K(S(A)) = h_{A, 0:g(A, F)}(i_{F, 0:g(F,D)}(0, K(H), K(H), \cdots, K(H), 0), K(G))\\\),
+where the innermost argument list uses \\\(N - 1\\\) copies of \\\(K(H)\\\).
+Let \\\(b_1 = 0, a_1 = K(E)\\\).
+If we expand the \\\(i\\\), the outermost expression uses \\\(b_0 = 0\\\) if \\\(N=1\\\) and otherwise \\\(i_{F, 0:g(F,D)}(0, K(H), K(H), \cdots, K(H), 0)\\\) with \\\(N-2\\\) copies of \\\(K(H)\\\), and \\\(a_0 = K(H)\\\).
+Recall \\\(H = S(E)\\\).
+Then \\\(a_0 = K(H) = K(S(E)) \lessapprox K(E) = a_1\\\), which we can assume because \\\(E\\\) is a label hydra and we are proving this assuming already that label hydras decrease.
+\\\(a_0 \lessapprox a_1\\\) implies \\\(i_{F, 0:g(F,D)}(0, K(H), K(H), \cdots, K(H), 0) \lessapprox h_{F, 0:g(F,D)}(0, K(E))\\\), which then implies \\\(K(S(A)) \lessapprox K(A)\\\).
+Thus, in this case, a sub-expression does decrease.
 
 </div>
 
-# Closing notes
-{: #closing-notes}
+</div>
+
+# Closing comments
+{: #closing-comments}
 
 {% include collapser.markdown %}
 
 <div>
 
-
+I greatly overestimated the difficulty of this task. I am still interested in studying these fields, but I will not ask for a "research opportunity" unless I find something worthy of extensive research.
 
 </div>
 
