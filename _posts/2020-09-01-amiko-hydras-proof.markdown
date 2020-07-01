@@ -88,17 +88,15 @@ which is needed because the original post on the hydras did not explicitly give 
 There may be no such hydras, in which case it is vacuously true.*
 
 **3. Definition of sub-expression comparison.**
-Define \\\(a \lessapprox_= b \iff a = b \lor a \lessapprox b\\\)
-Define \\\(a \lessapprox b \iff P(a) < P(b) \lor a \neq 0 \land b \neq 0 \\\)
-\\\(\land (a[0] \lessapprox b[0] \land a[2] \lessapprox_= b[2]\\\)
-\\\(\lor a[0] \lessapprox_= b[0] \land a[1] \lessapprox b[1] \land a[2] \lessapprox_= b[2]\\\)
-\\\(\lor a[0] \lessapprox_= b[0] \land a[1] \lessapprox_= b[1] \land a[2] \lessapprox b[2])\\\)
+Detine \\\(a \lessapprox b \iff a \lessapprox^\emptyset b\\\)
+Define \\\(a \lessapprox_=^c b \iff a = b \lor a \lessapprox^c b\\\)
+Define \\\(a \lessapprox^c b \iff P(a) < P(b) \lor a \neq 0 \land b \neq 0 \\\)
+\\\(\land (a[0] \lessapprox^{c\cup \\\{b\\\}} b[0] \land (a[1] \lessapprox_=^{c\cup \\\{b\\\}} b[1] \lor \exists x \in c\cup \\\{b\\\}, a[1]\lessapprox x) \land a[2] \lessapprox_=^{c\cup \\\{b\\\}} b[2]\\\)
+\\\(\lor a[0] \lessapprox_=^{c\cup \\\{b\\\}} b[0] \land a[1] \lessapprox^{c\cup \\\{b\\\}} b[1] \land a[2] \lessapprox_=^{c\cup \\\{b\\\}} b[2]\\\)
+\\\(\lor a[0] \lessapprox_=^{c\cup \\\{b\\\}} b[0] \land a[1] \lessapprox_=^{c\cup \\\{b\\\}} b[1] \land a[2] \lessapprox^{c\cup \\\{b\\\}} b[2])\\\)
 
-*Note this clause: \\\(a[0] \lessapprox b[0] \land a[2] \lessapprox_= b[2]\\\)
-This is intentional.
-Even if the [1]-term keeps increasing, if the [0]-term at least decreases in a sub-expression,
-then the [0]-term ordinal must eventually decrease.
-At that point, we can apply \\\(\alpha_0 < \alpha_1 \land \gamma_0 \leq \gamma_1 \implies C(\alpha_0, \beta_0, \gamma_0) < C(\alpha_1, \beta_1, \gamma_1)\\\).*
+*The clause \\\(\exists x \in c\cup \\\{b\\\}, a[1]\lessapprox x\\\) permits a [1]-term to increase when the [0]-term decreases,
+but to prevent non-terminating stacking, we still need the [1]-term to be less than something else - to be precise, it must be less than some parent expression.*
 
 **4. Hydra step always decreases the ordinal or a sub-expression, given that label hydras also decrease.**
 \\\(\forall A \in (\mathbb{H} - \\\{0_H\\\}), (\forall B \in A, K(S(B)) \lessapprox K(B)) \implies K(S(A)) \lessapprox K(A)\\\)
@@ -287,8 +285,7 @@ Observe \\\(K(A) = f_{A, 0:g(A, D)}(0)\\\).
 Let \\\(h_{Z, k}(b, a) = C(a, b, c)\\\), with \\\(c\\\) defined analogously to how it is defined in \\\(f\\\).
 Let \\\(h_{Z, m:k} = (f_{Z, m} \circ f_{Z, m+1} \circ \cdots \circ f_{Z, k-3} \circ f_{Z, k-2}) \circ h_{Z, k-1}\\\),
 and if \\\(m=k\\\), then \\\(h_{Z, m:k}(b, a) = b\\\) instead.
-Observe \\\(b_0 \lessapprox b_1 \implies h_{Z, k}(b_0, a) \lessapprox f_{Z, k}(b_1, a)\\\).
-Observe \\\(a_0 \lessapprox a_1 \implies h_{Z, k}(b_0, a_0) \lessapprox h_{Z, k}(b_1, a_1)\\\).
+Observe \\\(a_0 \lessapprox_=^c a_1 \land (b_0 \lessapprox^c b_1 \lor \exists x \in c\cup \\\{b_1\\\},b_0 \lessapprox x)\\\) \\\( \implies h_{Z, k}(b_0, a_0) \lessapprox^c f_{Z, k}(b_1, a_1)\\\).
 Same applies for \\\(h_{Z, m:k}\\\).
 
 Let \\\(i_{Z, m:k}(b, a_0, a_1, \cdots, a_{j-1}) = h_{Z, m:k}(h_{Z, m:k}(\cdots h_{Z, m:k}(b, a_{j-1}) \cdots, a_1), a_0)\\\).
@@ -298,10 +295,16 @@ Observe \\\(K(S(A)) = h_{A, 0:g(A, F)}(0, 0)\\\) if \\\(N = 0\\\), in which case
 Then, consider \\\(N > 0\\\), where \\\(K(S(A)) = h_{A, 0:g(A, F)}(i_{F, 0:g(F,D)}(0, K(H), K(H), \cdots, K(H), 0), K(G))\\\),
 where the innermost argument list uses \\\(N - 1\\\) copies of \\\(K(H)\\\).
 Let \\\(b_1 = 0, a_1 = K(E)\\\).
-If we expand the \\\(i\\\), the outermost expression uses \\\(b_0 = 0\\\) if \\\(N=1\\\) and otherwise \\\(i_{F, 0:g(F,D)}(0, K(H), K(H), \cdots, K(H), 0)\\\) with \\\(N-2\\\) copies of \\\(K(H)\\\), and \\\(a_0 = K(H)\\\).
+If we expand the \\\(i\\\), the outermost expression uses \\\(b_0 = 0\\\) if \\\(N=1\\\) and otherwise \\\(b_0=i_{F, 0:g(F,D)}(0, K(H), K(H), \cdots, K(H), 0)\\\) with \\\(N-2\\\) copies of \\\(K(H)\\\), and \\\(a_0 = K(H)\\\).
 Recall \\\(H = S(E)\\\).
 Then \\\(a_0 = K(H) = K(S(E)) \lessapprox K(E) = a_1\\\), which we can assume because \\\(E\\\) is a label hydra and we are proving this assuming already that label hydras decrease.
-\\\(a_0 \lessapprox a_1\\\) implies \\\(i_{F, 0:g(F,D)}(0, K(H), K(H), \cdots, K(H), 0) \lessapprox h_{F, 0:g(F,D)}(0, K(E))\\\), which then implies \\\(K(S(A)) \lessapprox K(A)\\\).
+We also need to show \\\((b_0 \lessapprox^c b_1 \lor \exists x \in c\cup \\\{b_1\\\},b_0 \lessapprox x)\\\), where \\\(c\\\) is the set of parent expressions visited plus \\\(b_1\\\) itself, by finding a suitable \\\(x\\\).
+Let \\\(x\\\) be the \\\(K\\\) of the rightmost child of \\\(F\\\).
+Then \\\(b_0, x\\\) look the same until we reach the node corresponding to \\\(D\\\).
+If there are no further layers, then \\\(b_0 = 0\\\) and it is obvious we are done.
+Otherwise, recurse again, choosing the same \\\(x\\\).
+It can be inductively shown then that \\\((b_0 \lessapprox^c b_1 \lor \exists x \in c\cup \\\{b_1\\\},b_0 \lessapprox x)\\\) for all \\\(N\\\).
+\\\(a_0 \lessapprox^c a_1 \land b_0 \lessapprox^c b_1\\\) implies \\\(i_{F, 0:g(F,D)}(0, K(H), K(H), \cdots, K(H), 0) \lessapprox^c h_{F, 0:g(F,D)}(0, K(E))\\\), which then implies \\\(K(S(A)) \lessapprox K(A)\\\).
 Thus, in this case, a sub-expression does decrease.
 
 </div>
