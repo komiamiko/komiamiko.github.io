@@ -223,7 +223,14 @@ Recall the comparison algorithm for Taranovsky's DoRI \\\(C\\\):
 
 *Taranovsky, 2020, Section 3.2*
 
-This holds for \\\(C(a, b, c)\\\) if \\\(a, b\\\) are maximal and \\\(c\\\) is minimal (which defines the normal form).
+This holds for \\\(C(a, b, c)\\\) if \\\(a, b\\\) are maximal and \\\(c\\\) is minimal, which defines the normal form.
+If both \\\(C(a, b, c), C(d, e, f)\\\) are in normal form, then the comparison result is guaranteed to be correct.
+
+Outside of normal form, the comparison algorithm may fail to produce a result, or it may produce a result.
+Without loss of generality, if in this case it says \\\(C(a, b, c) < C(d, e, f)\\\),
+then all we can actually conclude is \\\(C(a, b, c) \leq C(d, e, f)\\\),
+that is, it may incorrectly determine that 2 different expressions which are the same ordinal are not equal,
+but a less than or greater than result will never be the opposite of the correct comparison.
 
 I refer to \\\(C(a, b, c) ≤ f\\\) as clause 1, \\\(c < C(d, e, f)\\\) as clause 2, and \\\((a, b) < (c, d)\\\) as clause 3.
 
