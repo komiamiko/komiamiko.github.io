@@ -475,11 +475,11 @@ I go beyond the normal limit of the Buchholz function using the extended Buchhol
 
 | In other notations | Proof theoretic ordinal of | Taranovsky's DoRI \\\(C\\\) |
 |--:|:-:|:--|
-| \\\( \varepsilon_0 = \psi_0(\psi_1(0)) \\\) | \\\(PA, ACA_0\\\) | \\\( C(\uparrow 0, 0) = C(C(1, 0, 0), 0) = C(\Omega, 0) \\\) |
-| \\\( \textbf{Bachmann-Howard ordinal} = \psi_0(\psi_2(0)) \\\) | | \\\( C(\uparrow\uparrow 0, 0) = C(C(1, 0, C(1, 0, 0)), 0) \\\) |
+| \\\( \varepsilon_0 = \psi_0(\psi_1(0)) \\\) | \\\(PA\\)[^cite-kirby-paris] | \\\( C(\uparrow 0, 0) = C(C(1, 0, 0), 0) = C(\Omega, 0) \\\) |
+| \\\( \textbf{Bachmann-Howard ordinal} = \psi_0(\psi_2(0)) \\\) | \\\(KP\omega\\\)[^cite-rathjen] | \\\( C(\uparrow\uparrow 0, 0) = C(C(1, 0, C(1, 0, 0)), 0) \\\) |
 | \\\( \psi_0(\psi_3(0)) \\\) | | \\\( C(\uparrow\uparrow\uparrow 0, 0) = C(C(1, 0, C(1, 0, C(1, 0, 0))), 0) \\\) |
-| \\\( \psi_0(\psi_\omega(0)) \\\) | \\\(\Pi_1^1-CA_0\\\) | \\\( C(\Uparrow 0, 0) = C(C(1, 1, 0), 0) \\\) |
-| \\\( \textbf{Takeuti-Feferman-Buchholz ordinal} = \psi_0(\psi_{\omega + 1}(0)) \\\) | \\\(\Pi_1^1-CA_0+BI, \Pi_1^1-CA_0+TI\\\) | \\\( C(\uparrow\Uparrow 0, 0) = C(C(1, 0, C(1, 1, 0)), 0) \\\) |
+| \\\( \psi_0(\psi_\omega(0)) \\\) | \\\(\Pi_1^1-CA_0\\\)[^cite-taranovsky] | \\\( C(\Uparrow 0, 0) = C(C(1, 1, 0), 0) \\\) |
+| \\\( \textbf{Takeuti-Feferman-Buchholz ordinal} = \psi_0(\psi_{\omega + 1}(0)) \\\) | \\\(\Pi_1^1-CA_0+BI\\\)[^cite-buchholz] \\\(\Pi_1^1-CA_0+TI\\\)[^cite-taranovsky] | \\\( C(\uparrow\Uparrow 0, 0) = C(C(1, 0, C(1, 1, 0)), 0) \\\) |
 | \\\( \psi_0(\psi_{\omega 2}(0)) \\\) | | \\\( C(\Uparrow\Uparrow 0, 0) = C(C(1, 1, C(1, 1, 0)), 0) \\\) |
 | \\\( \psi_0(\psi_{\omega^2}(0)) \\\) | | \\\( C(C(1, 2, 0), 0) \\\) |
 | \\\( \psi_0(\psi_{\omega^\omega}(0)) \\\) | | \\\( C(C(1, C(1, 0), 0), 0) \\\) |
@@ -488,7 +488,7 @@ I go beyond the normal limit of the Buchholz function using the extended Buchhol
 | \\\( \psi_0(\psi_{\psi_0(\psi_{\psi_0(\psi_1(0))}(0))}(0)) \\\) | | \\\( C(C(1, C(C(1, C(C(1, 0, 0), 0), 0), 0), 0), 0) \\\) |
 | \\\( \psi_0(\psi_{\psi_1(0)}(0)) \\\) | | \\\( C(C(1, C(1, 0, 0), 0), 0) \\\) |
 | \\\( \psi_0(\psi_{\psi_{\psi_1(0)}(0)}(0)) \\\) | | \\\( C(C(1, C(1, C(1, 0, 0), 0), 0), 0) \\\) |
-| \\\( \psi_0(\Lambda) = \psi_0(\omega_{\omega_{\omega_{\cdots}}}) \\\) | \\\(\Pi_1^1-TR_0\\\) | \\\( C(C(2, 0, 0), 0) \\\) |
+| \\\( \psi_0(\Lambda) = \psi_0(\omega_{\omega_{\omega_{\cdots}}}) \\\) | \\\(\Pi_1^1-TR_0\\\)[^cite-taranovsky] | \\\( C(C(2, 0, 0), 0) \\\) |
 
 </div>
 
@@ -496,5 +496,10 @@ While it is tempting to "continue the pattern" and keep going, it would be quite
 I think this is a good place to stop.
 Taranovsky's DoRI \\\(C\\\) can go much higher of course - we have matched the strength of Buchholz's function using only \\\(C(\alpha, \beta, \gamma)\\\) with \\\(\alpha \leq 1\\\).
 If you are interested, you can explore that on your own.
+
+[^cite-kirby-paris]: [https://doi.org/10.1112/blms/14.4.285](https://doi.org/10.1112/blms/14.4.285)
+[^cite-buchholz]: [https://doi.org/10.1016/0168-0072%2887%2990078-9](https://doi.org/10.1016/0168-0072%2887%2990078-9)
+[^cite-taranovsky]: [https://web.archive.org/web/20200628053709/http://web.mit.edu/dmytro/www/other/OrdinalNotation.htm](https://web.archive.org/web/20200628053709/http://web.mit.edu/dmytro/www/other/OrdinalNotation.htm)
+[^cite-rathjen]: [https://doi.org/10.1017/cbo9780511896262.011](https://doi.org/10.1017/cbo9780511896262.011)
 
 </div>
