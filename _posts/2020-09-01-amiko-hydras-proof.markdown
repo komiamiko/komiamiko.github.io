@@ -473,20 +473,22 @@ I go beyond the normal limit of the Buchholz function using the extended Buchhol
 
 <div style="overflow:auto;">
 
-| In other notations | Taranovsky's DoRI \\\(C\\\) |
-|--:|:--|
-| \\\( \varepsilon_0 = \psi_0(\psi_1(0)) \\\) | \\\( C(\uparrow 0, 0) = C(C(1, 0, 0), 0) = C(\Omega, 0) \\\) |
-| \\\( \textbf{Bachmann-Howard ordinal} = \psi_0(\psi_2(0)) \\\) | \\\( C(\uparrow\uparrow 0, 0) = C(C(1, 0, C(1, 0, 0)), 0) \\\) |
-| \\\( \psi_0(\psi_3(0)) \\\) | \\\( C(\uparrow\uparrow\uparrow 0, 0) = C(C(1, 0, C(1, 0, C(1, 0, 0))), 0) \\\) |
-| \\\( \psi_0(\psi_\omega(0)) \\\) | \\\( C(\Uparrow 0, 0) = C(C(1, 1, 0), 0) \\\) |
-| \\\( \textbf{Takeuti-Feferman-Buchholz ordinal} = \psi_0(\psi_{\omega + 1}(0)) \\\) | \\\( C(\uparrow\Uparrow 0, 0) = C(C(1, 0, C(1, 1, 0)), 0) \\\) |
-| \\\( \psi_0(\psi_{\omega 2}(0)) \\\) | \\\( C(C(1, 1, C(1, 1, 0)), 0) \\\) |
-| \\\( \psi_0(\psi_{\omega^2}(0)) \\\) | \\\( C(C(1, 2, 0), 0) \\\) |
-| \\\( \psi_0(\psi_{\omega^\omega}(0)) \\\) | \\\( C(C(1, C(1, 0), 0), 0) \\\) |
-| \\\( \psi_0(\psi_{\omega^{\omega^\omega}}(0)) \\\) | \\\( C(C(1, C(C(1, 0), 0), 0), 0) \\\) |
-| \\\( \psi_0(\psi_{\varepsilon_0}(0)) = \psi_0(\psi_{\psi_0(\psi_1(0))}(0)) \\\) | \\\( C(C(1, C(C(1, 0, 0), 0), 0), 0) \\\) |
-| \\\( \psi_0(\psi_{\psi_0(\psi_{\psi_0(\psi_1(0))}(0))}(0)) \\\) | \\\( C(C(1, C(C(1, C(C(1, 0, 0), 0), 0), 0), 0), 0) \\\) |
-| \\\( \psi_0(\psi_{\psi_1(0)}(0)) \\\) | \\\( C(C(1, C(1, 0, 0), 0), 0) \\\) |
+| In other notations | Proof theoretic ordinal of | Taranovsky's DoRI \\\(C\\\) |
+|--:|:-:|:--|
+| \\\( \varepsilon_0 = \psi_0(\psi_1(0)) \\\) | \\\(PA, ACA_0\\\) | \\\( C(\uparrow 0, 0) = C(C(1, 0, 0), 0) = C(\Omega, 0) \\\) |
+| \\\( \textbf{Bachmann-Howard ordinal} = \psi_0(\psi_2(0)) \\\) | | \\\( C(\uparrow\uparrow 0, 0) = C(C(1, 0, C(1, 0, 0)), 0) \\\) |
+| \\\( \psi_0(\psi_3(0)) \\\) | | \\\( C(\uparrow\uparrow\uparrow 0, 0) = C(C(1, 0, C(1, 0, C(1, 0, 0))), 0) \\\) |
+| \\\( \psi_0(\psi_\omega(0)) \\\) | \\\(\Pi_1^1-CA_0\\\) | \\\( C(\Uparrow 0, 0) = C(C(1, 1, 0), 0) \\\) |
+| \\\( \textbf{Takeuti-Feferman-Buchholz ordinal} = \psi_0(\psi_{\omega + 1}(0)) \\\) | \\\(\Pi_1^1-CA_0+BI, \Pi_1^1-CA_0+TI\\\) | \\\( C(\uparrow\Uparrow 0, 0) = C(C(1, 0, C(1, 1, 0)), 0) \\\) |
+| \\\( \psi_0(\psi_{\omega 2}(0)) \\\) | | \\\( C(\Uparrow\Uparrow 0, 0) = C(C(1, 1, C(1, 1, 0)), 0) \\\) |
+| \\\( \psi_0(\psi_{\omega^2}(0)) \\\) | | \\\( C(C(1, 2, 0), 0) \\\) |
+| \\\( \psi_0(\psi_{\omega^\omega}(0)) \\\) | | \\\( C(C(1, C(1, 0), 0), 0) \\\) |
+| \\\( \psi_0(\psi_{\omega^{\omega^\omega}}(0)) \\\) | | \\\( C(C(1, C(C(1, 0), 0), 0), 0) \\\) |
+| \\\( \psi_0(\psi_{\varepsilon_0}(0)) = \psi_0(\psi_{\psi_0(\psi_1(0))}(0)) \\\) | | \\\( C(C(1, C(C(1, 0, 0), 0), 0), 0) \\\) |
+| \\\( \psi_0(\psi_{\psi_0(\psi_{\psi_0(\psi_1(0))}(0))}(0)) \\\) | | \\\( C(C(1, C(C(1, C(C(1, 0, 0), 0), 0), 0), 0), 0) \\\) |
+| \\\( \psi_0(\psi_{\psi_1(0)}(0)) \\\) | | \\\( C(C(1, C(1, 0, 0), 0), 0) \\\) |
+| \\\( \psi_0(\psi_{\psi_{\psi_1(0)}(0)}(0)) \\\) | | \\\( C(C(1, C(1, C(1, 0, 0), 0), 0), 0) \\\) |
+| \\\( \psi_0(\Lambda) = \psi_0(\omega_{\omega_{\omega_{\cdots}}}) \\\) | \\\(\Pi_1^1-TR_0\\\) | \\\( C(C(2, 0, 0), 0) \\\) |
 
 </div>
 
