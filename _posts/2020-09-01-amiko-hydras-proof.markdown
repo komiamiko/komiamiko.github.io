@@ -91,7 +91,7 @@ There may be no such hydras, in which case it is vacuously true.*
 Detine \\\(a \lessapprox b \iff a \lessapprox^\emptyset b\\\)
 Define \\\(a \lessapprox_=^c b \iff a = b \lor a \lessapprox^c b\\\)
 Define \\\(a \lessapprox^c b \iff b \neq 0 \land (a = 0 \lor a \neq 0 \land (a \lessapprox^{c\cup \\\{b\\\}} b[2]\\\)
-\\\(\lor a[2] \lessapprox^c b \land (a[0] \lessapprox a[2] \lor a[0] = a[2] \land a[1] \lessapprox^{c\cup \\\{b\\\}} b[0])\\\)
+\\\(\lor a[2] \lessapprox^c b \land (a[0] \lessapprox^{c\cup \\\{b\\\}} b[0] \lor a[0] = b[0] \land a[1] \lessapprox^{c\cup \\\{b\\\}} b[1])\\\)
 \\\(\lor a[0] \lessapprox^{c\cup \\\{b\\\}} b[0] \land (a[1] \lessapprox_=^{c\cup \\\{b\\\}} b[1] \lor \exists x \in c\cup \\\{b\\\}, a[1]\lessapprox x) \land a[2] \lessapprox_=^{c\cup \\\{b\\\}} b[2]\\\)
 \\\(\lor a[0] \lessapprox_=^{c\cup \\\{b\\\}} b[0] \land a[1] \lessapprox^{c\cup \\\{b\\\}} b[1] \land a[2] \lessapprox_=^{c\cup \\\{b\\\}} b[2]\\\)
 \\\(\lor a[0] \lessapprox_=^{c\cup \\\{b\\\}} b[0] \land a[1] \lessapprox_=^{c\cup \\\{b\\\}} b[1] \land a[2] \lessapprox^{c\cup \\\{b\\\}} b[2] ))\\\)
@@ -225,6 +225,12 @@ Recall the comparison algorithm for Taranovsky's DoRI \\\(C\\\):
 
 *Taranovsky, 2020, Section 3.2*
 
+That last part is suspicious, and actually, it is easy to find a counterexample - as written, the comparison algorithm fails to determine \\\(C(0, C(0, 0, 0), 0) < C(0, 0, 0)\\\).
+I'm quite sure where Taranovsky wrote "\\\((a, b) < (c, d)\\\)" they meant to write "\\\((a, b) < (d, e)\\\)".
+This seems like a sane correction to make, so I proceed using it.
+Here is the corrected definition:
+> If a and b are maximal in C(a, b, c), then C(a, b, c) < C(d, e, f) iff C(a, b, c) ≤ f or c < C(d, e, f) ∧ (a, b) < (d, e).
+
 This holds for \\\(C(a, b, c)\\\) if \\\(a, b\\\) are maximal and \\\(c\\\) is minimal, which defines the normal form.
 If both \\\(C(a, b, c), C(d, e, f)\\\) are in normal form, then the comparison result is guaranteed to be correct.
 
@@ -235,7 +241,6 @@ that is, it may incorrectly determine that 2 different expressions which are the
 but a less than or greater than result will never be the opposite of the correct comparison.
 
 I refer to \\\(C(a, b, c) ≤ f\\\) as clause 1, \\\(c < C(d, e, f)\\\) as clause 2, and \\\((a, b) < (c, d)\\\) as clause 3.
-It seems a little suspicious to me that clause 3 is \\\((a, b) < (c, d)\\\) rather than \\\((a, b) < (d, e)\\\), but I'll trust Taranovsky on this one, and if they were wrong I'll blame them for my possibly incorrect proof.
 The definition of \\\(\lessapprox\\\) includes analogous clauses, which I will also refer to as clause 1, clause 2, and clause 3.
 
 ## Rule 1.1
