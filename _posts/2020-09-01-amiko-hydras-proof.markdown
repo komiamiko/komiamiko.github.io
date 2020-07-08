@@ -35,7 +35,7 @@ It's not a ghost that can haunt me forever.
 
 I also have other good news.
 I finally have a proof of termination for Amiko hydras, which I hope is correct.
-Most of the work on my part needed to get here wasn't actually proof writing, but study within the topic.
+A large portion of the work on my part needed to get here wasn't actually proof writing, but study within the topic.
 I was already comfortable using the Cantor normal form up to \\\(\varepsilon_0\\\),
 the Veblen normal form up to \\\(\Gamma_0\\\),
 and the Buchholz normal form up to \\\(\psi_0(\varepsilon_{\Omega_\omega + 1})\\\).
@@ -47,7 +47,7 @@ as the Buchholz function is simpler than all of those, so you might as well jump
 
 My next major leap was to [Taranovsky's C](https://web.archive.org/web/20200628053709/http://web.mit.edu/dmytro/www/other/OrdinalNotation.htm),
 specifically the "Degrees of Recursive Inaccessibility" system, which is the weakest one on that page.
-It took a lot of reading up on background concepts and examining that system until I was comfortable working in it,
+It took some reading up on background concepts and examining that system until I was comfortable working in it,
 and it really does not help that that page contains very few examples.
 Once that was done, I was ready to attempt a proof of termination for Amiko hydras, and that proof itself was actually relatively easy.
 
@@ -359,6 +359,46 @@ TODO cases where no suitable E was found
 <div>
 
 I greatly overestimated the difficulty of this task. I am still interested in studying these fields, but I will not ask for a "research opportunity" unless I find something worthy of extensive research.
+
+The actual proof was not hard or obscenely long.
+Why then, you may wonder, did it take me so long to produce it?
+It is because I was continually intimidated.
+In truth, I had all the time in the world and nothing to lose, yet the anxiety persisted.
+In this landscape, I know where the starting point is, and I know what the goal looks like, but the world is covered in a dense fog.
+I can look ahead, but never more than a few steps.
+To ever reach the goal, I needed to try; to break this paralysis; to take some steps.
+Not every attempt yielded progress.
+Sometimes I needed to backtrack, and that's okay.
+I didn't get [the structure of the proof](#proof-structure) right the first time,
+but I would not have derived the other parts, or known I needed a slightly different setup, if I had not made that first attempt.
+Bit by bit, as I mapped out the path, a working proof emerged.
+
+One important lesson for tackling complex problems like this is that creating structure is helpful.
+In the geographical analogy, this means identifying landmarks, charting out routes between them, and then putting together the final map.
+For programmers, this kind of organization is the reason for creating more classes with specific purposes and separating code into multiple files.
+In this proof, I first introduced some overall structure in the proof,
+and within the section to prove sub-expressions always decrease, I further divided it by rule and then by cases.
+There is some complex interdependence, and something like linking in software needs to happen at the very end to produce the final complete proof statement,
+but so long as I abided by certain rules in logic to avoid issues like circular reasoning, everything would work out.
+
+One more note before I end off my commentary.
+I've long refused to identify with any disability, impairment, or disorder,
+on the sole basis that I get by fine in life and I've never received a formal diagnosis.
+Not everyone gets by fine though.
+As a message not for those with a disability but the people they interact with:
+please be kind to them.
+If they struggle to do something that seems easy to you, it's not that they don't want to, their brain may just be not letting them.
+Telling them what they need to do or criticizing them does not necessarily enable them to do it.
+
+> I know I HAVE to cook, but how do I turn on the stove without the Button?
+
+*- [Pina, ADHD Alien](https://twitter.com/adhd_alien)*
+
+I'm guilty of doing it in the past, and I almost did it again just now.
+I commented on my experiences getting here.
+I don't expect it to be useful or actionable advice.
+I did it to tell my story.
+Thank you for reading.
 
 </div>
 
