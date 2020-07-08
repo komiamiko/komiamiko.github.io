@@ -122,7 +122,7 @@ There is actually nothing wrong with making this claim for all ordinals, but in 
 
 **8. If sub-expressions decrease, the ordinal eventually decreases.**
 There is no infinite sequence \\\(a_0, a_1, \cdots\\\) for which \\\(\forall n \in \mathbb{N}, P(a_0) = P(a_1) \land a_1 \lessapprox a_0\\\).
-The formal statement is quite long to write, but it is proven by transfinite induction on each tuple element.
+The formal statement is quite long to write, but it is proven by transfinite induction.
 
 The only non-trivial part of this is step 4.
 I dedicate some space to defining \\\(M\\\), and the rest of the proof is for proving step 4.
