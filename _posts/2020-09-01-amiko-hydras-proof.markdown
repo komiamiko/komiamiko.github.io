@@ -225,7 +225,7 @@ Recall the comparison algorithm for Taranovsky's DoRI \\\(C\\\):
 
 *Taranovsky, 2020, Section 3.2*
 
-That last part is suspicious, and actually, it is easy to find a counterexample - as written, the comparison algorithm fails to determine \\\(C(0, C(0, 0, 0), 0) < C(0, 0, 0)\\\).
+That last part is suspicious, and actually, it is easy to find a counterexample - as written, the comparison algorithm fails to determine \\\(C(0, 0, 0) < C(0, C(0, 0, 0), 0)\\\).
 I'm quite sure where Taranovsky wrote "\\\((a, b) < (c, d)\\\)" they meant to write "\\\((a, b) < (d, e)\\\)".
 This seems like a sane correction to make, so I proceed using it.
 Here is the corrected definition:
