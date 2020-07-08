@@ -45,7 +45,7 @@ as the Buchholz function is simpler than all of those, so you might as well jump
 
 ![A scatter plot with connecting lines, with strength of a system on the horizontal axis and complexity of a system on the vertical axis. Each highlighted point is the next stronger system which is minimally more complex. They are, in order, the integers, Cantor normal form, 2-argument Veblen normal form, Buchholz normal form, and Taranovsky's C in the Degrees of Recursive Inaccessibility variant.](/assets/hydras/ordinal-systems.png)
 
-My next major leap was to [Taranovsky's C](https://web.archive.org/web/20200628053709/http://web.mit.edu/dmytro/www/other/OrdinalNotation.htm),
+My next major leap was to [Taranovsky's C](https://web.archive.org/web/20200708201005/http://web.mit.edu/dmytro/www/other/OrdinalNotation.htm),
 specifically the "Degrees of Recursive Inaccessibility" system, which is the weakest one on that page.
 It took some reading up on background concepts and examining that system until I was comfortable working in it,
 and it really does not help that that page contains very few examples.
@@ -221,15 +221,9 @@ Recall the definition of \\\(S\\\):
 
 Recall the comparison algorithm for Taranovsky's DoRI \\\(C\\\):
 
-> If a and b are maximal in C(a, b, c), then C(a, b, c) < C(d, e, f) iff C(a, b, c) ≤ f or c < C(d, e, f) ∧ (a, b) < (c, d).
+> If a and b are maximal in C(a, b, c), then C(a, b, c) < C(d, e, f) iff C(a, b, c) ≤ f or c < C(d, e, f) ∧ (a, b) < (d, e).
 
 *Taranovsky, 2020, Section 3.2*
-
-That last part is suspicious, and actually, it is easy to find a counterexample - as written, the comparison algorithm fails to determine \\\(C(0, 0, 0) < C(0, C(0, 0, 0), 0)\\\).
-I'm quite sure where Taranovsky wrote "\\\((a, b) < (c, d)\\\)" they meant to write "\\\((a, b) < (d, e)\\\)".
-This seems like a sane correction to make, so I proceed using it.
-Here is the corrected definition:
-> If a and b are maximal in C(a, b, c), then C(a, b, c) < C(d, e, f) iff C(a, b, c) ≤ f or c < C(d, e, f) ∧ (a, b) < (d, e).
 
 This holds for \\\(C(a, b, c)\\\) if \\\(a, b\\\) are maximal and \\\(c\\\) is minimal, which defines the normal form.
 If both \\\(C(a, b, c), C(d, e, f)\\\) are in normal form, then the comparison result is guaranteed to be correct.
@@ -240,7 +234,7 @@ then all we can actually conclude is \\\(C(a, b, c) \leq C(d, e, f)\\\),
 that is, it may incorrectly determine that 2 different expressions which are the same ordinal are not equal,
 but a less than or greater than result will never be the opposite of the correct comparison.
 
-I refer to \\\(C(a, b, c) ≤ f\\\) as clause 1, \\\(c < C(d, e, f)\\\) as clause 2, and \\\((a, b) < (c, d)\\\) as clause 3.
+I refer to \\\(C(a, b, c) ≤ f\\\) as clause 1, \\\(c < C(d, e, f)\\\) as clause 2, and \\\((a, b) < (d, e)\\\) as clause 3.
 The definition of \\\(\lessapprox\\\) includes analogous clauses, which I will also refer to as clause 1, clause 2, and clause 3.
 
 ## Rule 1.1
@@ -340,7 +334,7 @@ For the original \\\(F\\\), if we define \\\(F^\* \\\) to be \\\(F\\\) with labe
 Back in \\\(A\\\), the subexpression \\\(K(D')\\\) is replaced by \\\(i_{E', 0:g(E,D)}(0, 0, 0, \cdots, 0)\\\) with \\\(N+1\\\) copies of \\\(0\\\).
 Our goal is to show \\\(i_{E', 0:g(E,D)}(0, 0, 0, \cdots, 0) \lessapprox K(D')\\\), which would imply \\\(K(S(A)) \lessapprox K(A)\\\).
 We will do this by showing clause 2 and 3 hold in all cases.
-Clause 3 is easier, since \\\(a[0] = 0 \lessapprox a[2] \neq 0\\\).
+Clause 3 is easier, since \\\(a[0] = 0 \lessapprox b[0] \neq 0\\\).
 For clause 2, we need to take off the outer layer, and check \\\((0, b_1, \cdots (0, b_{i-1}, K(S(D'))) \cdots ) \lessapprox K(D')\\\).
 This happens again at each layer until we reach \\\(K(S(D')) \lessapprox K(D')\\\), which is true by induction.
 Thus, in this case, \\\(K(S(A)) \lessapprox K(A)\\\).
@@ -579,7 +573,7 @@ If you are interested, you can explore that on your own.
 
 [^cite-kirby-paris]: [https://doi.org/10.1112/blms/14.4.285](https://doi.org/10.1112/blms/14.4.285)
 [^cite-buchholz]: [https://doi.org/10.1016/0168-0072%2887%2990078-9](https://doi.org/10.1016/0168-0072%2887%2990078-9)
-[^cite-taranovsky]: [https://web.archive.org/web/20200628053709/http://web.mit.edu/dmytro/www/other/OrdinalNotation.htm](https://web.archive.org/web/20200628053709/http://web.mit.edu/dmytro/www/other/OrdinalNotation.htm)
+[^cite-taranovsky]: [https://web.archive.org/web/20200708201005/http://web.mit.edu/dmytro/www/other/OrdinalNotation.htm](https://web.archive.org/web/20200708201005/http://web.mit.edu/dmytro/www/other/OrdinalNotation.htm)
 [^cite-rathjen]: [https://doi.org/10.1017/cbo9780511896262.011](https://doi.org/10.1017/cbo9780511896262.011)
 
 </div>
