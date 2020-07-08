@@ -121,7 +121,7 @@ There is actually nothing wrong with making this claim for all ordinals, but in 
 \\\((R(0) \land \forall m \in \mathbb{N}, R(m) \implies R(m+1)) \implies \forall m \in \mathbb{N}, R(m)\\\)
 
 **8. If sub-expressions decrease, the ordinal eventually decreases.**
-There is no infinite sequence \\\(a_0, a_1, \cdots\\\) for which \\\(\forall n \in \mathbb{N}, P(a_0) = P(a_1) \land a_1 \lessapprox a_0\\\).
+There is no infinite sequence \\\(a_0, a_1, \cdots\\\) for which \\\(\forall n \in \mathbb{N}, P(a_n) = P(a_{n+1}) \land a_{n+1} \lessapprox a_n\\\).
 The formal statement is quite long to write, but it is proven by transfinite induction.
 
 The only non-trivial part of this is step 4.
