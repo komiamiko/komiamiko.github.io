@@ -90,10 +90,12 @@ There may be no such hydras, in which case it is vacuously true.*
 **3. Definition of sub-expression comparison.**
 Detine \\\(a \lessapprox b \iff a \lessapprox^\emptyset b\\\)
 Define \\\(a \lessapprox_=^c b \iff a = b \lor a \lessapprox^c b\\\)
-Define \\\(a \lessapprox^c b \iff P(a) < P(b) \lor a \neq 0 \land b \neq 0 \\\)
-\\\(\land (a[0] \lessapprox^{c\cup \\\{b\\\}} b[0] \land (a[1] \lessapprox_=^{c\cup \\\{b\\\}} b[1] \lor \exists x \in c\cup \\\{b\\\}, a[1]\lessapprox x) \land a[2] \lessapprox_=^{c\cup \\\{b\\\}} b[2]\\\)
+Define \\\(a \lessapprox^c b \iff b \neq 0 \land (a = 0 \lor a \neq 0 \land (a \lessapprox^{c\cup \\\{b\\\}} b[2]\\\)
+\\\(\lor a[2] \lessapprox^c b \land (a[0] \lessapprox a[2] \lor a[0] = a[2] \land a[1] \lessapprox^{c\cup \\\{b\\\}} b[0])\\\)
+\\\(\lor a[0] \lessapprox^{c\cup \\\{b\\\}} b[0] \land (a[1] \lessapprox_=^{c\cup \\\{b\\\}} b[1] \lor \exists x \in c\cup \\\{b\\\}, a[1]\lessapprox x) \land a[2] \lessapprox_=^{c\cup \\\{b\\\}} b[2]\\\)
 \\\(\lor a[0] \lessapprox_=^{c\cup \\\{b\\\}} b[0] \land a[1] \lessapprox^{c\cup \\\{b\\\}} b[1] \land a[2] \lessapprox_=^{c\cup \\\{b\\\}} b[2]\\\)
-\\\(\lor a[0] \lessapprox_=^{c\cup \\\{b\\\}} b[0] \land a[1] \lessapprox_=^{c\cup \\\{b\\\}} b[1] \land a[2] \lessapprox^{c\cup \\\{b\\\}} b[2])\\\)
+\\\(\lor a[0] \lessapprox_=^{c\cup \\\{b\\\}} b[0] \land a[1] \lessapprox_=^{c\cup \\\{b\\\}} b[1] \land a[2] \lessapprox^{c\cup \\\{b\\\}} b[2] ))\\\)
+Note that \\\(c_0 \subset c_1 \implies (a \lessapprox^{c_0} b \implies a \lessapprox^{c_1} b)\\\), so it is safe to drop \\\(c\\\) in certain contexts, as is done in the proof.
 
 *The clause \\\(\exists x \in c\cup \\\{b\\\}, a[1]\lessapprox x\\\) permits a [1]-term to increase when the [0]-term decreases,
 but to prevent non-terminating stacking, we still need the [1]-term to be less than something else - to be precise, it must be less than some parent expression.*
@@ -233,6 +235,8 @@ that is, it may incorrectly determine that 2 different expressions which are the
 but a less than or greater than result will never be the opposite of the correct comparison.
 
 I refer to \\\(C(a, b, c) ≤ f\\\) as clause 1, \\\(c < C(d, e, f)\\\) as clause 2, and \\\((a, b) < (c, d)\\\) as clause 3.
+It seems a little suspicious to me that clause 3 is \\\((a, b) < (c, d)\\\) rather than \\\((a, b) < (d, e)\\\), but I'll trust Taranovsky on this one, and if they were wrong I'll blame them for my possibly incorrect proof.
+The definition of \\\(\lessapprox\\\) includes analogous clauses, which I will also refer to as clause 1, clause 2, and clause 3.
 
 ## Rule 1.1
 {: #proof-rule-11}
@@ -260,17 +264,6 @@ but we are sure that \\\(K(F')\\\) will decrease, so we can say \\\(K(S(A)) \les
 
 </div>
 
-## Rule 1.2
-{: #proof-rule-12}
-
-{% include collapser.markdown %}
-
-<div>
-
-
-
-</div>
-
 ## Rule 2.2
 {: #proof-rule-22}
 
@@ -278,7 +271,7 @@ but we are sure that \\\(K(F')\\\) will decrease, so we can say \\\(K(S(A)) \les
 
 <div>
 
-Let \\\(f_{Z, k}(b) = C(a, b, c)\\\) be a family of functions, where,
+Let \\\(f_{Z, k}(b) = (a, b, c)\\\) be a family of functions, where,
 if \\\(Y\\\) is the node reached by repeatedly taking the rightmost child \\\(k\\\) times starting with \\\(Z\\\),
 \\\(c\\\) is what \\\(K(Y)\\\) would be if the rightmost child of \\\(Y\\\) was removed,
 and \\\(a = K(X)\\\) where \\\(X\\\) is the label of the rightmost child of \\\(Y\\\).
@@ -289,7 +282,7 @@ and additionally \\\(b_0 \lessapprox b_1 \implies f_{Z, m:k}(b_0) \lessapprox f_
 Let \\\(g(X, Y)\\\) be the edge distance between nodes \\\(X, Y\\\).
 Observe \\\(K(A) = f_{A, 0:g(A, D)}(0)\\\).
 
-Let \\\(h_{Z, k}(b, a) = C(a, b, c)\\\), with \\\(c\\\) defined analogously to how it is defined in \\\(f\\\).
+Let \\\(h_{Z, k}(b, a) = (a, b, c)\\\), with \\\(c\\\) defined analogously to how it is defined in \\\(f\\\).
 Let \\\(h_{Z, m:k} = (f_{Z, m} \circ f_{Z, m+1} \circ \cdots \circ f_{Z, k-3} \circ f_{Z, k-2}) \circ h_{Z, k-1}\\\),
 and if \\\(m=k\\\), then \\\(h_{Z, m:k}(b, a) = b\\\) instead.
 Observe \\\(a_0 \lessapprox_=^c a_1 \land (b_0 \lessapprox^c b_1 \lor \exists x \in c\cup \\\{b_1\\\},b_0 \lessapprox x)\\\) \\\( \implies h_{Z, k}(b_0, a_0) \lessapprox^c f_{Z, k}(b_1, a_1)\\\).
@@ -313,6 +306,41 @@ Otherwise, recurse again, choosing the same \\\(x\\\).
 It can be inductively shown then that \\\((b_0 \lessapprox^c b_1 \lor \exists x \in c\cup \\\{b_1\\\},b_0 \lessapprox x)\\\) for all \\\(N\\\).
 \\\(a_0 \lessapprox^c a_1 \land b_0 \lessapprox^c b_1\\\) implies \\\(i_{F, 0:g(F,D)}(0, K(H), K(H), \cdots, K(H), 0) \lessapprox^c h_{F, 0:g(F,D)}(0, K(E))\\\), which then implies \\\(K(S(A)) \lessapprox K(A)\\\).
 Thus, in this case, a sub-expression does decrease.
+
+</div>
+
+## Rule 1.2
+{: #proof-rule-12}
+
+{% include collapser.markdown %}
+
+<div>
+
+Suppose a suitable \\\(E\\\) is found.
+Let \\\(E^\* \\\) be \\\(E\\\) but with label changed to \\\(\star\\\).
+Then, \\\(K(E^\* ) = (a_0, b_0, (a_1, b_1, \cdots (a_{j-1}, b_{j-1}, 0) \cdots ))\\\) for some \\\(a, b\\\).
+Due to the relative locations, \\\(K(D)\\\) must appear as a sub-expression of \\\(b_0\\\) (or possibly it is \\\(b_0\\\)).
+Let \\\(i = \min \\\{i | i\in j \land 0 \lessapprox a_i \\\} \cup \\\{ j \\\}\\\).
+Note that \\\(\forall k\in i, a_i = 0\\\).
+Since a suitable \\\(E\\\) was found, and we know \\\(D\\\) and \\\(E\\\) must both have label \\\((\star:)\\\), we can say
+\\\((a_i, b_i, (a_{i+1}, b_{i+1}, \cdots (a_{j-1}, b_{j-1}, 0) \cdots )) \lessapprox K(D')\\\).
+Let \\\(E'^\* \\\) be \\\(E'\\\) but with label changed to \\\(\star\\\).
+Observe \\\(K(E'^\* ) = (a_0, b_0, (a_1, b_1, \cdots (a_{i-1}, b_{i-1}, K(S(D'))) \cdots )) = (0, b_0, (0, b_1, \cdots (0, b_{i-1}, K(S(D'))) \cdots ))\\\).
+Observe that the transform "Replace \\\(F\\\) with \\\(E'\\\) where \\\(D\\\) is replaced by \\\(F\\\)."
+corresponds to \\\(h_{E', 0:g(E,D)}\\\).
+Observe that the iterate corresponds to \\\(K(F) \mapsto i_{E', 0:g(E,D)}(K(F), K(G), K(G), \cdots, K(G), 0)\\\) with \\\(N-1\\\) copies of \\\(K(G)\\\) where \\\(G\\\) is the label of \\\(D\\\),
+however, since we know \\\(G = (\star:)\\\), \\\(K(G) = 0\\\), and thus the map reduces to simply
+\\\(K(F) \mapsto i_{E', 0:g(E,D)}(K(F), 0, 0, \cdots, 0)\\\) with \\\(N\\\) copies of \\\(0\\\).
+For the original \\\(F\\\), if we define \\\(F^\* \\\) to be \\\(F\\\) with label changed to \\\(\star\\\), then \\\(F^\* = (\star:)\\\), and \\\(K(F^\* ) = 0\\\).
+Back in \\\(A\\\), the subexpression \\\(K(D')\\\) is replaced by \\\(i_{E', 0:g(E,D)}(0, 0, 0, \cdots, 0)\\\) with \\\(N+1\\\) copies of \\\(0\\\).
+Our goal is to show \\\(i_{E', 0:g(E,D)}(0, 0, 0, \cdots, 0) \lessapprox K(D')\\\), which would imply \\\(K(S(A)) \lessapprox K(A)\\\).
+We will do this by showing clause 2 and 3 hold in all cases.
+Clause 3 is easier, since \\\(a[0] = 0 \lessapprox a[2] \neq 0\\\).
+For clause 2, we need to take off the outer layer, and check \\\((0, b_1, \cdots (0, b_{i-1}, K(S(D'))) \cdots ) \lessapprox K(D')\\\).
+This happens again at each layer until we reach \\\(K(S(D')) \lessapprox K(D')\\\), which is true by induction.
+Thus, in this case, \\\(K(S(A)) \lessapprox K(A)\\\).
+
+TODO cases where no suitable E was found
 
 </div>
 
@@ -465,6 +493,13 @@ This guess fails at the next example, or if not there, soon after.
 I find it remarkable how similar the Buchholz expressions are to the Taranovsky DoRI expressions -
 if you read Buchholz expressions left to right and Taranovsky right to left,
 \\\(\psi_0\\\) corresponds to \\\(0\\\) and \\\(\psi_1\\\) corresponds to \\\(\Omega\\\).
+That they are similar would not be too surprising - ordinal collapsing functions, by their nature, tend to have similar looking ladders.
+Across the zoo of OCFs, including Bachmann's \\\(\psi\\\), Madore's \\\(\psi\\\), Feferman's \\\(\theta\\\), Wilken's \\\(\vartheta\\\), and Weiermann's \\\(\vartheta\\\),
+if you chart out expressions in each notation that all name the same ordinal,
+the ladders end up looking similar but will tend to not quite line up, due to differences between the OCFs.
+What is remarkable to me is that for Buchholz's \\\(\psi\\\) and Taranovsky's DoRI \\\(C\\\), there is a straightforward conversion between them.
+I am cautious to not speak more on philosophy than is warranted and pollute the serious discussion, but I must say,
+that the structure stabilizes even while the notation changes (from Buchholz's \\\(\psi\\\) to Taranovsky's DoRI \\\(C\\\)) looks to me to be a good sign we are moving toward the most simple and natural notation.
 
 For the few examples that Taranovsky listed, the corresponding entries in my tables match exactly, so at least to that extent I have verified my derivations are correct.
 
