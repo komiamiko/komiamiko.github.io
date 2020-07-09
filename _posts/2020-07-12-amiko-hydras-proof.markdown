@@ -91,9 +91,9 @@ There may be no such hydras, in which case it is vacuously true.*
 Detine \\\(a \lessapprox b \iff a \lessapprox^\emptyset b\\\)
 Define \\\(a \lessapprox_=^c b \iff a = b \lor a \lessapprox^c b\\\)
 Define \\\(a \lessapprox^c b \iff b \neq 0 \land (a = 0 \lor a \neq 0 \land (a \lessapprox^{c\cup \\\{b\\\}} b[2]\\\)
-\\\(\lor a[2] \lessapprox^c b \land (a[0] \lessapprox^{c\cup \\\{b\\\}} b[0] \lor a[0] = b[0] \land a[1] \lessapprox^{c\cup \\\{b\\\}} b[1])\\\)
-\\\(\lor a[0] \lessapprox^{c\cup \\\{b\\\}} b[0] \land (a[1] \lessapprox_=^{c\cup \\\{b\\\}} b[1] \lor \exists x \in c\cup \\\{b\\\}, a[1]\lessapprox x) \land a[2] \lessapprox_=^{c\cup \\\{b\\\}} b[2]\\\)
-\\\(\lor a[0] \lessapprox_=^{c\cup \\\{b\\\}} b[0] \land a[1] \lessapprox^{c\cup \\\{b\\\}} b[1] \land a[2] \lessapprox_=^{c\cup \\\{b\\\}} b[2]\\\)
+\\\(\lor (a[2] \lessapprox_=^{c\cup \\\{b\\\}} b[2] \lor a[2] \lessapprox_=^c b) \land (\\\)
+\\\(a[0] \lessapprox^{c\cup \\\{b\\\}} b[0] \land (a[1] \lessapprox_=^{c\cup \\\{b\\\}} b[1] \lor \exists x \in c\cup \\\{b\\\}, a[1]\lessapprox x)\\\)
+\\\(\lor a[0] \lessapprox_=^{c\cup \\\{b\\\}} b[0] \land a[1] \lessapprox^{c\cup \\\{b\\\}} b[1] )\\\)
 \\\(\lor a[0] \lessapprox_=^{c\cup \\\{b\\\}} b[0] \land a[1] \lessapprox_=^{c\cup \\\{b\\\}} b[1] \land a[2] \lessapprox^{c\cup \\\{b\\\}} b[2] ))\\\)
 Note that \\\(c_0 \subset c_1 \implies (a \lessapprox^{c_0} b \implies a \lessapprox^{c_1} b)\\\), so it is safe to drop \\\(c\\\) in certain contexts, as is done in the proof.
 
@@ -337,9 +337,14 @@ For the original \\\(F\\\), if we define \\\(F^\* \\\) to be \\\(F\\\) with labe
 Back in \\\(A\\\), the subexpression \\\(K(D')\\\) is replaced by \\\(i_{E', 0:g(E,D)}(0, 0, 0, \cdots, 0)\\\) with \\\(N+1\\\) copies of \\\(0\\\).
 Our goal is to show \\\(i_{E', 0:g(E,D)}(0, 0, 0, \cdots, 0) \lessapprox K(D')\\\), which would imply \\\(K(S(A)) \lessapprox K(A)\\\).
 We will do this by showing clause 2 and 3 hold in all cases.
-Clause 3 is easier, since \\\(a = 0 \lessapprox d \neq 0\\\).
 For clause 2, we need to take off the outer layer, and check \\\((0, b_1, \cdots (0, b_{i-1}, K(D'')) \cdots ) \lessapprox K(D')\\\).
 This happens again at each layer until we reach \\\(K(D'') \lessapprox K(D')\\\), which we already know to be true.
+For clause 3, we know \\\(a[0] = 0 \lessapprox b[0] \neq 0\\\), and we also need to show \\\((a[1] \lessapprox_=^{c\cup \\\{b\\\}} b[1] \lor \exists x \in c\cup \\\{b\\\}, a[1]\lessapprox x)\\\), where the set \\\(c\\\) includes all ancestors of \\\(K(D')\\\).
+We take the route of showing \\\(\exists x \in c\cup \\\{b\\\}, a[1]\lessapprox x\\\).
+Choose the rightmost child of \\\(E\\\) here to be \\\(x\\\).
+This mirrors the structure of \\\(i_{E', 0:g(E,D)}(0, 0, 0, \cdots, 0)\\\) until we reach the location where \\\(D\\\) would be.
+There, clause 2 will again hold by the same argument, and clause 3 will allow us to take rightmost child of \\\(E\\\) as \\\(x\\\) again, while \\\(a\\\) now has \\\(1\\\) less iterate of the repeated subtree.
+After moving past all \\\(N\\\) iterates, we are left with \\\(0\\\) at the leaf being compared to \\\(K(D')\\\), for which it is obvious that \\\(0 \lessapprox K(D')\\\).
 Thus, in this case, \\\(K(S(A)) \lessapprox K(A)\\\).
 
 In another case, suppose no suitable \\\(E\\\) was found.
