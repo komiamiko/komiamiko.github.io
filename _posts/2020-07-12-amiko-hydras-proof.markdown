@@ -578,9 +578,9 @@ I think this is a good place to stop.
 Taranovsky's DoRI \\\(C\\\) can go much higher of course - we have matched the strength of Buchholz's function using only \\\(C(\alpha, \beta, \gamma)\\\) with \\\(\alpha \leq 1\\\).
 If you are interested, you can explore that on your own.
 
-[^cite-kirby-paris]: [https://doi.org/10.1112/blms/14.4.285](https://doi.org/10.1112/blms/14.4.285)
-[^cite-buchholz]: [https://doi.org/10.1016/0168-0072%2887%2990078-9](https://doi.org/10.1016/0168-0072%2887%2990078-9)
-[^cite-taranovsky]: [https://web.archive.org/web/20200708201005/http://web.mit.edu/dmytro/www/other/OrdinalNotation.htm](https://web.archive.org/web/20200708201005/http://web.mit.edu/dmytro/www/other/OrdinalNotation.htm)
-[^cite-rathjen]: [https://doi.org/10.1017/cbo9780511896262.011](https://doi.org/10.1017/cbo9780511896262.011)
+[^cite-kirby-paris]: [Kirby, L. and Paris, J. (1982), Accessible Independence Results for Peano Arithmetic. Bulletin of the London Mathematical Society, 14: 285-293. doi:10.1112/blms/14.4.285](https://doi.org/10.1112/blms/14.4.285)
+[^cite-buchholz]: [Buchholz, W. (1987), An independence result for (Π<sub>1</sub><sup>1</sup>-CA)+BI. Annals of Pure and Applied Logic, 33: 131-155. https://doi.org/10.1016/0168-0072%2887%2990078-9](https://doi.org/10.1016/0168-0072%2887%2990078-9)
+[^cite-taranovsky]: [Taranovsky, D. (2020). Ordinal Notation. Retrieved 2020-07-08.](https://web.archive.org/web/20200708201005/http://web.mit.edu/dmytro/www/other/OrdinalNotation.htm)
+[^cite-rathjen]: [Rathjen, M. (1993). Fragments of Kripke-Platek set theory with infinity. In P. Aczel, H. Simmons, & S. Wainer (Eds.), Proof Theory: A selection of papers from the Leeds Proof Theory Programme 1990 (pp. 251-274). Cambridge: Cambridge University Press. doi:10.1017/CBO9780511896262.011](https://doi.org/10.1017/cbo9780511896262.011)
 
 </div>
