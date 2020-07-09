@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Proof of termination for Amiko hydras"
-date: 2020-06-01 22:30
+date: 2020-07-12 22:30
 categories: math ordinals
 ---
 
