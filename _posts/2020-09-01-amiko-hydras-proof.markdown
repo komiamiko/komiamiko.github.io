@@ -339,7 +339,14 @@ For clause 2, we need to take off the outer layer, and check \\\((0, b_1, \cdots
 This happens again at each layer until we reach \\\(K(S(D')) \lessapprox K(D')\\\), which is true by induction.
 Thus, in this case, \\\(K(S(A)) \lessapprox K(A)\\\).
 
-TODO cases where no suitable E was found
+In another case, suppose no suitable \\\(E\\\) was found.
+In this case, \\\(E\\\) is taken as the parent of the last candidate, which may simply be the parent of \\\(D\\\) if no nodes were explored, with all children removed except for the rightmost.
+We can recycle the argument for the previous case, using \\\(i = j = 1\\\), and it still works for this case.
+In this case, \\\(K(S(A)) \lessapprox K(A)\\\).
+
+In the last case, suppose \\\(A\\\) was reached and still no suitable candidate was found.
+Then \\\(A\\\) is taken as \\\(E\\\), with all children removed except for the rightmost.
+Again, we are able to recycle the previous argument using \\\(i = j = 1\\\), so in this case, \\\(K(S(A)) \lessapprox K(A)\\\).
 
 </div>
 
