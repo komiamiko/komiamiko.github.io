@@ -324,7 +324,10 @@ Note that \\\(\forall k\in i, a_i = 0\\\).
 Since a suitable \\\(E\\\) was found, and we know \\\(D\\\) and \\\(E\\\) must both have label \\\((\star:)\\\), we can say
 \\\((a_i, b_i, (a_{i+1}, b_{i+1}, \cdots (a_{j-1}, b_{j-1}, 0) \cdots )) \lessapprox K(D')\\\).
 Let \\\(E'^\* \\\) be \\\(E'\\\) but with label changed to \\\(\star\\\).
-Observe \\\(K(E'^\* ) = (a_0, b_0, (a_1, b_1, \cdots (a_{i-1}, b_{i-1}, K(S(D'))) \cdots )) = (0, b_0, (0, b_1, \cdots (0, b_{i-1}, K(S(D'))) \cdots ))\\\).
+Let \\\(D''\\\) be \\\(S(D')\\\) but with children with label \\\((\star:)\\\) removed.
+We know \\\(K(D'') \lessapprox K(S(D'))\\\) since removing children causes a sub-expression to decrease, and \\\(K(S(D')) \lessapprox K(D')\\\) by induction.
+Then, \\\(K(D'') \lessapprox K(D')\\\).
+Observe \\\(K(E'^\* ) = (a_0, b_0, (a_1, b_1, \cdots (a_{i-1}, b_{i-1}, K(D'')) \cdots )) = (0, b_0, (0, b_1, \cdots (0, b_{i-1}, K(D'')) \cdots ))\\\).
 Observe that the transform "Replace \\\(F\\\) with \\\(E'\\\) where \\\(D\\\) is replaced by \\\(F\\\)."
 corresponds to \\\(h_{E', 0:g(E,D)}\\\).
 Observe that the iterate corresponds to \\\(K(F) \mapsto i_{E', 0:g(E,D)}(K(F), K(G), K(G), \cdots, K(G), 0)\\\) with \\\(N-1\\\) copies of \\\(K(G)\\\) where \\\(G\\\) is the label of \\\(D\\\),
@@ -334,9 +337,9 @@ For the original \\\(F\\\), if we define \\\(F^\* \\\) to be \\\(F\\\) with labe
 Back in \\\(A\\\), the subexpression \\\(K(D')\\\) is replaced by \\\(i_{E', 0:g(E,D)}(0, 0, 0, \cdots, 0)\\\) with \\\(N+1\\\) copies of \\\(0\\\).
 Our goal is to show \\\(i_{E', 0:g(E,D)}(0, 0, 0, \cdots, 0) \lessapprox K(D')\\\), which would imply \\\(K(S(A)) \lessapprox K(A)\\\).
 We will do this by showing clause 2 and 3 hold in all cases.
-Clause 3 is easier, since \\\(a[0] = 0 \lessapprox b[0] \neq 0\\\).
-For clause 2, we need to take off the outer layer, and check \\\((0, b_1, \cdots (0, b_{i-1}, K(S(D'))) \cdots ) \lessapprox K(D')\\\).
-This happens again at each layer until we reach \\\(K(S(D')) \lessapprox K(D')\\\), which is true by induction.
+Clause 3 is easier, since \\\(a = 0 \lessapprox d \neq 0\\\).
+For clause 2, we need to take off the outer layer, and check \\\((0, b_1, \cdots (0, b_{i-1}, K(D'')) \cdots ) \lessapprox K(D')\\\).
+This happens again at each layer until we reach \\\(K(D'') \lessapprox K(D')\\\), which we already know to be true.
 Thus, in this case, \\\(K(S(A)) \lessapprox K(A)\\\).
 
 In another case, suppose no suitable \\\(E\\\) was found.
