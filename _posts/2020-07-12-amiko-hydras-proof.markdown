@@ -401,7 +401,8 @@ Telling them what they need to do or criticizing them does not necessarily enabl
 
 > I know I HAVE to cook, but how do I turn on the stove without the Button?
 
-*- [Pina, ADHD Alien](https://twitter.com/adhd_alien)*
+*- [Pina, ADHD Alien](https://twitter.com/adhd_alien)
+| Source: [WHY CAN YOU DO IT NOW AND NOT EARLIER ? EXECUTIVE DYSFUNCTION THEORY](http://adhd-alien.com/2019/07/16/why-can-you-do-it-now/)*
 
 I'm guilty of doing it in the past, and I almost did it again just now.
 I commented on my experiences getting here.
