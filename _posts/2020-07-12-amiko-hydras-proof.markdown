@@ -130,9 +130,12 @@ I dedicate some space to defining \\\(M\\\), and the rest of the proof is for pr
 **Hydra theorem.**
 \\\(\forall A \in \mathbb{H}, \pi(A)\\\)
 
-**Corollary.**
-The strength of Amiko hydras is upper-bounded at \\\(\chi\\\).
-Formally proving this requires some more technical steps, but they are not hard after the main proof is done.
+**Conjecture.**
+"The strength of Amiko hydras is upper-bounded at \\\(C(\chi,0)\\\)."
+I would be completely sure of this if every step decreased the ordinal.
+However, I relied on sub-expressions decreasing, which hides additional structure.
+At the very least, this conjecture does not follow obviously from the main theorem,
+and it is possible that the additional structure pushes the strength of Amiko hydras above \\\(C(\chi,0)\\\).
 
 I must emphasize that, because \\\(M\\\) is not necessarily a bijection, \\\(\chi\\\) is only an upper bound for the strength of Amiko hydras, and actually the hydras may be weaker.
 To be precise, for the unique \\\(\chi\\\) for which a bijective \\\(M\\\) exists, the strength of Amiko hydras is exactly that \\\(\chi\\\).
