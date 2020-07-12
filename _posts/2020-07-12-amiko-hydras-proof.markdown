@@ -132,7 +132,7 @@ I dedicate some space to defining \\\(M\\\), and the rest of the proof is for pr
 
 **Corollary.**
 The strength of Amiko hydras is upper-bounded at \\\(\chi\\\).
-Formally proving this requires some more technical steps, but the are not hard after the main proof is done.
+Formally proving this requires some more technical steps, but they are not hard after the main proof is done.
 
 I must emphasize that, because \\\(M\\\) is not necessarily a bijection, \\\(\chi\\\) is only an upper bound for the strength of Amiko hydras, and actually the hydras may be weaker.
 To be precise, for the unique \\\(\chi\\\) for which a bijective \\\(M\\\) exists, the strength of Amiko hydras is exactly that \\\(\chi\\\).
