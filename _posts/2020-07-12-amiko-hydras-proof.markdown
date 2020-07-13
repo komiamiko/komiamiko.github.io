@@ -88,7 +88,7 @@ which is needed because the original post on the hydras did not explicitly give 
 There may be no such hydras, in which case it is vacuously true.*
 
 **3. Definition of sub-expression comparison.**
-Detine \\\(a \lessapprox b \iff a \lessapprox^\emptyset b\\\)
+Define \\\(a \lessapprox b \iff a \lessapprox^\emptyset b\\\)
 Define \\\(a \lessapprox_=^c b \iff a = b \lor a \lessapprox^c b\\\)
 Define \\\(a \lessapprox^c b \iff b \neq 0 \land (a = 0 \lor a \neq 0 \land (a \lessapprox^{c\cup \\\{b\\\}} b[2]\\\)
 \\\(\lor (a[2] \lessapprox_=^{c\cup \\\{b\\\}} b[2] \lor a[2] \lessapprox_=^c b) \land (\\\)
@@ -331,7 +331,7 @@ Let \\\(D''\\\) be \\\(S(D')\\\) but with children with label \\\((\star:)\\\) r
 We know \\\(K(D'') \lessapprox K(S(D'))\\\) since removing children causes a sub-expression to decrease, and \\\(K(S(D')) \lessapprox K(D')\\\) by induction.
 Then, \\\(K(D'') \lessapprox K(D')\\\).
 Observe \\\(K(E'^\* ) = (a_0, b_0, (a_1, b_1, \cdots (a_{i-1}, b_{i-1}, K(D'')) \cdots )) = (0, b_0, (0, b_1, \cdots (0, b_{i-1}, K(D'')) \cdots ))\\\).
-Observe that the transform "Replace \\\(F\\\) with \\\(E'\\\) where \\\(D\\\) is replaced by \\\(F\\\)."
+Observe that the transform "Replace \\\(F\\\) with \\\(E'\\\) where \\\(D\\\) is replaced by \\\(F\\\)"
 corresponds to \\\(h_{E', 0:g(E,D)}\\\).
 Observe that the iterate corresponds to \\\(K(F) \mapsto i_{E', 0:g(E,D)}(K(F), K(G), K(G), \cdots, K(G), 0)\\\) with \\\(N-1\\\) copies of \\\(K(G)\\\) where \\\(G\\\) is the label of \\\(D\\\),
 however, since we know \\\(G = (\star:)\\\), \\\(K(G) = 0\\\), and thus the map reduces to simply
