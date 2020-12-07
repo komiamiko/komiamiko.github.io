@@ -110,6 +110,10 @@ In the end, what my suspicion speaks most on is how much internalized transphobi
 Internalized transphobia is a nasty problem, and not something that can be solved overnight.
 However, once we recognize it, we can do something about it.
 I hope you wonderful trans folk out there learn to accept compliments better, and maybe see yourself in a better light.
+On the other end, please do validate and compliment trans people you meet, if you're comfortable with it.
+We really need it.
+It does a little to counteract the background noise that always tells us all the reasons we are bad.
+It also brings us just a little closer to that ideal world of acceptance.
 Thank you for reading my story.
 
 </div>
