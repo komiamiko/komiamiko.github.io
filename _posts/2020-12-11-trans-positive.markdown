@@ -109,11 +109,30 @@ In the end, what my suspicion speaks most on is how much internalized transphobi
 
 Internalized transphobia is a nasty problem, and not something that can be solved overnight.
 However, once we recognize it, we can do something about it.
+People may say nice things about you, and they mean it!
 I hope you wonderful trans folk out there learn to accept compliments better, and maybe see yourself in a better light.
 On the other end, please do validate and compliment trans people you meet, if you're comfortable with it.
 We really need it.
 It does a little to counteract the background noise that always tells us all the reasons we are bad.
-It also brings us just a little closer to that ideal world of acceptance.
 Thank you for reading my story.
+
+</div>
+
+# Addendum
+{: #addendum}
+
+{% include collapser.markdown %}
+
+<div>
+
+This is my story.
+It's not going to be everyone's story.
+People are wonderfully diverse, with seemingly an exception to every rule.
+I speak generally, which may give the impression I'm asserting this is how it is for everyone,
+but I do not wish for my words to be read as such.
+If I added a note to explain the nuances every time I made a general statement, this would be more of a book than a blog post.
+I hope this addendum will suffice instead.
+As for the post as a whole, I hope it will help some people.
+That would be more than enough for me.
 
 </div>
