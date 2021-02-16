@@ -7,9 +7,9 @@ categories: art meme
 
 {::options parse_block_html="true" /}
 
-![A forest, with some burning creature in it. The image is blurry, as if the photographer was moving quickly. The fire is yellow, then white, then purple, then black - the colours of the nonbinary flag. Fog covers the area.](/assets/flaming-gender/flaming-gender-monster.png)
+![A forest, with some burning creature in it. The image is blurry, as if the photographer was moving quickly. The fire is yellow, then white, then purple, then black - the colours of the nonbinary flag. Fog covers the area.](/assets/flaming-gender/flaming-gender-monster-small.png)
 
-<span style="font-size:80%;">"Flaming Gender Monster" © 2021 Komi Amiko, published under [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/) | [download assets](/assets/flaming-gender/flaming-gender-monster.tar.bz2)</span>
+<span style="font-size:80%;">"Flaming Gender Monster" © 2021 Komi Amiko, published under [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/) | [high quality version](/assets/flaming-gender/flaming-gender-monster.png) | [download assets](/assets/flaming-gender/flaming-gender-monster.tar.bz2)</span>
 
 # What is this?
 {: #what}
