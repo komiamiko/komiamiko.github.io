@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Boy/girl flag interpolations"
-date: 2021-05-10 22:00
+date: 2021-05-12 23:00
 categories: art experimental
 ---
 
