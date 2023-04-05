@@ -1,10 +1,11 @@
 ---
-layout: homepage
+layout: post
+title: "Art lessons from a beginner"
+date: 2022-06-26 20:00
+categories: archive homepage art
 ---
 
 {::options parse_block_html="true" /}
-
-[Jump to posts index](#posts-index)
 
 # Hello
 {: #hello}
@@ -78,11 +79,3 @@ Which parameters lead to it actually looking right, I cannot know in advance, bu
 Expert artists have better tuned their guessing skills (for lack of a better term) to get better quality in less tries, but they still don't have a magic method to get perfection on the first try.
 
 </div>
-
-# All posts
-{: #posts-index}
-
-| Date posted | Title of post |
-|--:|:--|
-{% for post in site.posts %} | {{ post.date | date: "%Y-%m-%d" }} | [{{ post.title }}]({{ post.url }}) |
-{% endfor %}
